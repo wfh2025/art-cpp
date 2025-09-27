@@ -1,0 +1,185 @@
+{
+    "files.eol": "\n",
+    "files.encoding": "utf8",
+    "files.autoSave": "afterDelay",
+    "editor.rulers": [
+        150
+    ],
+    "editor.lineNumbers": "on",
+    "editor.cursorBlinking": "smooth",
+    "editor.tabSize": 4,
+    "editor.fontSize": 15,
+    "editor.wordWrap": "on",
+    "editor.formatOnSave": true,
+    "editor.minimap.enabled": false,
+    "editor.renderWhitespace": "selection",
+    "editor.fontFamily": "霞鹭文楷, Menlo, Monaco, 'Courier New', monospace",
+    "editor.semanticHighlighting.enabled": false,
+    "[cpp]": {
+        "editor.defaultFormatter": "ms-vscode.cpptools"
+    },
+    "terminal.explorerKind": "integrated",
+    "terminal.integrated.accessibleViewPreserveCursorPosition": false,
+    "terminal.integrated.accessibleViewFocusOnCommandExecution": false,
+    "terminal.integrated.allowChords": true,
+    "terminal.integrated.allowedLinkSchemes": [
+        "file",
+        "http",
+        "https",
+        "mailto",
+        "vscode",
+        "vscode-insiders"
+    ],
+    "terminal.integrated.automationProfile.linux": null,
+    "terminal.integrated.automationProfile.osx": null,
+    "terminal.integrated.automationProfile.windows": null,
+    "terminal.integrated.autoReplies": {},
+    "terminal.integrated.bellDuration": 1000,
+    "terminal.integrated.commandsToSkipShell": [],
+    "terminal.integrated.confirmOnExit": "never",
+    "terminal.integrated.confirmOnKill": "editor",
+    "terminal.integrated.copyOnSelection": false,
+    "terminal.integrated.cursorBlinking": false,
+    "terminal.integrated.cursorStyle": "block",
+    "terminal.integrated.cursorStyleInactive": "outline",
+    "terminal.integrated.cwd": "",
+    "terminal.integrated.defaultLocation": "view",
+    "terminal.integrated.defaultProfile.linux": null,
+    "terminal.integrated.defaultProfile.osx": null,
+    "terminal.integrated.detectLocale": "auto",
+    "terminal.integrated.drawBoldTextInBrightColors": true,
+    "terminal.integrated.enableFileLinks": "on",
+    "terminal.integrated.enableImages": false,
+    "terminal.integrated.enableMultiLinePasteWarning": "auto",
+    "terminal.integrated.enablePersistentSessions": true,
+    "terminal.integrated.enableVisualBell": false,
+    "terminal.integrated.env.linux": {},
+    "terminal.integrated.env.osx": {},
+    "terminal.integrated.env.windows": {},
+    "terminal.integrated.environmentChangesIndicator": "warnonly",
+    "terminal.integrated.environmentChangesRelaunch": true,
+    "terminal.integrated.focusAfterRun": "none",
+    "terminal.integrated.fontFamily": "",
+    "terminal.integrated.fontLigatures.enabled": false,
+    "terminal.integrated.fontSize": 12,
+    "terminal.integrated.fontWeight": "normal",
+    "terminal.integrated.fontWeightBold": "bold",
+    "terminal.integrated.gpuAcceleration": "auto",
+    "terminal.integrated.hideOnLastClosed": true,
+    "terminal.integrated.hideOnStartup": "never",
+    "terminal.integrated.ignoreBracketedPasteMode": false,
+    "terminal.integrated.initialHint": true,
+    "terminal.integrated.letterSpacing": 0,
+    "terminal.integrated.lineHeight": 1,
+    "terminal.integrated.localEchoExcludePrograms": [
+        "vim",
+        "vi",
+        "nano",
+        "tmux"
+    ],
+    "terminal.integrated.localEchoLatencyThreshold": 30,
+    "terminal.integrated.localEchoStyle": "dim",
+    "terminal.integrated.macOptionClickForcesSelection": false,
+    "terminal.integrated.macOptionIsMeta": false,
+    "terminal.integrated.middleClickBehavior": "default",
+    "terminal.integrated.mouseWheelZoom": false,
+    "terminal.integrated.persistentSessionReviveProcess": "onExit",
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "path": "bash",
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh"
+        },
+        "fish": {
+            "path": "fish"
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.profiles.osx": {
+        "bash": {
+            "path": "bash",
+            "args": [
+                "-l"
+            ],
+            "icon": "terminal-bash"
+        },
+        "zsh": {
+            "path": "zsh",
+            "args": [
+                "-l"
+            ]
+        },
+        "fish": {
+            "path": "fish",
+            "args": [
+                "-l"
+            ]
+        },
+        "tmux": {
+            "path": "tmux",
+            "icon": "terminal-tmux"
+        },
+        "pwsh": {
+            "path": "pwsh",
+            "icon": "terminal-powershell"
+        }
+    },
+    "terminal.integrated.profiles.windows": {
+        "MSYS2-shell-cmd": {
+            "path": "D:\\install-dir\\msys64\\msys2_shell.cmd",
+            "args": [
+                "-defterm",
+                "-here",
+                "-no-start",
+                "-ucrt64"
+            ],
+            "icon": "terminal-bash"
+        }
+    },
+    "terminal.integrated.rightClickBehavior": "selectWord",
+    "terminal.integrated.scrollback": 1000,
+    "terminal.integrated.sendKeybindingsToShell": false,
+    "terminal.integrated.shellIntegration.enabled": true,
+    "terminal.integrated.shellIntegration.history": 100,
+    "terminal.integrated.shellIntegration.showCommandGuide": true,
+    "terminal.integrated.showExitAlert": true,
+    "terminal.integrated.smoothScrolling": false,
+    "terminal.integrated.splitCwd": "inherited",
+    "terminal.integrated.stickyScroll.enabled": false,
+    "terminal.integrated.suggest.enabled": false,
+    "terminal.integrated.suggest.windowsExecutableExtensions": {},
+    "terminal.integrated.suggest.selectionMode": "partial",
+    "terminal.integrated.tabs.defaultColor": "terminal.ansiGreen",
+    "terminal.integrated.tabs.defaultIcon": "terminal",
+    "terminal.integrated.tabs.description": "${task}${separator}${local}${separator}${cwdFolder}",
+    "terminal.integrated.tabs.enableAnimation": true,
+    "terminal.integrated.tabs.enabled": true,
+    "terminal.integrated.tabs.hideCondition": "singleTerminal",
+    "terminal.integrated.tabs.location": "right",
+    "terminal.integrated.tabs.showActions": "singleTerminalOrNarrow",
+    "terminal.integrated.tabs.showActiveTerminal": "singleTerminalOrNarrow",
+    "terminal.integrated.tabs.title": "${process}",
+    "terminal.integrated.unicodeVersion": "11",
+    "terminal.integrated.useWslProfiles": true,
+    "terminal.integrated.windowsEnableConpty": true,
+    "terminal.sourceControlRepositoriesKind": "integrated",
+    "terminal.integrated.defaultProfile.windows": "MSYS2-shell-cmd",
+    "application.experimental.rendererProfiling": false,
+    "security.promptForLocalFileProtocolHandling": true,
+    "security.promptForRemoteFileProtocolHandling": true,
+    "telemetry.feedback.enabled": false,
+    "workbench.colorTheme": "Visual Studio Dark - C++",
+    "update.mode": "none",
+    "extensions.autoUpdate": false,
+    "telemetry.telemetryLevel": "off",
+    "cmake.sourceDirectory": "/Users/wu.feihu/ws/art-cpp/src"
+}

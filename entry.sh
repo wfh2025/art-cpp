@@ -1,0 +1,184 @@
+#!/usr/bin/env bash
+export PROJ_ROOT=$(cd "$(dirname -- "$0")" && pwd -P)
+export PROJ_BUILD=${PROJ_ROOT}/build
+export PROJ_DEPS=${PROJ_ROOT}/deps
+export PROJ_SRC=${PROJ_ROOT}/src
+
+function build-deps() {
+    build-googletest && build-fmt && build-gflags && \
+    build-pugixml && build-nlohmann-json && build-leveldb && build-dlib && \
+    build-abseil-cpp && build-poco
+}
+
+function build-leveldb() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/leveldb"
+    local src="${PROJ_SRC}/third-party/leveldb-1.23"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DBUILD_SHARED_LIBS=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
+          -DLEVELDB_BUILD_BENCHMARKS=OFF -DLEVELDB_BUILD_TESTS=OFF && \
+    cmake --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
+function build-nlohmann-json() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/json"
+    local src="${PROJ_SRC}/third-party/json-3.12.0"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests=OFF \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
+function build-googletest() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/googletest"
+    local src="${PROJ_SRC}/third-party/googletest-1.17.0"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-abseil-cpp() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/abseil-cpp"
+    local src="${PROJ_SRC}/third-party/abseil-cpp-20250814.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-linenoise-ng() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/linenoise-ng"
+    local src="${PROJ_SRC}/third-party/linenoise-ng-1.0.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -Wno-dev \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-dlib() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/dlib"
+    local src="${PROJ_SRC}/third-party/dlib-20.0"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -Wno-dev \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-fmt() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/fmt"
+    local src="${PROJ_SRC}/third-party/fmt-12.0.0"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DFMT_TEST=OFF\
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-gflags() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/gflags"
+    local src="${PROJ_SRC}/third-party/gflags-2.2.2"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.10 -DCMAKE_MINIMUM_REQUIRED_VERSION=3.10 \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-pugixml() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/pugixml"
+    local src="${PROJ_SRC}/third-party/pugixml-1.15"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-poco() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/poco"
+    local src="${PROJ_SRC}/third-party/poco-poco-1.14.2-release"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function build-opencv() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/opencv"
+    local src="${PROJ_SRC}/third-party/opencv-4.12.0"
+    local src_contrib="${PROJ_SRC}/third-party/opencv_contrib-4.12.0/modules"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+    cmake -B "${build_dir}" -S "${src}" -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+        -DCMAKE_BUILD_TYPE=Release -Wno-dev -DWITH_FFMPEG=OFF \
+        -DBUILD_opencv_python_bindings_generator=OFF -DBUILD_opencv_python_tests=OFF \
+        -DBUILD_JAVA=OFF -DBUILD_opencv_java_bindings_generator=OFF \
+        -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DOPENCV_TEST_DNN_TFLITE=OFF -DOPENCV_TEST_DNN_CANN=OFF \
+        -DOPENCV_TEST_DNN_OPENVINO=OFF -DOPENCV_TEST_DNN_TIMVX=OFF -DINSTALL_TESTS=OFF \
+        -DBUILD_opencv_js=OFF -DBUILD_opencv_js_bindings_generator=OFF \
+        -DOPENCV_OSX_USE_ACCELERATE_NEW_LAPACK=ON \
+        -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations -Wno-unused-result" \
+        -DOPENCV_EXTRA_MODULES_PATH="${src_contrib}"
+    cmake --build "${build_dir}" --parallel --target install
+    rm -fr "${build_dir}"
+}
+
+function main() {
+    local funcName="$1"
+    shift
+    "$funcName" "$@"
+}
+main "$@"
