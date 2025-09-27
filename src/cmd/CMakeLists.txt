@@ -1,0 +1,5 @@
+add_subdirectory(cv)
+add_subdirectory(absl)
+add_subdirectory(xml)
+add_subdirectory(fmt)
+add_subdirectory(gtest)

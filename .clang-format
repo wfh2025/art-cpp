@@ -1,0 +1,116 @@
+# 基于 LLVM 风格，这是最流行的 C++ 代码风格之一
+BasedOnStyle: LLVM
+
+# 语言设置
+Language: Cpp
+
+# 访问说明符（public、private、protected）的缩进
+AccessModifierOffset: -4
+
+# 对齐方式
+AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: false
+AlignConsecutiveAssignments: false
+AlignConsecutiveDeclarations: false
+AlignEscapedNewlines: Right
+AlignOperands: Align
+AlignTrailingComments: true
+
+# 允许函数定义和声明在一行内
+AllowAllParametersOfDeclarationOnNextLine: false
+AllowShortBlocksOnASingleLine: false
+AllowShortCaseLabelsOnASingleLine: false
+AllowShortFunctionsOnASingleLine: Empty
+AllowShortIfStatementsOnASingleLine: false
+AllowShortLoopsOnASingleLine: false
+
+# 总是在返回类型后换行
+AlwaysBreakAfterDefinitionReturnType: None
+AlwaysBreakAfterReturnType: None
+AlwaysBreakBeforeMultilineStrings: false
+AlwaysBreakTemplateDeclarations: MultiLine
+
+# 括号换行风格
+BinPackArguments: true
+BinPackParameters: true
+BraceWrapping:
+  AfterClass: true
+  AfterControlStatement: true
+  AfterEnum: true
+  AfterFunction: true
+  AfterNamespace: true
+  AfterObjCDeclaration: true
+  AfterStruct: true
+  AfterUnion: true
+  BeforeCatch: true
+  BeforeElse: true
+  IndentBraces: false
+  SplitEmptyFunction: false
+  SplitEmptyRecord: false
+  SplitEmptyNamespace: false
+
+# 在二元运算符前换行
+BreakBeforeBinaryOperators: None
+
+# 大括号换行风格
+BreakBeforeBraces: Custom
+
+# 在构造函数初始化列表的冒号后换行
+BreakBeforeInheritanceComma: false
+BreakInheritanceList: BeforeColon
+
+# 换行策略
+BreakBeforeTernaryOperators: true
+BreakConstructorInitializers: BeforeColon
+BreakAfterJavaFieldAnnotations: false
+BreakStringLiterals: true
+
+# 列限制
+ColumnLimit: 100
+
+# 紧凑命名空间
+CompactNamespaces: false
+
+# 构造函数初始化列表样式
+ConstructorInitializerAllOnOneLineOrOnePerLine: false
+ConstructorInitializerIndentWidth: 4
+
+# 连续空行的最大数量
+MaxEmptyLinesToKeep: 1
+
+# 缩进宽度
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+# 命名空间缩进
+NamespaceIndentation: All
+
+# 指针和引用的对齐
+PointerAlignment: Left
+
+# 空格设置
+SpaceAfterCStyleCast: false
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: true
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCpp11BracedList: false
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true
+SpaceBeforeParens: ControlStatements
+SpaceBeforeRangeBasedForLoopColon: true
+SpaceInEmptyParentheses: false
+SpacesBeforeTrailingComments: 1
+SpacesInAngles: false
+SpacesInContainerLiterals: true
+SpacesInCStyleCastParentheses: false
+SpacesInParentheses: false
+SpacesInSquareBrackets: false
+
+# 其他
+IndentCaseLabels: false
+IndentPPDirectives: AfterHash
+FixNamespaceComments: true
+ReflowComments: true
+SortIncludes: true
+SortUsingDeclarations: true
