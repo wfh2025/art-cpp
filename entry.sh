@@ -9,9 +9,11 @@ function build-deps() {
     build-abseil-cpp && \
     build-pugixml && \
     build-fmt && \
-    build-nlohmann-json
+    build-nlohmann-json && \
+    build-linenoise-ng && \
+    build-dlib && \
+    build-gflags
 }
-
 
 function build-nlohmann-json() {
     rm -fr "${PROJ_BUILD}"
@@ -46,6 +48,30 @@ function build-abseil-cpp() {
     rm -fr "${PROJ_BUILD}"
 }
 
+function build-linenoise-ng() {
+    rm -fr "${PROJ_BUILD}"
+    mkdir -p "${PROJ_DEPS}/linenoise-ng" 
+    cmake -B "${PROJ_BUILD}" \
+          -S "${PROJ_SRC}/3rdparty/linenoise-ng-1.0.1" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -Wno-dev \
+          -DCMAKE_INSTALL_PREFIX="${PROJ_DEPS}/linenoise-ng" && \
+    cmake --build "${PROJ_BUILD}" --parallel --target install
+    rm -fr "${PROJ_BUILD}"
+}
+
+function build-dlib() {
+    rm -fr "${PROJ_BUILD}"
+    mkdir -p "${PROJ_DEPS}/dlib" 
+    cmake -B "${PROJ_BUILD}" \
+          -S "${PROJ_SRC}/3rdparty/dlib-20.0" \
+          -DCMAKE_BUILD_TYPE=Release -Wno-dev \
+          -DCMAKE_INSTALL_PREFIX="${PROJ_DEPS}/dlib" && \
+    cmake --build "${PROJ_BUILD}" --parallel --target install
+    rm -fr "${PROJ_BUILD}"
+}
+
+
+
 function build-fmt() {
     rm -fr "${PROJ_BUILD}"
     mkdir -p "${PROJ_DEPS}/fmt" 
@@ -53,6 +79,17 @@ function build-fmt() {
           -S "${PROJ_SRC}/3rdparty/fmt-12.0.0" \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_INSTALL_PREFIX="${PROJ_DEPS}/fmt" && \
+    cmake --build "${PROJ_BUILD}" --parallel --target install
+    rm -fr "${PROJ_BUILD}"
+}
+
+function build-gflags() {
+    rm -fr "${PROJ_BUILD}"
+    mkdir -p "${PROJ_DEPS}/gflags" 
+    cmake -B "${PROJ_BUILD}" \
+          -S "${PROJ_SRC}/3rdparty/gflags-2.2.2" \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DCMAKE_INSTALL_PREFIX="${PROJ_DEPS}/gflags" && \
     cmake --build "${PROJ_BUILD}" --parallel --target install
     rm -fr "${PROJ_BUILD}"
 }

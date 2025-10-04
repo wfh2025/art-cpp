@@ -20,7 +20,8 @@ target_include_directories(${TARGET_NAME} PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
                                                 "${DEPS_DIR}/fmt/include"
                                                 "${DEPS_DIR}/pugixml/include"
                                                 "${DEPS_DIR}/abseil-cpp/include"
-                                                "${DEPS_DIR}/json/include")
+                                                "${DEPS_DIR}/json/include"
+                                                "${CMAKE_SOURCE_DIR}/3rdparty/cmdline")
 # target_link_directories(${TARGET_NAME} PRIVATE "${DEPS_DIR}/googletest/lib")
 target_link_libraries(${TARGET_NAME} PRIVATE "${DEPS_DIR}/googletest/lib/libgtest_main.a"
                                              "${DEPS_DIR}/googletest/lib/libgtest.a" 

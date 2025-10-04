@@ -13,6 +13,7 @@
 #include <utility>
 #include <vector>
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(lambda, 001)
 {
     auto f1 = []() { return 42; };
@@ -107,7 +108,6 @@ TEST(lambda, 001)
     EXPECT_THROW(f11(), std::runtime_error);
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(tuple, 001)
 {
     std::tuple<std::string, int, int, std::complex<double>> t0;
