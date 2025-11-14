@@ -36,7 +36,7 @@ function build-nlohmann-json() {
 
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests=OFF \
+          -DCMAKE_BUILD_TYPE=Release -DJSON_BuildTests=OFF -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${PROJ_BUILD}" --parallel --target install
 
@@ -65,7 +65,7 @@ function build-abseil-cpp() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 \
+          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
@@ -79,7 +79,8 @@ function build-linenoise-ng() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -Wno-dev \
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -Wno-dev \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
@@ -93,7 +94,7 @@ function build-dlib() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -Wno-dev \
+          -DCMAKE_BUILD_TYPE=Release -Wno-dev -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
@@ -107,7 +108,7 @@ function build-fmt() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DFMT_TEST=OFF\
+          -DCMAKE_BUILD_TYPE=Release -DFMT_TEST=OFF -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
@@ -121,7 +122,8 @@ function build-gflags() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.10 -DCMAKE_MINIMUM_REQUIRED_VERSION=3.10 \
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.10 -DCMAKE_MINIMUM_REQUIRED_VERSION=3.10 \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
@@ -135,7 +137,8 @@ function build-pugixml() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     cmake -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
     cmake --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
