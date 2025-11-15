@@ -11,6 +11,7 @@
     "editor.fontSize": 15,
     "editor.wordWrap": "on",
     "editor.formatOnSave": true,
+    "editor.formatOnPaste": true,
     "editor.minimap.enabled": false,
     "editor.renderWhitespace": "selection",
     "editor.fontFamily": "霞鹭文楷, Menlo, Monaco, 'Courier New', monospace",

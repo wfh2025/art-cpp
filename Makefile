@@ -1,15 +1,22 @@
-PROJ_DIR 	:= $(CURDIR)
-BUILD_DIR := ${PROJ_DIR}/build
-SRC_DIR 	:= ${PROJ_DIR}/src
-DEPS_DIR 	:= ${PROJ_DIR}/deps
-RM 				:= rm -fr
+PROJ_DIR            := $(abspath $(CURDIR))
+SRC_DIR             := ${PROJ_DIR}/src
+DEPS_DIR            := ${PROJ_DIR}/deps
+BUILD_DIR           := ${PROJ_DIR}/build
+RM                  := rm -fr
+CC                  := $(shell which clang)
+CXX                 := $(shell which clang++)
+CMAKE               := cmake
+MKDIR               := mkdir -p
+.DEFAULT_GOAL       := build
+CMAKE_GENERATOR     := Unix Makefiles
 
-.DEFAULT_GOAL := build
 all: deps build
 build: generate
-	cmake --build "${BUILD_DIR}" --parallel
+	${CMAKE} --build "${BUILD_DIR}" --parallel
 generate: clean
-	cmake -B "${BUILD_DIR}" -S "${SRC_DIR}" -DCMAKE_MESSAGE_LOG_LEVEL=FATAL_ERROR
+	${CMAKE} -B "${BUILD_DIR}" -S "${SRC_DIR}" \
+	-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" \
+	-DCMAKE_MESSAGE_LOG_LEVEL=FATAL_ERROR 
 deps: clean
 	${RM} "${DEPS_DIR}" && mkdir -p "${DEPS_DIR}" && ${PROJ_DIR}/entry.sh build-deps
 clean:
