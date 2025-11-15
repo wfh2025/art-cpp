@@ -2,9 +2,9 @@ PROJ_DIR            := $(abspath $(CURDIR))
 SRC_DIR             := ${PROJ_DIR}/src
 DEPS_DIR            := ${PROJ_DIR}/deps
 BUILD_DIR           := ${PROJ_DIR}/build
+PROJ_CC             := $(shell which cc)
+PROJ_CXX            := $(shell which c++)
 RM                  := rm -fr
-CC                  := $(shell which clang)
-CXX                 := $(shell which clang++)
 CMAKE               := cmake
 MKDIR               := mkdir -p
 .DEFAULT_GOAL       := build
@@ -15,7 +15,7 @@ build: generate
 	${CMAKE} --build "${BUILD_DIR}" --parallel
 generate: clean
 	${CMAKE} -B "${BUILD_DIR}" -S "${SRC_DIR}" \
-	-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER="${CC}" -DCMAKE_CXX_COMPILER="${CXX}" \
+	-G "${CMAKE_GENERATOR}" -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
 	-DCMAKE_MESSAGE_LOG_LEVEL=FATAL_ERROR 
 deps: clean
 	${RM} "${DEPS_DIR}" && mkdir -p "${DEPS_DIR}" && ${PROJ_DIR}/entry.sh build-deps
