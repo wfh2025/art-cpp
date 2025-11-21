@@ -8,9 +8,34 @@ export PROJ_CC=$(which cc)
 export PROJ_CXX=$(which c++)
 
 function build-deps() {
-    build-googletest && build-fmt && build-gflags && \
-    build-pugixml && build-nlohmann-json && build-leveldb && build-dlib && \
-    build-abseil-cpp && build-poco && build-civetweb
+    build-fmt
+    build-zlib
+    build-poco
+    build-dlib
+    build-gflags
+    build-pugixml
+    build-leveldb
+    build-civetweb
+    build-googletest
+    build-nlohmann-json
+    build-abseil-cpp
+}
+
+function build-zlib() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/zlib"
+    local src="${PROJ_SRC}/third-party/zlib-1.3.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" 
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
 }
 
 function build-civetweb() {
@@ -53,10 +78,13 @@ function build-leveldb() {
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
           -DCMAKE_BUILD_TYPE=Release \
-          -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" \
-          -DBUILD_SHARED_LIBS=OFF -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
-          -DLEVELDB_BUILD_BENCHMARKS=OFF -DLEVELDB_BUILD_TESTS=OFF && \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
+          -DLEVELDB_BUILD_BENCHMARKS=OFF \
+          -DLEVELDB_BUILD_TESTS=OFF 
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
@@ -71,9 +99,11 @@ function build-nlohmann-json() {
 
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
-          -DJSON_BuildTests=OFF -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DJSON_BuildTests=OFF \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" 
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
@@ -87,9 +117,11 @@ function build-googletest() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -102,9 +134,11 @@ function build-abseil-cpp() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
-          -DCMAKE_CXX_STANDARD=17 -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_CXX_STANDARD=17 \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -117,10 +151,13 @@ function build-linenoise-ng() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 -Wno-dev \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -Wno-dev \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -133,9 +170,11 @@ function build-dlib() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -Wno-dev -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -148,9 +187,10 @@ function build-fmt() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DFMT_TEST=OFF -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -163,10 +203,12 @@ function build-gflags() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_POLICY_VERSION_MINIMUM=3.10 -DCMAKE_MINIMUM_REQUIRED_VERSION=3.10 \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
+          -DCMAKE_MINIMUM_REQUIRED_VERSION=3.10 \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -179,10 +221,11 @@ function build-pugixml() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -195,9 +238,11 @@ function build-poco() {
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" && \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
 }
@@ -209,14 +254,26 @@ function build-opencv() {
     local src_contrib="${PROJ_SRC}/third-party/opencv_contrib-4.12.0/modules"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
-    ${PROJ_CMAKE} -B "${build_dir}" -S "${src}" -DCMAKE_INSTALL_PREFIX="${install_dir}" \
-        -DCMAKE_BUILD_TYPE=Release -DCMAKE_C_COMPILER="${PROJ_CC}" -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
-        -Wno-dev -DWITH_FFMPEG=OFF \
-        -DBUILD_opencv_python_bindings_generator=OFF -DBUILD_opencv_python_tests=OFF \
-        -DBUILD_JAVA=OFF -DBUILD_opencv_java_bindings_generator=OFF \
-        -DBUILD_PERF_TESTS=OFF -DBUILD_TESTS=OFF -DOPENCV_TEST_DNN_TFLITE=OFF -DOPENCV_TEST_DNN_CANN=OFF \
-        -DOPENCV_TEST_DNN_OPENVINO=OFF -DOPENCV_TEST_DNN_TIMVX=OFF -DINSTALL_TESTS=OFF \
-        -DBUILD_opencv_js=OFF -DBUILD_opencv_js_bindings_generator=OFF \
+    ${PROJ_CMAKE} -B "${build_dir}" -S "${src}" \
+        -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+        -DCMAKE_BUILD_TYPE=Release \
+        -DCMAKE_C_COMPILER="${PROJ_CC}" \
+        -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+        -Wno-dev \
+        -DWITH_FFMPEG=OFF \
+        -DBUILD_opencv_python_bindings_generator=OFF \
+        -DBUILD_opencv_python_tests=OFF \
+        -DBUILD_JAVA=OFF \
+        -DBUILD_opencv_java_bindings_generator=OFF \
+        -DBUILD_PERF_TESTS=OFF \
+        -DBUILD_TESTS=OFF \
+        -DOPENCV_TEST_DNN_TFLITE=OFF \
+        -DOPENCV_TEST_DNN_CANN=OFF \
+        -DOPENCV_TEST_DNN_OPENVINO=OFF \
+        -DOPENCV_TEST_DNN_TIMVX=OFF \
+        -DINSTALL_TESTS=OFF \
+        -DBUILD_opencv_js=OFF \
+        -DBUILD_opencv_js_bindings_generator=OFF \
         -DOPENCV_OSX_USE_ACCELERATE_NEW_LAPACK=ON \
         -DCMAKE_CXX_FLAGS="-Wno-deprecated-declarations -Wno-unused-result" \
         -DOPENCV_EXTRA_MODULES_PATH="${src_contrib}"
