@@ -34,7 +34,10 @@ function build-civetweb() {
           -DCMAKE_C_COMPILER="${PROJ_CC}" \
           -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" \
-          -DBUILD_SHARED_LIBS=OFF -DCIVETWEB_ENABLE_MEMORY_DEBUGGING=ON
+          -DBUILD_SHARED_LIBS=OFF \
+          -DCIVETWEB_ENABLE_MEMORY_DEBUGGING=ON \
+          -DCIVETWEB_ENABLE_WEBSOCKETS=ON \
+          -DCIVETWEB_INSTALL_EXECUTABLE=ON
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
