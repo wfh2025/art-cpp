@@ -8,11 +8,99 @@
 #include <map>
 #include <string>
 #include <vector>
+
+TEST(ClassBasic, 015)
+{
+    class Base
+    {
+    public:
+        Base()
+        {
+            printf("line: %d, func: Base()\n", __LINE__);
+        }
+        void show()
+        {
+            printf("line: %d, func: show()\n", __LINE__);
+        }
+
+    protected:
+        std::string _name;
+    };
+
+    class Derive : public Base
+    {
+    public:
+        Derive()
+        {
+            printf("line: %d, func: Derive()\n", __LINE__);
+        }
+        void display()
+        {
+            printf("line: %d, func: display() \n", __LINE__);
+        }
+    };
+
+    auto fn = [](Base* pstBase) { pstBase->show(); };
+    {
+        Derive derive;
+        Base base = derive;
+        Base& refBase = derive;
+        Base* pstBase = &derive;
+        base.show();
+        refBase.show();
+        pstBase->show();
+        fn(&derive);
+    }
+}
 #ifdef RUN_ALL_TEST_CASE
 TEST(ClassBasic, 014)
 {
-    std::string s = art::str::toLower("Hello");
-    EXPECT_EQ(s, "hello");
+    class Student
+    {
+    public:
+        void setGrade(std::string grade)
+        {
+            _grade = grade;
+        }
+        std::string getGrade()
+        {
+            return _grade;
+        }
+        void setName(std::string name)
+        {
+            _name = name;
+        }
+        std::string getName()
+        {
+            return _name;
+        }
+
+    protected:
+        std::string _grade; // 年级
+
+    private:
+        std::string _name; // 名字
+    };
+    class Undergraduate : public Student
+    {
+    public:
+        Undergraduate(std::string major) : _major(major) {}
+        void display()
+        {
+            printf("line: %d, name: %s, grade: %s, major: %s \n", __LINE__, getName().c_str(),
+                   getGrade().c_str(), _major.c_str());
+        }
+
+    private:
+        std::string _major; // 专业
+    };
+
+    {
+        Undergraduate stu("Computer");
+        stu.setName("ZhangSan");
+        stu.setGrade("DaSan");
+        stu.display();
+    }
 }
 
 TEST(ClassBasic, 013)
@@ -59,6 +147,13 @@ TEST(ClassBasic, 013)
     private:
         std::string _name;
     };
+
+    {
+        // 1. 派生类继承基类，构造函数: 基类 => 派生类构造
+        Cat cat("猫");
+        cat.move();
+        cat.walk();
+    }
 }
 
 class GPoint

@@ -15,6 +15,7 @@ target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}
                                                   "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/deps/fpconv"
                                                   "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/deps/hiredis"
                                                   "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/deps/hdr_histogram"
+                                                  "${CMAKE_SOURCE_DIR}/third-party/nf_prefix_tree/src"
 )
 target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/deps/linenoise/linenoise.c"
                                       "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/zmalloc.c"
@@ -52,7 +53,9 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}/third-party/redis-7
                                       "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/geohash_helper.c"
                                       "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/cli_commands.c"
                                       "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/anet.c"
-                                      "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/rio.c"                         
+                                      "${CMAKE_SOURCE_DIR}/third-party/redis-7.2.11/src/rio.c"
+                                      "${CMAKE_SOURCE_DIR}/third-party/nf_prefix_tree/src/PrefixTree.cpp"
+                                      "${CMAKE_SOURCE_DIR}/third-party/nf_prefix_tree/src/TreeNode.cpp"                          
 )
 target_compile_options("${TARGET_NAME}" PRIVATE -pthread 
                                               -ggdb
