@@ -10,7 +10,34 @@ export PROJ_CXX=$(which c++)
 function build-deps() {
     build-googletest && build-fmt && build-gflags && \
     build-pugixml && build-nlohmann-json && build-leveldb && build-dlib && \
-    build-abseil-cpp && build-poco
+    build-abseil-cpp && build-poco && build-civetweb
+}
+
+function build-civetweb() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/civetweb"
+    local src="${PROJ_SRC}/third-party/civetweb-1.16"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DBUILD_TESTING=OFF \
+          -DCIVETWEB_BUILD_TESTING=OFF \
+          -DCIVETWEB_ALLOW_WARNINGS=OFF \
+          -DCIVETWEB_ENABLE_SSL=OFF \
+          -DCIVETWEB_ENABLE_SSL_DYNAMIC_LOADING=OFF \
+          -DCIVETWEB_ENABLE_SERVER_STATS=ON \
+          -DCIVETWEB_ENABLE_CXX=ON \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DBUILD_SHARED_LIBS=OFF -DCIVETWEB_ENABLE_MEMORY_DEBUGGING=ON
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
 }
 
 function build-leveldb() {
