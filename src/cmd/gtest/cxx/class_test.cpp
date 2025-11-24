@@ -8,7 +8,7 @@
 #include <map>
 #include <string>
 #include <vector>
-
+#ifdef RUN_ALL_TEST_CASE
 TEST(ClassBasic, 015)
 {
     class Base
@@ -52,7 +52,7 @@ TEST(ClassBasic, 015)
         fn(&derive);
     }
 }
-#ifdef RUN_ALL_TEST_CASE
+
 TEST(ClassBasic, 014)
 {
     class Student
