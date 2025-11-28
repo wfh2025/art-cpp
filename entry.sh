@@ -21,7 +21,43 @@ function build-deps() {
     build-abseil-cpp
 }
 
+function build-spdlog() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/spdlog"
+    local src="${PROJ_SRC}/third-party/spdlog-1.15.3"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" -DSPDLOG_BUILD_SHARED=OFF
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
+function build-eigen() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/eigen"
+    local src="${PROJ_SRC}/third-party/eigen-5.0.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DBUILD_TESTING=OFF -DEIGEN_BUILD_TESTING=OFF
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
 function build-libevent() {
+    # https://codeload.github.com/libevent/libevent/tar.gz/refs/tags/release-2.1.12-stable
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/libevent"
     local src="${PROJ_SRC}/third-party/libevent-release-2.1.12-stable"
@@ -44,6 +80,7 @@ function build-libevent() {
 }
 
 function build-zlib() {
+    # https://zlib.net/zlib-1.3.1.tar.gz
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/zlib"
     local src="${PROJ_SRC}/third-party/zlib-1.3.1"
