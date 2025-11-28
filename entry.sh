@@ -10,8 +10,6 @@ export PROJ_CXX=$(which c++)
 function build-deps() {
     build-fmt
     build-zlib
-    build-poco
-    build-dlib
     build-gflags
     build-pugixml
     build-leveldb
