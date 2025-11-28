@@ -21,6 +21,28 @@ function build-deps() {
     build-abseil-cpp
 }
 
+function build-libevent() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/libevent"
+    local src="${PROJ_SRC}/third-party/libevent-release-2.1.12-stable"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5 \
+          -DBUILD_TESTING=OFF \
+          -DEVENT__LIBRARY_TYPE=BOTH \
+          -DEVENT__DISABLE_OPENSSL=ON \
+          -DEVENT__DISABLE_TESTS=ON
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
 function build-zlib() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/zlib"
@@ -279,6 +301,10 @@ function build-opencv() {
         -DOPENCV_EXTRA_MODULES_PATH="${src_contrib}"
     ${PROJ_CMAKE} --build "${build_dir}" --parallel --target install
     rm -fr "${build_dir}"
+}
+
+function rm-rubbish() {
+    find . -name ".DS_Store" -type f -delete
 }
 
 function main() {
