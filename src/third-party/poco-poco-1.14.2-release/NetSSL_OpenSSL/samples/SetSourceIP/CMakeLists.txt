@@ -1,5 +1,0 @@
-add_executable(SetSourceIP src/SetSourceIP.cpp)
-target_link_libraries(SetSourceIP PUBLIC Poco::NetSSL Poco::Crypto Poco::Util Poco::Net Poco::XML Poco::Foundation)
-if(MSVC)
-	target_link_libraries(SetSourceIP PRIVATE OpenSSL::applink)
-endif()
