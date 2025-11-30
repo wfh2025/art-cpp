@@ -8,6 +8,7 @@
 #include <complex>
 #include <ctime>
 #include <deque>
+#include <filesystem>
 #include <fstream>
 #include <future>
 #include <initializer_list>
@@ -22,6 +23,86 @@
 #include <typeinfo>
 #include <utility>
 #include <vector>
+
+std::tuple<std::vector<std::string>, std::vector<std::string>>
+listFsPrefix(const std::string& prefix)
+{
+    std::vector<std::string> dirs;
+    std::vector<std::string> files;
+
+    for (const auto& entry : std::filesystem::directory_iterator(prefix))
+    {
+        // std::cout << "path: " << entry.path().string()
+        //           << ", dir: " << (entry.is_directory() ? "true" : "false")
+        //           << ", filename: " << entry.path().filename() << ", stem: " <<
+        //           entry.path().stem()
+        //           << ", extend: " << entry.path().extension() << std::endl;
+        if (entry.is_directory())
+        {
+            dirs.push_back(entry.path().filename());
+        }
+        else
+        {
+            files.push_back(entry.path().filename());
+        }
+    }
+    return std::make_tuple(dirs, files);
+}
+
+static void listFsBFS(const std::string& prefix)
+{
+    std::queue<std::string> pathQueue;
+    pathQueue.push(prefix);
+    while (!pathQueue.empty())
+    {
+        std::string curPath = pathQueue.front();
+        pathQueue.pop();
+        std::tuple<std::vector<std::string>, std::vector<std::string>> entries =
+            listFsPrefix(curPath);
+
+        for (auto& dir : std::get<0>(entries))
+        {
+            std::string newPrefix = (std::filesystem::path(curPath) / dir).string();
+            pathQueue.push(newPrefix);
+        }
+
+        for (auto& file : std::get<1>(entries))
+        {
+            std::cout << "prefix: " << curPath << ", file: " << file << std::endl;
+        }
+    }
+}
+
+static void listFsDFS(const std::string& prefix)
+{
+    // 深度优先
+    std::stack<std::string> pathStack;
+    pathStack.push(prefix);
+
+    while (!pathStack.empty())
+    {
+        std::string curPath = pathStack.top();
+        pathStack.pop();
+
+        auto [dirs, files] = listFsPrefix(curPath);
+
+        for (auto it = dirs.rbegin(); it != dirs.rend(); ++it)
+        {
+            std::string newPrefix = (std::filesystem::path(curPath) / *it).string();
+            pathStack.push(newPrefix);
+        }
+
+        for (auto& file : files)
+        {
+            std::cout << "prefix: " << curPath << ", file: " << file << std::endl;
+        }
+    }
+}
+
+TEST(listFsDFS, 001)
+{
+    // listFsBFS("/Users/wu.feihu/ws/art-cpp/deps");
+}
 
 #ifdef RUN_ALL_TEST_CASE
 static std::string joinThreeIntValues(int a, int b, int c)
