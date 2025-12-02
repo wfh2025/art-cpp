@@ -24,6 +24,7 @@
 #include <utility>
 #include <vector>
 
+#ifdef RUN_ALL_TEST_CASE
 std::tuple<std::vector<std::string>, std::vector<std::string>>
 listFsPrefix(const std::string& prefix)
 {
@@ -101,10 +102,11 @@ static void listFsDFS(const std::string& prefix)
 
 TEST(listFsDFS, 001)
 {
-    // listFsBFS("/Users/wu.feihu/ws/art-cpp/deps");
+    std::string prefix = "/usr/bin";
+    listFsBFS(prefix);
+    listFsDFS(prefix);
 }
 
-#ifdef RUN_ALL_TEST_CASE
 static std::string joinThreeIntValues(int a, int b, int c)
 {
     std::string tmp = std::to_string(a) + "-" + std::to_string(b) + "-" + std::to_string(c);
