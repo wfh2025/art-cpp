@@ -19,6 +19,25 @@ function build-deps() {
     build-abseil-cpp
 }
 
+function build-zlog() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/zlog"
+    local src="${PROJ_SRC}/third-party/zlog-1.2.18"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
 function build-spdlog() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/spdlog"
@@ -89,7 +108,7 @@ function build-zlib() {
           -S "${src}" \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_C_COMPILER="${PROJ_CC}" \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" 
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
@@ -141,7 +160,7 @@ function build-leveldb() {
           -DBUILD_SHARED_LIBS=OFF \
           -DCMAKE_POLICY_VERSION_MINIMUM=3.10 \
           -DLEVELDB_BUILD_BENCHMARKS=OFF \
-          -DLEVELDB_BUILD_TESTS=OFF 
+          -DLEVELDB_BUILD_TESTS=OFF
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
@@ -160,7 +179,7 @@ function build-nlohmann-json() {
           -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DJSON_BuildTests=OFF \
           -DBUILD_SHARED_LIBS=OFF \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" 
+          -DCMAKE_INSTALL_PREFIX="${install_dir}"
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
 
     rm -fr "${build_dir}"
