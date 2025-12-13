@@ -1,4 +1,5 @@
 #include "base/art_str.h"
+#include "spdlog/spdlog.h"
 #include "ut_config.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
@@ -8,6 +9,7 @@
 #include <complex>
 #include <ctime>
 #include <deque>
+#include <exception>
 #include <filesystem>
 #include <fstream>
 #include <future>
@@ -16,6 +18,7 @@
 #include <limits>
 #include <list>
 #include <memory>
+#include <random>
 #include <set>
 #include <string>
 #include <tuple>
@@ -23,8 +26,111 @@
 #include <typeinfo>
 #include <utility>
 #include <vector>
+TEST(STD_ASYNC, 003)
+{
+    SPDLOG_INFO("before, async");
+    std::future<std::string> fut;
+    try
+    {
+        fut = std::async(
+            std::launch::deferred,
+            [&](const std::string& str) -> std::string {
+                std::this_thread::sleep_for(std::chrono::seconds(15));
+                return str;
+            },
+            "Hello");
+    }
+    catch (std::system_error& e)
+    {
+        SPDLOG_ERROR("Failed to create thread, {}", e.what());
+    }
+    SPDLOG_INFO("after, async");
+    std::this_thread::sleep_for(std::chrono::seconds(7));
+    SPDLOG_INFO("after, sleep");
+    std::string ret = fut.get();
+    SPDLOG_INFO("after, get, value: {}", ret);
+}
 
 #ifdef RUN_ALL_TEST_CASE
+TEST(STD_ASYNC, 002)
+{
+    /**
+     * 1. std::future<std::string> fut = std::async(std::launch::async, fn):
+     *      fn在新的线程立即开始执行
+     * 2. std::future对象必须被保存, 否则其析构函数会阻塞直到异步操作完成
+     * 3. 如果抛出异常,异常会在std::future中,调用get()重新抛出
+     */
+    SPDLOG_INFO("before, async");
+    std::future<std::string> fut;
+    try
+    {
+        fut = std::async(
+            std::launch::async,
+            [&](const std::string& str) -> std::string {
+                std::this_thread::sleep_for(std::chrono::seconds(15));
+                return str;
+            },
+            "Hello");
+    }
+    catch (std::system_error& e)
+    {
+        SPDLOG_ERROR("Failed to create thread, {}", e.what());
+    }
+    SPDLOG_INFO("after, async");
+    std::this_thread::sleep_for(std::chrono::seconds(7));
+    SPDLOG_INFO("after, sleep");
+    std::string ret = fut.get();
+    SPDLOG_INFO("after, get, value: {}", ret);
+}
+
+TEST(STD_ASYNC, 001)
+{
+    /**
+     * 1. std::async(std::launch::async, fn1):
+     * 1. std::launch::any: 非C++标准,禁止使用std::async(std::launch::any, fn)
+     * 2. std::async(std::launch::any, fn): 非标准，行为不确定
+     * 3. std::async(std::launch::async, fn): fn将会在新的线程中异步执行
+     * 4. std::async(std::launch::deferred, fn): 执行会被延迟,
+     * 直到在返回的future上执行get()或者wait才会执行,fn将会在执行get()或wait的线程中执行
+     */
+
+    /**
+     * 1. std::async(fn)尝试启动fn于后台，并将结果赋值给std::future对象
+     * 2. std::async尝试将所获得函数立刻异步启动于一个分离线程内
+     *      fn在这里被启动，不会造成当前执行用例线程阻塞
+     * 3. 返回std::future对象是必须的:
+     *      a) 允许启动函数的结果: 返回值/异常
+     *      b) 无返回值: std::future<void>
+     *      c) 必须存在，确保"目标函数"或快/慢被调用:
+     *          async只是尝试启动目标函数，如果没有发生，稍后必须通过该该对象强制启动(需要结果或确保该函数被执行)
+     *      d) 无论对async函数的返回敢不敢兴趣，都必须有，而且后面必须得有get()调用
+     * 4. std::future的get()调用，三种场景:
+     *      a) 任务被async启动一个分离线程并结束，立刻获得结果
+     *      b) 任务被async启动，但是未结束，get()会阻塞并等任务结束后返回结果
+     *      c) 任务没有启动,会被强迫启动如同一个同步调用，get()会阻塞并直至产生结果
+     * 5. std::future的get()确保在单线程环境，或async无法启动新线程，程序仍能有效运作
+     */
+    std::future<std::string> fut;
+    try
+    {
+        SPDLOG_INFO("before, async");
+        fut = std::async(
+            [&](const std::string& str) -> std::string {
+                std::this_thread::sleep_for(std::chrono::seconds(15));
+                return str;
+            },
+            "Hello");
+        SPDLOG_INFO("after async");
+    }
+    catch (std::system_error& e)
+    {
+        SPDLOG_ERROR("Failed to create thread, {}", e.what());
+    }
+
+    std::string ret = fut.get();
+    SPDLOG_INFO("after get, value: {}", ret);
+}
+
 std::tuple<std::vector<std::string>, std::vector<std::string>>
 listFsPrefix(const std::string& prefix)
 {

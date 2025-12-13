@@ -19,6 +19,7 @@ target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}
                                                     "${ART_CXX_DEPS_DIR}/leveldb/include"
                                                     "${ART_CXX_DEPS_DIR}/pugixml/include"
                                                     "${ART_CXX_DEPS_DIR}/poco/include"
+                                                    "${ART_CXX_DEPS_DIR}/spdlog/include"
                                                     "${CMAKE_SOURCE_DIR}/third-party/cmdline"
 )
 
@@ -57,4 +58,5 @@ target_link_libraries("${TARGET_NAME}" PRIVATE -pthread
                                                "${ART_CXX_DEPS_DIR}/gflags/lib/libgflags_nothreads.a"
                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
                                                "${ART_CXX_DEPS_DIR}/leveldb/lib/libleveldb.a"
+                                               "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
 )
