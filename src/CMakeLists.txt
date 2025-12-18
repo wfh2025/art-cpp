@@ -10,6 +10,7 @@ set(ART_CXX_DEPS_DIR "${CMAKE_SOURCE_DIR}/../deps")
 
 add_subdirectory(cmd)
 add_subdirectory(base)
+add_subdirectory(s3)
 
 ###################################################################################################
 # https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html

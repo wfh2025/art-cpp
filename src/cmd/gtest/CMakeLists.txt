@@ -30,6 +30,8 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gtest/archi
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/oop_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/ref_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/stl_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/cxx/any_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/cxx/s3_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/thread_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/absl_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/fmt_test.cpp"
@@ -46,10 +48,11 @@ target_compile_options("${TARGET_NAME}" PRIVATE -pthread
                                                 -Wno-tautological-undefined-compare
 )
 
-add_dependencies("${TARGET_NAME}" "art-base-static")
+add_dependencies("${TARGET_NAME}" "art-base-static" "art-s3-static")
 target_link_libraries("${TARGET_NAME}" PRIVATE -pthread  
                                                "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
                                                "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libart_base.a"
+                                               "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libart_s3.a"
                                                "${ART_CXX_DEPS_DIR}/googletest/lib/libgmock.a"
                                                "${ART_CXX_DEPS_DIR}/fmt/lib/libfmt.a"
                                                "${ART_CXX_DEPS_DIR}/abseil-cpp/lib/libabsl_strings.a"
