@@ -3,7 +3,8 @@ set(OUTPUT_NAME "art_s3")
 set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/aws_s3.cpp" 
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/aws_resp.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_resp.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_utils.cpp"
 )
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${ART_CXX_DEPS_DIR}/pugixml/include"
