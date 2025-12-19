@@ -1,13 +1,14 @@
-#include "base/art_str.h"
-#include "ut_config.h"
-#include "utils.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <cmath>
 #include <iostream>
 #include <map>
 #include <string>
 #include <vector>
+
+#include "base/art_str.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "ut_config.h"
+#include "utils.h"
 #ifdef RUN_ALL_TEST_CASE
 TEST(ClassBasic, 015)
 {

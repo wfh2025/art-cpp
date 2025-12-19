@@ -1,6 +1,3 @@
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -20,6 +17,10 @@
 #include <type_traits>
 #include <utility>
 #include <vector>
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "ut_config.h"
 
 struct CommandArg
 {

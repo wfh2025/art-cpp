@@ -1,5 +1,5 @@
-#ifndef ART_S3_DEF_H_INCLUDED
-#define ART_S3_DEF_H_INCLUDED
+#ifndef ART_S3_DEF_HPP_INCLUDED
+#define ART_S3_DEF_HPP_INCLUDED
 #include <string>
 enum class HttpCode
 {

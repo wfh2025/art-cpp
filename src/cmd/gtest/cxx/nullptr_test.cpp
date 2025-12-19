@@ -1,7 +1,7 @@
-#include "ut_config.h"
-#include "utils.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "ut_config.h"
+#include "utils.h"
 
 static int fn0(int n)
 {

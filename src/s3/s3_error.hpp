@@ -1,5 +1,5 @@
-#ifndef ART_S3_ERROR_H_INCLUDED
-#define ART_S3_ERROR_H_INCLUDED
+#ifndef ART_S3_ERROR_HPP_INCLUDED
+#define ART_S3_ERROR_HPP_INCLUDED
 #include <string>
 #include <system_error>
 namespace s3

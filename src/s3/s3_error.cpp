@@ -1,6 +1,6 @@
-#include "s3_error.h"
-#include <unordered_map>
+#include "s3_error.hpp"
 
+#include <unordered_map>
 namespace s3
 {
     namespace

@@ -1,12 +1,13 @@
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <functional>
 #include <iostream>
 #include <map>
 #include <string>
 #include <type_traits>
 #include <vector>
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "ut_config.h"
 
 static char* fnVal(std::string str)
 {

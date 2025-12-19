@@ -1,8 +1,3 @@
-#include "base/art_str.h"
-#include "spdlog/spdlog.h"
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <algorithm>
 #include <array>
 #include <chrono>
@@ -26,6 +21,12 @@
 #include <typeinfo>
 #include <utility>
 #include <vector>
+
+#include "base/art_str.h"
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "spdlog/spdlog.h"
+#include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(STD_ASYNC, 004)
@@ -190,8 +191,8 @@ TEST(steady_clock, 001)
     SPDLOG_INFO("interval: {}", d0);
 }
 
-std::tuple<std::vector<std::string>, std::vector<std::string>>
-listFsPrefix(const std::string& prefix)
+std::tuple<std::vector<std::string>, std::vector<std::string>> listFsPrefix(
+    const std::string& prefix)
 {
     std::vector<std::string> dirs;
     std::vector<std::string> files;
