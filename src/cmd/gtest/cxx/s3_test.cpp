@@ -31,6 +31,8 @@ TEST(buildListObjectsResultToXml, 001)
     ct0.restoreStatus.restoreExpiryDate = "ct0.rs.re0";
     ct0.size = 5;
     ct0.storageClass = "standrad";
+    ct0.restoreStatus.isRestoreInProgress = true;
+    ct0.restoreStatus.restoreExpiryDate = "xxx";
     output.contents.emplace_back(ct0);
 
     auto ct1 = s3::ListObjectsResult::Content{};
@@ -45,6 +47,8 @@ TEST(buildListObjectsResultToXml, 001)
     ct1.restoreStatus.restoreExpiryDate = "ct1.rs.re";
     ct1.size = 6;
     ct1.storageClass = "archive";
+    ct1.restoreStatus.isRestoreInProgress = false;
+    ct1.restoreStatus.restoreExpiryDate = "yyy";
     output.contents.emplace_back(ct1);
 
     std::string str = s3::buildListObjectsResultToXml(output);

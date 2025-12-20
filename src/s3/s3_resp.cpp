@@ -69,6 +69,14 @@ namespace s3
             auto ownerNode = contentsNode.append_child("Owner");
             ownerNode.append_child("ID").append_child(pugi::node_pcdata).set_value(content.owner.id.c_str());
             ownerNode.append_child("DisplayName").append_child(pugi::node_pcdata).set_value(content.owner.displayName.c_str());
+
+            auto restoreStatusNode = contentsNode.append_child("RestoreStatus");
+            restoreStatusNode.append_child("IsRestoreInProgress")
+                .append_child(pugi::node_pcdata)
+                .set_value(content.restoreStatus.isRestoreInProgress ? "true" : "false");
+            restoreStatusNode.append_child("restoreExpiryDate")
+                .append_child(pugi::node_pcdata)
+                .set_value(content.restoreStatus.restoreExpiryDate.c_str());
         }
 
         for (const auto& commonPrefix : output.commonPrefixes)

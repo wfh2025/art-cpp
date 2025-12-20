@@ -65,10 +65,10 @@ BreakAfterJavaFieldAnnotations: false
 BreakStringLiterals: true
 
 # 列限制
-ColumnLimit: 100
+ColumnLimit: 150
 
 # 紧凑命名空间
-CompactNamespaces: false
+CompactNamespaces: true
 
 # 构造函数初始化列表样式
 ConstructorInitializerAllOnOneLineOrOnePerLine: false
