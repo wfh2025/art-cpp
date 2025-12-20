@@ -1,10 +1,11 @@
-#include "tbb/parallel_for_each.h"
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <map>
 #include <set>
 #include <vector>
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "tbb/parallel_for_each.h"
+#include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(tbb, 001)

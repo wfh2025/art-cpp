@@ -191,8 +191,7 @@ TEST(steady_clock, 001)
     SPDLOG_INFO("interval: {}", d0);
 }
 
-std::tuple<std::vector<std::string>, std::vector<std::string>> listFsPrefix(
-    const std::string& prefix)
+std::tuple<std::vector<std::string>, std::vector<std::string>> listFsPrefix(const std::string& prefix)
 {
     std::vector<std::string> dirs;
     std::vector<std::string> files;
@@ -224,8 +223,7 @@ static void listFsBFS(const std::string& prefix)
     {
         std::string curPath = pathQueue.front();
         pathQueue.pop();
-        std::tuple<std::vector<std::string>, std::vector<std::string>> entries =
-            listFsPrefix(curPath);
+        std::tuple<std::vector<std::string>, std::vector<std::string>> entries = listFsPrefix(curPath);
 
         for (auto& dir : std::get<0>(entries))
         {
@@ -281,12 +279,10 @@ static std::string joinThreeIntValues(int a, int b, int c)
 
 TEST(bind, 001)
 {
-    std::function<std::string(int, int)> f2 =
-        std::bind(joinThreeIntValues, 10, std::placeholders::_1, std::placeholders::_2);
+    std::function<std::string(int, int)> f2 = std::bind(joinThreeIntValues, 10, std::placeholders::_1, std::placeholders::_2);
     EXPECT_EQ(f2(20, 30), "10-20-30");
 
-    std::function<std::string(int, int)> f3 =
-        std::bind(joinThreeIntValues, 10, std::placeholders::_2, std::placeholders::_1);
+    std::function<std::string(int, int)> f3 = std::bind(joinThreeIntValues, 10, std::placeholders::_2, std::placeholders::_1);
     EXPECT_EQ(f3(20, 30), "10-30-20");
 
     class Calculator
@@ -304,21 +300,18 @@ TEST(bind, 001)
     Calculator calc("haha");
 
     std::function<std::string(int, double, const std::string&)> f4 =
-        std::bind(&Calculator::join, &calc, std::placeholders::_1, std::placeholders::_2,
-                  std::placeholders::_3);
+        std::bind(&Calculator::join, &calc, std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     EXPECT_EQ(f4(3, 3.14, "world"), "haha-3-3.140000-world");
 
     std::function<std::string(int, double, const std::string&)> f5 =
-        std::bind(&Calculator::join, std::make_shared<Calculator>("hi"), std::placeholders::_1,
-                  std::placeholders::_2, std::placeholders::_3);
+        std::bind(&Calculator::join, std::make_shared<Calculator>("hi"), std::placeholders::_1, std::placeholders::_2, std::placeholders::_3);
     EXPECT_EQ(f5(3, 3.14, "world"), "hi-3-3.140000-world");
 }
 
 static std::string demangle(const char* name)
 {
     int status = -1;
-    std::unique_ptr<char, void (*)(void*)> res(abi::__cxa_demangle(name, nullptr, nullptr, &status),
-                                               std::free);
+    std::unique_ptr<char, void (*)(void*)> res(abi::__cxa_demangle(name, nullptr, nullptr, &status), std::free);
     return (status == 0) ? res.get() : name;
 }
 
@@ -339,8 +332,7 @@ TEST(decltype, 001)
 
 TEST(mapErase, 001)
 {
-    std::map<std::string, int> data = {
-        {"apple", 1}, {"banana", 2}, {"cherry", 3}, {"date", 4}, {"elderberry", 5}};
+    std::map<std::string, int> data = {{"apple", 1}, {"banana", 2}, {"cherry", 3}, {"date", 4}, {"elderberry", 5}};
 
     for (auto it = data.begin(); it != data.end();)
     {
@@ -421,14 +413,10 @@ TEST(strsplit, 001)
     EXPECT_THAT(art::str::strsplit("a;b;c;", ";"), ::testing::ElementsAre("a", "b", "c", ""));
     EXPECT_THAT(art::str::strsplit("a", ";"), ::testing::ElementsAre("a"));
     EXPECT_THAT(art::str::strsplit("a", ""), ::testing::ElementsAre("a"));
-    EXPECT_THAT(
-        art::str::strsplit("a;b;;c;d;", ";"),
-        ::testing::AllOf(::testing::SizeIs(6), ::testing::ElementsAre("a", "b", "", "c", "d", "")));
+    EXPECT_THAT(art::str::strsplit("a;b;;c;d;", ";"), ::testing::AllOf(::testing::SizeIs(6), ::testing::ElementsAre("a", "b", "", "c", "d", "")));
     EXPECT_THAT(art::str::strsplit("", ";"), ::testing::ElementsAre(""));
-    EXPECT_THAT(art::str::strsplit("a;b;c", ";"),
-                ::testing::AllOf(::testing::SizeIs(3), ::testing::ElementsAre("a", "b", "c")));
-    EXPECT_THAT(art::str::strsplit("", ""),
-                ::testing::AllOf(::testing::SizeIs(1), ::testing::ElementsAre("")));
+    EXPECT_THAT(art::str::strsplit("a;b;c", ";"), ::testing::AllOf(::testing::SizeIs(3), ::testing::ElementsAre("a", "b", "c")));
+    EXPECT_THAT(art::str::strsplit("", ""), ::testing::AllOf(::testing::SizeIs(1), ::testing::ElementsAre("")));
 }
 
 TEST(is_pod, 001)
@@ -512,20 +500,16 @@ TEST(stdSet, 001)
     EXPECT_THAT(s0, ::testing::ElementsAre(9, 8, 7, 6, 5, 4, 3, 2, 1));
 
     std::deque<int> d0;
-    std::transform(s0.cbegin(), s0.cend(), std::back_inserter(d0),
-                   std::bind(std::multiplies<int>(), std::placeholders::_1, 10));
+    std::transform(s0.cbegin(), s0.cend(), std::back_inserter(d0), std::bind(std::multiplies<int>(), std::placeholders::_1, 10));
     EXPECT_THAT(d0, ::testing::ElementsAre(90, 80, 70, 60, 50, 40, 30, 20, 10));
 
-    std::replace_if(d0.begin(), d0.end(),
-                    std::bind(std::equal_to<int>(), std::placeholders::_1, 70), 42);
+    std::replace_if(d0.begin(), d0.end(), std::bind(std::equal_to<int>(), std::placeholders::_1, 70), 42);
     EXPECT_THAT(d0, ::testing::ElementsAre(90, 80, 42, 60, 50, 40, 30, 20, 10));
 
-    d0.erase(
-        std::remove_if(d0.begin(), d0.end(),
-                       std::bind(std::logical_and<bool>(),
-                                 std::bind(std::greater_equal<int>(), std::placeholders::_1, 50),
-                                 std::bind(std::less_equal<int>(), std::placeholders::_1, 80))),
-        d0.end());
+    d0.erase(std::remove_if(d0.begin(), d0.end(),
+                            std::bind(std::logical_and<bool>(), std::bind(std::greater_equal<int>(), std::placeholders::_1, 50),
+                                      std::bind(std::less_equal<int>(), std::placeholders::_1, 80))),
+             d0.end());
     EXPECT_THAT(d0, ::testing::ElementsAre(90, 42, 40, 30, 20, 10));
 }
 
@@ -561,9 +545,8 @@ TEST(add, 001)
     {
         li2.push_back(c);
     }
-    EXPECT_THAT(li2, ::testing::ElementsAre('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k',
-                                            'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v',
-                                            'w', 'x', 'y', 'z'));
+    EXPECT_THAT(li2, ::testing::ElementsAre('a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u',
+                                            'v', 'w', 'x', 'y', 'z'));
     for (auto elem : li2)
     {
     }
@@ -652,11 +635,9 @@ TEST(foreach, 001)
                     })));
 
     // 注意: 不关注顺序
-    EXPECT_THAT(m0, ::testing::UnorderedElementsAre(::testing::Pair("struppi", 7),
-                                                    ::testing::Pair("tim", 3)));
+    EXPECT_THAT(m0, ::testing::UnorderedElementsAre(::testing::Pair("struppi", 7), ::testing::Pair("tim", 3)));
     // 注意: 关注顺序
-    EXPECT_THAT(m0,
-                ::testing::ElementsAre(::testing::Pair("struppi", 7), ::testing::Pair("tim", 3)));
+    EXPECT_THAT(m0, ::testing::ElementsAre(::testing::Pair("struppi", 7), ::testing::Pair("tim", 3)));
 
     std::map<std::string, int> m1{
         {"tim", 3},
@@ -742,9 +723,7 @@ TEST(lambda, 001)
     auto square = [](int x) { return x * x; };
     EXPECT_EQ(square(3), 9);
 
-    auto divide = [](int a, int b) -> double {
-        return (b == 0) ? 0.0 : static_cast<double>(a) / b;
-    };
+    auto divide = [](int a, int b) -> double { return (b == 0) ? 0.0 : static_cast<double>(a) / b; };
 
     std::vector<int> v{3, 1, 4, 1, 5};
     std::sort(v.begin(), v.end(), [](int a, int b) { return a < b; });
@@ -759,9 +738,7 @@ TEST(lambda, 001)
     EXPECT_EQ(y, 10);
 
     auto factorial = [](int n) {
-        auto factImpl = [](int n, const auto& self) -> int {
-            return n <= 1 ? 1 : n * self(n - 1, self);
-        };
+        auto factImpl = [](int n, const auto& self) -> int { return n <= 1 ? 1 : n * self(n - 1, self); };
         return factImpl(n, factImpl);
     };
     EXPECT_EQ(factorial(4), 24);
@@ -789,8 +766,9 @@ TEST(lambda, 001)
     auto future = std::async([](int a, int b) { return a * b; }, 6, 7);
     EXPECT_EQ(future.get(), 42);
 
-    std::function<int(const std::string&, const std::string&)> f7 =
-        [](const std::string& s1, const std::string& s2) -> int { return s1.size() + s2.size(); };
+    std::function<int(const std::string&, const std::string&)> f7 = [](const std::string& s1, const std::string& s2) -> int {
+        return s1.size() + s2.size();
+    };
     EXPECT_EQ(f7("hello", "wo"), 7);
 
     int (*f9)(int) = [](int x) { return x * x; };
@@ -818,8 +796,7 @@ TEST(tuple, 001)
     EXPECT_DOUBLE_EQ(std::get<3>(t0).imag(), 0);
     EXPECT_TRUE((std::get<0>(t0) == "") && (std::get<1>(t0) == 0) && (std::get<2>(t0) == 0));
 
-    std::tuple<std::string, int, std::complex<double>> t1("haha", 2,
-                                                          std::complex<double>(4.0, 3.0));
+    std::tuple<std::string, int, std::complex<double>> t1("haha", 2, std::complex<double>(4.0, 3.0));
     EXPECT_DOUBLE_EQ(std::get<2>(t1).real(), 4.0);
     EXPECT_DOUBLE_EQ(std::get<2>(t1).imag(), 3.0);
     EXPECT_TRUE((std::get<0>(t1) == "haha") && (std::get<1>(t1) == 2));
@@ -867,19 +844,13 @@ TEST(shared_ptr, 001)
     whoMadeCoffee.push_back(pJutta);
     whoMadeCoffee.push_back(pNico);
 
-    EXPECT_THAT(whoMadeCoffee,
-                ::testing::ElementsAre(::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Nico")),
-                                       ::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Nico"))));
+    EXPECT_THAT(whoMadeCoffee, ::testing::ElementsAre(::testing::Pointee(::testing::StrEq("Jutta")), ::testing::Pointee(::testing::StrEq("Jutta")),
+                                                      ::testing::Pointee(::testing::StrEq("Nico")), ::testing::Pointee(::testing::StrEq("Jutta")),
+                                                      ::testing::Pointee(::testing::StrEq("Nico"))));
     *pNico = "Nicolai";
-    EXPECT_THAT(whoMadeCoffee,
-                ::testing::ElementsAre(::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Nicolai")),
-                                       ::testing::Pointee(::testing::StrEq("Jutta")),
-                                       ::testing::Pointee(::testing::StrEq("Nicolai"))));
+    EXPECT_THAT(whoMadeCoffee, ::testing::ElementsAre(::testing::Pointee(::testing::StrEq("Jutta")), ::testing::Pointee(::testing::StrEq("Jutta")),
+                                                      ::testing::Pointee(::testing::StrEq("Nicolai")), ::testing::Pointee(::testing::StrEq("Jutta")),
+                                                      ::testing::Pointee(::testing::StrEq("Nicolai"))));
     EXPECT_EQ(whoMadeCoffee[0].use_count(), 4);
     EXPECT_EQ(pJutta.use_count(), 4);
 
@@ -930,8 +901,7 @@ TEST(valCompare, 001)
 
 TEST(Limits, 001)
 {
-    EXPECT_TRUE((std::numeric_limits<short>::max() == 32767) &&
-                (std::numeric_limits<short>::min() == -32768));
+    EXPECT_TRUE((std::numeric_limits<short>::max() == 32767) && (std::numeric_limits<short>::min() == -32768));
 
     EXPECT_FLOAT_EQ(1.1754944e-38, std::numeric_limits<float>::min());
     EXPECT_FLOAT_EQ(3.4028235e+38, std::numeric_limits<float>::max());
@@ -945,8 +915,7 @@ TEST(Limits, 001)
     EXPECT_DOUBLE_EQ(4.9406564584124654e-324, std::numeric_limits<double>::denorm_min());
     EXPECT_DOUBLE_EQ(2.2204460492503131e-16, std::numeric_limits<double>::epsilon());
 
-    EXPECT_TRUE(std::numeric_limits<char>::is_signed &&
-                !std::numeric_limits<unsigned char>::is_signed);
+    EXPECT_TRUE(std::numeric_limits<char>::is_signed && !std::numeric_limits<unsigned char>::is_signed);
 }
 
 TEST(enable_shared_from_this, 001)
@@ -963,8 +932,7 @@ TEST(enable_shared_from_this, 001)
         {
             // std::cout << "line: " << __LINE__ << ", " << std::endl;
         }
-        void setParentAndKids(std::shared_ptr<Person> m = nullptr,
-                              std::shared_ptr<Person> f = nullptr)
+        void setParentAndKids(std::shared_ptr<Person> m = nullptr, std::shared_ptr<Person> f = nullptr)
         {
             _mother = m;
             _father = f;
@@ -1017,14 +985,10 @@ TEST(ratio, 001)
     std::ratio<25, 15> val1;
     EXPECT_TRUE(val1.num == 5 && val1.den == 3);
 
-    EXPECT_TRUE((std::ratio_equal<std::ratio_add<std::ratio<1, 3>, std::ratio<1, 6>>,
-                                  std::ratio<1, 2>>::value));
-    EXPECT_TRUE((std::ratio_equal<std::ratio_subtract<std::ratio<1, 3>, std::ratio<1, 6>>,
-                                  std::ratio<1, 6>>::value));
-    EXPECT_TRUE((std::ratio_equal<std::ratio_multiply<std::ratio<2, 3>, std::ratio<3, 4>>,
-                                  std::ratio<6, 12>>::value));
-    EXPECT_TRUE((std::ratio_equal<std::ratio_divide<std::ratio<1, 2>, std::ratio<2, 3>>,
-                                  std::ratio<3, 4>>::value));
+    EXPECT_TRUE((std::ratio_equal<std::ratio_add<std::ratio<1, 3>, std::ratio<1, 6>>, std::ratio<1, 2>>::value));
+    EXPECT_TRUE((std::ratio_equal<std::ratio_subtract<std::ratio<1, 3>, std::ratio<1, 6>>, std::ratio<1, 6>>::value));
+    EXPECT_TRUE((std::ratio_equal<std::ratio_multiply<std::ratio<2, 3>, std::ratio<3, 4>>, std::ratio<6, 12>>::value));
+    EXPECT_TRUE((std::ratio_equal<std::ratio_divide<std::ratio<1, 2>, std::ratio<2, 3>>, std::ratio<3, 4>>::value));
     EXPECT_TRUE((std::ratio_less<std::ratio<1, 3>, std::ratio<1, 2>>::value));
     EXPECT_TRUE((std::ratio_greater<std::ratio<1, 2>, std::ratio<1, 3>>::value));
     EXPECT_TRUE((std::ratio_greater_equal<std::ratio<1, 2>, std::ratio<1, 2>>::value));
@@ -1043,10 +1007,8 @@ TEST(asString, 001)
 {
     EXPECT_EQ(asString(std::chrono::system_clock::time_point{}), "Thu Jan  1 08:00:00 1970");
     (void)asString(std::chrono::system_clock::now());
-    EXPECT_EQ(asString(std::chrono::system_clock::time_point::min()),
-              "Mon Dec 22 04:04:49     -290308");
-    EXPECT_EQ(asString(std::chrono::system_clock::time_point::max()),
-              "Sun Jan 10 12:00:54     294247");
+    EXPECT_EQ(asString(std::chrono::system_clock::time_point::min()), "Mon Dec 22 04:04:49     -290308");
+    EXPECT_EQ(asString(std::chrono::system_clock::time_point::max()), "Sun Jan 10 12:00:54     294247");
 }
 TEST(asString, 002)
 {
@@ -1153,9 +1115,8 @@ TEST(STD_ERRC, 001)
     std::errc::wrong_protocol_type;
     std::system_error(std::make_error_code(std::errc::value_too_large), "invalid value");
     std::error_code ec = std::make_error_code(std::errc::value_too_large);
-    SPDLOG_INFO("errc: {}, value: {}, message: {}, category name: {}, category message: {}",
-                static_cast<int>(std::errc::value_too_large), ec.value(), ec.message(),
-                ec.category().name(), ec.category().message(2));
+    SPDLOG_INFO("errc: {}, value: {}, message: {}, category name: {}, category message: {}", static_cast<int>(std::errc::value_too_large), ec.value(),
+                ec.message(), ec.category().name(), ec.category().message(2));
 
     auto fn = [](bool x) -> std::error_code {
         if (x)

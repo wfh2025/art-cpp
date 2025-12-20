@@ -21,8 +21,7 @@ static bool startsWith(const std::string& str, const std::string& prefix)
 }
 static bool endsWith(const std::string& str, const std::string& suffix)
 {
-    return str.size() >= suffix.size() &&
-           str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+    return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
 }
 
 static std::string strtrim(const std::string& str, const std::string& trimChars)
@@ -163,8 +162,7 @@ struct Command
         Builder& args(std::vector<CommandArg> args)
         {
             commandArgs_.reserve(commandArgs_.size() + args.size());
-            commandArgs_.insert(commandArgs_.end(), std::make_move_iterator(args.begin()),
-                                std::make_move_iterator(args.end()));
+            commandArgs_.insert(commandArgs_.end(), std::make_move_iterator(args.begin()), std::make_move_iterator(args.end()));
             return *this;
         }
         Builder& args(std::initializer_list<CommandArg> args)
@@ -365,85 +363,38 @@ static CommandsManager initializeCommandsManager()
                               .name("user.add")
                               .since("1.0")
                               .summary("add user")
-                              .arg(CommandArg::create()
-                                       .name("name")
-                                       .defaultValue("defaultValue")
-                                       .summary("user name")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("age")
-                                       .defaultValue("defaultValue")
-                                       .summary("user age")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("gender")
-                                       .defaultValue("man or woman")
-                                       .summary("user gender: man/woman")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("height")
-                                       .defaultValue("175")
-                                       .summary("user height, centimeters")
-                                       .build())
+                              .arg(CommandArg::create().name("name").defaultValue("defaultValue").summary("user name").build())
+                              .arg(CommandArg::create().name("age").defaultValue("defaultValue").summary("user age").build())
+                              .arg(CommandArg::create().name("gender").defaultValue("man or woman").summary("user gender: man/woman").build())
+                              .arg(CommandArg::create().name("height").defaultValue("175").summary("user height, centimeters").build())
                               .build());
 
     commands.emplace_back(Command::create()
                               .name("user.delete")
                               .since("1.0")
                               .summary("delete user by name")
-                              .arg(CommandArg::create()
-                                       .name("name")
-                                       .defaultValue("defaultValue")
-                                       .summary("user name")
-                                       .build())
+                              .arg(CommandArg::create().name("name").defaultValue("defaultValue").summary("user name").build())
                               .build());
 
     commands.emplace_back(Command::create()
                               .name("user.search")
                               .since("1.0")
                               .summary("search")
-                              .arg(CommandArg::create()
-                                       .name("name")
-                                       .defaultValue("defaultValue")
-                                       .summary("user name")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("gender")
-                                       .defaultValue("man or woman")
-                                       .summary("user gender: man/woman")
-                                       .build())
+                              .arg(CommandArg::create().name("name").defaultValue("defaultValue").summary("user name").build())
+                              .arg(CommandArg::create().name("gender").defaultValue("man or woman").summary("user gender: man/woman").build())
                               .build());
     commands.emplace_back(Command::create()
                               .name("user.update")
                               .since("1.0")
                               .summary("update")
-                              .arg(CommandArg::create()
-                                       .name("name")
-                                       .defaultValue("defaultValue")
-                                       .summary("user name")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("gender")
-                                       .defaultValue("man or woman")
-                                       .summary("user gender: man/woman")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("age")
-                                       .defaultValue("defaultValue")
-                                       .summary("user age")
-                                       .build())
-                              .arg(CommandArg::create()
-                                       .name("height")
-                                       .defaultValue("175")
-                                       .summary("user height, centimeters")
-                                       .build())
+                              .arg(CommandArg::create().name("name").defaultValue("defaultValue").summary("user name").build())
+                              .arg(CommandArg::create().name("gender").defaultValue("man or woman").summary("user gender: man/woman").build())
+                              .arg(CommandArg::create().name("age").defaultValue("defaultValue").summary("user age").build())
+                              .arg(CommandArg::create().name("height").defaultValue("175").summary("user height, centimeters").build())
                               .build());
-    commands.emplace_back(
-        Command::create().name("quit").since("1.0").summary("quit program").build());
-    commands.emplace_back(
-        Command::create().name("exit").since("1.0").summary("exit program").build());
-    commands.emplace_back(
-        Command::create().name("clear").since("1.0").summary("clear screen").build());
+    commands.emplace_back(Command::create().name("quit").since("1.0").summary("quit program").build());
+    commands.emplace_back(Command::create().name("exit").since("1.0").summary("exit program").build());
+    commands.emplace_back(Command::create().name("clear").since("1.0").summary("clear screen").build());
     for (const auto& elem : commands)
     {
         mgr.commandMap[elem.name] = elem;

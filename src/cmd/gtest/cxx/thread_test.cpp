@@ -56,8 +56,7 @@ static void printId(int id)
     while (!g_ready)
     {
         g_condVar.wait(lock);
-        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false")
-                  << std::endl;
+        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false") << std::endl;
     }
     std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false") << std::endl;
 }
@@ -77,11 +76,9 @@ TEST(thread, 004)
     {
         std::unique_lock lock(g_mutex);
         g_ready = true;
-        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false")
-                  << std::endl;
+        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false") << std::endl;
         g_condVar.notify_all();
-        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false")
-                  << std::endl;
+        std::cout << "line: " << __LINE__ << " " << (g_ready == true ? "true" : "false") << std::endl;
     }
     for (auto& th : threads)
     {

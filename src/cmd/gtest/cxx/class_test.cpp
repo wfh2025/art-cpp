@@ -88,8 +88,7 @@ TEST(ClassBasic, 014)
         Undergraduate(std::string major) : _major(major) {}
         void display()
         {
-            printf("line: %d, name: %s, grade: %s, major: %s \n", __LINE__, getName().c_str(),
-                   getGrade().c_str(), _major.c_str());
+            printf("line: %d, name: %s, grade: %s, major: %s \n", __LINE__, getName().c_str(), getGrade().c_str(), _major.c_str());
         }
 
     private:
@@ -174,8 +173,7 @@ private:
 double GPoint::_sLen = 0;
 GPoint::GPoint(double x, double y) : _x(x), _y(y)
 {
-    printf("line: %d, GPoint(double x, double y), x: %.2f, y: %.2f, len: %2.f \n", __LINE__, _x, _y,
-           GPoint::_sLen);
+    printf("line: %d, GPoint(double x, double y), x: %.2f, y: %.2f, len: %2.f \n", __LINE__, _x, _y, GPoint::_sLen);
 }
 
 GPoint::~GPoint()
@@ -196,8 +194,7 @@ void updateGPointAttrs(GPoint& pt, double x, double y)
 {
     pt._x = x;
     pt._y = y;
-    printf("line: %d, updateGPointAttrs(GPoint& pt, double x, double y), x: %.2f, y: %.2f \n",
-           __LINE__, pt._x, pt._y);
+    printf("line: %d, updateGPointAttrs(GPoint& pt, double x, double y), x: %.2f, y: %.2f \n", __LINE__, pt._x, pt._y);
 }
 
 TEST(ClassBasic, 012)
@@ -214,36 +211,32 @@ TEST(ClassBasic, 011)
     class Person
     {
     public:
-        Person(std::string name, int age, std::string addr, std::string fruit)
-            : _name(name), _age(age), _addr(addr), _favoriteFruit(fruit)
+        Person(std::string name, int age, std::string addr, std::string fruit) : _name(name), _age(age), _addr(addr), _favoriteFruit(fruit)
         {
             printf("line: %d, Person(std::string name, int age, std::string addr, std::string "
                    "fruit), name: %s, age: %d, addr: %s, fruit: %s \n",
                    __LINE__, _name.c_str(), _age, _addr.c_str(), _favoriteFruit.c_str());
         }
-        Person(const Person& other)
-            : _name(other._name), _age(other._age), _addr(other._addr),
-              _favoriteFruit(other._favoriteFruit)
+        Person(const Person& other) : _name(other._name), _age(other._age), _addr(other._addr), _favoriteFruit(other._favoriteFruit)
         {
-            printf(
-                "line: %d, Person(const Person& other), name: %s, age: %d, addr: %s, fruit: %s \n",
-                __LINE__, _name.c_str(), _age, _addr.c_str(), _favoriteFruit.c_str());
+            printf("line: %d, Person(const Person& other), name: %s, age: %d, addr: %s, fruit: %s \n", __LINE__, _name.c_str(), _age, _addr.c_str(),
+                   _favoriteFruit.c_str());
         }
         Person& operator=(const Person&) = delete;
         void printAttrs() const
         {
             // _favoriteFruit = "apple"; // 常成员函数不能修改类成员函数
             // printAddr();              // 常成员函数只能调用常成员函数
-            printf("line: %d, void printAttrs() const, name: %s, age: %d, addr: %s, fruit: %s \n",
-                   __LINE__, _name.c_str(), _age, _addr.c_str(), _favoriteFruit.c_str());
+            printf("line: %d, void printAttrs() const, name: %s, age: %d, addr: %s, fruit: %s \n", __LINE__, _name.c_str(), _age, _addr.c_str(),
+                   _favoriteFruit.c_str());
         }
 
         void printAttrs()
         {
             // 成员函数与常成员函数构成重载,常成员函数只能由const修饰的对象访问
             printAddr();
-            printf("line: %d, void printAttrs(), name: %s, age: %d, addr: %s, fruit: %s \n",
-                   __LINE__, _name.c_str(), _age, _addr.c_str(), _favoriteFruit.c_str());
+            printf("line: %d, void printAttrs(), name: %s, age: %d, addr: %s, fruit: %s \n", __LINE__, _name.c_str(), _age, _addr.c_str(),
+                   _favoriteFruit.c_str());
         }
 
         void printAddr()
@@ -290,8 +283,7 @@ TEST(ClassBasic, 010)
         Sheep(const Sheep& another)
         {
             this->_id = another._id + 1;
-            printf("line: %d,  Sheep(const Sheep& another), input id: %d, output id: %d \n",
-                   __LINE__, another._id, this->_id);
+            printf("line: %d,  Sheep(const Sheep& another), input id: %d, output id: %d \n", __LINE__, another._id, this->_id);
         }
         ~Sheep()
         {
@@ -410,9 +402,7 @@ TEST(ClassBasic, 007)
     class Student
     {
     public:
-        Student(std::string name, int year, int month, int day)
-            : _name(name), _birth(year, month, day)
-        {}
+        Student(std::string name, int year, int month, int day) : _name(name), _birth(year, month, day) {}
 
     public:
         std::string _name;
@@ -421,8 +411,7 @@ TEST(ClassBasic, 007)
 
     // 成员对象构造函数有参数，需从类成员构造函数传递
     Student stu("Li", 2000, 10, 14);
-    EXPECT_TRUE(stu._name == "Li" && stu._birth._year == 2000 && stu._birth._month == 10 &&
-                stu._birth._day == 14);
+    EXPECT_TRUE(stu._name == "Li" && stu._birth._year == 2000 && stu._birth._month == 10 && stu._birth._day == 14);
 }
 
 TEST(ClassBasic, 006)
@@ -464,8 +453,7 @@ TEST(ClassBasic, 005)
         Clock(int hour, int min, int sec) : _hour(hour), _min(min), _sec(sec) {}
         std::string getKey()
         {
-            return std::to_string(this->_hour) + std::string("-") + std::to_string(this->_min) +
-                   "-" + std::to_string(this->_sec);
+            return std::to_string(this->_hour) + std::string("-") + std::to_string(this->_min) + "-" + std::to_string(this->_sec);
         }
 
     private:
@@ -490,8 +478,7 @@ TEST(ClassBasic, 004)
         Clock(int hour, int min, int sec) : _hour(hour), _min(min), _sec(sec) {}
         std::string getKey()
         {
-            return std::to_string(this->_hour) + std::string("-") + std::to_string(this->_min) +
-                   "-" + std::to_string(this->_sec);
+            return std::to_string(this->_hour) + std::string("-") + std::to_string(this->_min) + "-" + std::to_string(this->_sec);
         }
 
     private:

@@ -104,8 +104,7 @@ struct Command
         Builder& args(std::vector<CommandArg> args)
         {
             commandArgs_.reserve(commandArgs_.size() + args.size());
-            commandArgs_.insert(commandArgs_.end(), std::make_move_iterator(args.begin()),
-                                std::make_move_iterator(args.end()));
+            commandArgs_.insert(commandArgs_.end(), std::make_move_iterator(args.begin()), std::make_move_iterator(args.end()));
             return *this;
         }
         Builder& args(std::initializer_list<CommandArg> args)
@@ -137,44 +136,20 @@ struct Command
 TEST(OOP, 002)
 {
     std::vector<CommandArg> userAttrArgs = {
-        CommandArg::create()
-            .name("attr0")
-            .defaultValue("attr0-default")
-            .summary("attr0-summary")
-            .build(),
-        CommandArg::create()
-            .name("attr1")
-            .defaultValue("attr1-default")
-            .summary("attr1-summary")
-            .build(),
+        CommandArg::create().name("attr0").defaultValue("attr0-default").summary("attr0-summary").build(),
+        CommandArg::create().name("attr1").defaultValue("attr1-default").summary("attr1-summary").build(),
     };
 
     Command command = Command::create()
                           .name("user.add")
                           .since("1.0")
                           .summary("add user command")
-                          .arg(CommandArg::create()
-                                   .name("id")
-                                   .defaultValue("defaultId")
-                                   .summary("user id")
-                                   .build())
-                          .arg(CommandArg::create()
-                                   .name("name")
-                                   .defaultValue("defaultName")
-                                   .summary("user name")
-                                   .build())
+                          .arg(CommandArg::create().name("id").defaultValue("defaultId").summary("user id").build())
+                          .arg(CommandArg::create().name("name").defaultValue("defaultName").summary("user name").build())
                           .args(std::move(userAttrArgs))
                           .args({
-                              CommandArg::create()
-                                  .name("config")
-                                  .defaultValue("config.json")
-                                  .summary("Config file")
-                                  .build(),
-                              CommandArg::create()
-                                  .name("log-level")
-                                  .defaultValue("info")
-                                  .summary("Log level")
-                                  .build(),
+                              CommandArg::create().name("config").defaultValue("config.json").summary("Config file").build(),
+                              CommandArg::create().name("log-level").defaultValue("info").summary("Log level").build(),
                           })
                           .build();
 

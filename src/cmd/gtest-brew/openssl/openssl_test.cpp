@@ -1,11 +1,12 @@
-#include "openssl/err.h"
-#include "openssl/sha.h"
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <map>
 #include <set>
 #include <vector>
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "openssl/err.h"
+#include "openssl/sha.h"
+#include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(SHA256, 001)

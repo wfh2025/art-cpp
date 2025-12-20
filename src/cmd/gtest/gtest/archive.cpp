@@ -1,9 +1,10 @@
-#include "ut_config.h"
-#include "gmock/gmock.h"
-#include "gtest/gtest.h"
 #include <map>
 #include <set>
 #include <vector>
+
+#include "gmock/gmock.h"
+#include "gtest/gtest.h"
+#include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(UnitTest, 005)
@@ -26,12 +27,10 @@ TEST(UnitTest, 004)
     ::testing::Matcher<int> m1 = ::testing::Gt(0);
     auto m2 = ::testing::AllOf(m1, ::testing::Truly([](int n) { return n % 2 == 0; }));
 
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::AnyOf(::testing::Contains(0), ::testing::Contains(5)));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::AnyOf(::testing::Contains(0), ::testing::Contains(5)));
 
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::AllOf(::testing::SizeIs(5), ::testing::Contains(3),
-                                 ::testing::Each(::testing::Lt(10))));
+                ::testing::AllOf(::testing::SizeIs(5), ::testing::Contains(3), ::testing::Each(::testing::Lt(10))));
     EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::Each(m1));
     EXPECT_THAT((std::vector<std::string>{"a", "b", "c"}), ::testing::Each(m0));
 
@@ -45,30 +44,22 @@ TEST(UnitTest, 004)
     std::vector<int> a0{1, 4, 9, 16};
     std::vector<int> e0{1, 2, 3, 4};
 
-    EXPECT_THAT(a0, ::testing::Pointwise(::testing::Truly([](const std::tuple<int, int>& pair) {
-                                             return std::get<0>(pair) ==
-                                                    std::get<1>(pair) * std::get<1>(pair);
-                                         }),
-                                         e0));
+    EXPECT_THAT(
+        a0, ::testing::Pointwise(
+                ::testing::Truly([](const std::tuple<int, int>& pair) { return std::get<0>(pair) == std::get<1>(pair) * std::get<1>(pair); }), e0));
 
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::Not(::testing::IsEmpty()));
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::SizeIs(::testing::Gt(2)));
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::SizeIs(::testing::Lt(10)));
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::SizeIs(::testing::AllOf(::testing::Ge(3), ::testing::Le(5))));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::SizeIs(::testing::AllOf(::testing::Ge(3), ::testing::Le(5))));
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::Each(::testing::Gt(0)));
-    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}),
-                ::testing::Each(::testing::SizeIs(::testing::Ge(4))));
+    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}), ::testing::Each(::testing::SizeIs(::testing::Ge(4))));
     EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::Contains(::testing::Gt(4)));
-    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}),
-                ::testing::Contains(::testing::StartsWith("h")));
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::Not(::testing::Contains(::testing::Lt(0))));
+    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}), ::testing::Contains(::testing::StartsWith("h")));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::Not(::testing::Contains(::testing::Lt(0))));
 
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::ElementsAre(::testing::AllOf(::testing::Gt(0), ::testing::Lt(2)),
-                                       ::testing::_, ::testing::Gt(2), ::testing::Le(4),
-                                       ::testing::Ge(5)));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::ElementsAre(::testing::AllOf(::testing::Gt(0), ::testing::Lt(2)), ::testing::_,
+                                                                          ::testing::Gt(2), ::testing::Le(4), ::testing::Ge(5)));
 
     int arr[] = {1, 2, 3};
     EXPECT_THAT(arr, ::testing::ElementsAre(1, 2, 3));
@@ -77,7 +68,6 @@ TEST(UnitTest, 004)
 
 TEST(UnitTest, 003)
 {
-
     // 简单vector
     EXPECT_THAT(std::vector<int>{}, ::testing::IsEmpty());
     EXPECT_THAT(std::vector<int>{}, ::testing::ElementsAre());
@@ -93,28 +83,18 @@ TEST(UnitTest, 003)
     EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Not(::testing::ElementsAre(1, 2, 3)));
     EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::UnorderedElementsAre(1, 2, 3));
     EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::UnorderedElementsAre(2, 3, 1));
-    EXPECT_THAT((std::vector<int>{1, 2, 3}),
-                ::testing::Not(::testing::UnorderedElementsAre(2, 3, 1, 1)));
+    EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::Not(::testing::UnorderedElementsAre(2, 3, 1, 1)));
 
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::SizeIs(::testing::AllOf(::testing::Ge(3), ::testing::Le(5))));
-    EXPECT_THAT((std::vector<int>{10, 20, 30, 40}),
-                ::testing::Contains(
-                    ::testing::ResultOf([](int n) { return n % 2 == 0; }, ::testing::Eq(true))));
-    EXPECT_THAT((std::vector<int>{10, 20, 30, 40}),
-                ::testing::ElementsAre(::testing::Lt(15), ::testing::Gt(15), ::testing::_,
-                                       ::testing::Ge(40)));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::SizeIs(::testing::AllOf(::testing::Ge(3), ::testing::Le(5))));
+    EXPECT_THAT((std::vector<int>{10, 20, 30, 40}), ::testing::Contains(::testing::ResultOf([](int n) { return n % 2 == 0; }, ::testing::Eq(true))));
+    EXPECT_THAT((std::vector<int>{10, 20, 30, 40}), ::testing::ElementsAre(::testing::Lt(15), ::testing::Gt(15), ::testing::_, ::testing::Ge(40)));
 
-    EXPECT_THAT((std::vector<int>{2, 1, 3}),
-                ::testing::Not(::testing::AnyOf(::testing::Contains(0), ::testing::Contains(4))));
+    EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Not(::testing::AnyOf(::testing::Contains(0), ::testing::Contains(4))));
     EXPECT_THAT((std::vector<int>{4, 5, 6}),
-                ::testing::Not(::testing::AnyOf(::testing::Contains(1), ::testing::Contains(2),
-                                                ::testing::Contains(3))));
-    EXPECT_THAT((std::vector<int>{2, 1, 3}),
-                ::testing::Not(::testing::ContainerEq(std::vector<int>{1, 2, 3})));
+                ::testing::Not(::testing::AnyOf(::testing::Contains(1), ::testing::Contains(2), ::testing::Contains(3))));
+    EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Not(::testing::ContainerEq(std::vector<int>{1, 2, 3})));
 
-    EXPECT_THAT((std::vector<int>{4, 5, 6}),
-                ::testing::Not(::testing::UnorderedElementsAre(1, 2, 3)));
+    EXPECT_THAT((std::vector<int>{4, 5, 6}), ::testing::Not(::testing::UnorderedElementsAre(1, 2, 3)));
     EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Each(::testing::Ne(0)));
     EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Contains(::testing::Ne(1)));
     EXPECT_THAT((std::vector<int>{2, 1, 3}), ::testing::Not(::testing::Contains(0)));
@@ -122,29 +102,20 @@ TEST(UnitTest, 003)
 
     EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::ContainerEq(std::vector<int>{1, 2, 3}));
     EXPECT_EQ((std::vector<int>{1, 2, 3}), (std::vector<int>{1, 2, 3}));
-    EXPECT_THAT((std::vector<int>{1, 2, 3}),
-                ::testing::ElementsAreArray(std::vector<int>{1, 2, 3}));
-    EXPECT_THAT((std::vector<int>{3, 2, 1}),
-                ::testing::WhenSorted(::testing::ElementsAre(1, 2, 3)));
-    EXPECT_THAT((std::vector<int>{3, 1, 4, 2}),
-                ::testing::WhenSortedBy(std::less<int>(), ::testing::ElementsAre(1, 2, 3, 4)));
+    EXPECT_THAT((std::vector<int>{1, 2, 3}), ::testing::ElementsAreArray(std::vector<int>{1, 2, 3}));
+    EXPECT_THAT((std::vector<int>{3, 2, 1}), ::testing::WhenSorted(::testing::ElementsAre(1, 2, 3)));
+    EXPECT_THAT((std::vector<int>{3, 1, 4, 2}), ::testing::WhenSortedBy(std::less<int>(), ::testing::ElementsAre(1, 2, 3, 4)));
     EXPECT_THAT((std::vector<int>{2, 1, 3, 5}),
-                ::testing::AllOf(::testing::Not(::testing::ElementsAre(1, 2, 3)),
-                                 ::testing::Contains(::testing::Gt(4))));
+                ::testing::AllOf(::testing::Not(::testing::ElementsAre(1, 2, 3)), ::testing::Contains(::testing::Gt(4))));
     EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}),
-                ::testing::Contains(::testing::ResultOf(
-                    [](const std::string& s) { return s.length(); }, ::testing::Gt(4))));
+                ::testing::Contains(::testing::ResultOf([](const std::string& s) { return s.length(); }, ::testing::Gt(4))));
 
-    EXPECT_THAT(
-        (std::vector<int>{2, 1, 3, 5}),
-        ::testing::AllOf(::testing::Not(::testing::IsEmpty()), ::testing::Each(::testing::Gt(0))));
+    EXPECT_THAT((std::vector<int>{2, 1, 3, 5}), ::testing::AllOf(::testing::Not(::testing::IsEmpty()), ::testing::Each(::testing::Gt(0))));
 
     EXPECT_THAT(std::vector<std::string>({"hello", "world", "test"}),
-                ::testing::ElementsAre(::testing::StartsWith("h"), ::testing::EndsWith("d"),
-                                       ::testing::StrEq("test")));
+                ::testing::ElementsAre(::testing::StartsWith("h"), ::testing::EndsWith("d"), ::testing::StrEq("test")));
 
-    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}),
-                ::testing::Each(::testing::SizeIs(::testing::Ge(4))));
+    EXPECT_THAT((std::vector<std::string>{"hello", "world", "test"}), ::testing::Each(::testing::SizeIs(::testing::Ge(4))));
 
     // 简单字符串
     EXPECT_THAT("Hello World 123", ::testing::StartsWith("Hello"));
@@ -231,13 +202,11 @@ TEST(UnitTest, 002)
     EXPECT_FALSE(false);
     EXPECT_NEAR(3, 2, 1);
     EXPECT_NEAR(2, 3, 1.1);
-    EXPECT_THAT((std::vector<double>{1.0, 2.0, 3.0}),
-                ::testing::Each(::testing::DoubleNear(0.0, 3.1)));
+    EXPECT_THAT((std::vector<double>{1.0, 2.0, 3.0}), ::testing::Each(::testing::DoubleNear(0.0, 3.1)));
     EXPECT_THAT(3.14, ::testing::DoubleEq(3.14));
     EXPECT_THAT(3.14, ::testing::NanSensitiveDoubleEq(3.14));
 
-    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}),
-                ::testing::Contains(::testing::Truly([](int n) { return n % 2 == 0; })));
+    EXPECT_THAT((std::vector<int>{1, 2, 3, 4, 5}), ::testing::Contains(::testing::Truly([](int n) { return n % 2 == 0; })));
 
     int x = 0;
     EXPECT_THAT(&x, ::testing::NotNull());

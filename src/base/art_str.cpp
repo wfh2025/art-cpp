@@ -28,8 +28,7 @@ namespace art
         }
         bool endsWith(const std::string& str, const std::string& suffix)
         {
-            return str.size() >= suffix.size() &&
-                   str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
+            return str.size() >= suffix.size() && str.compare(str.size() - suffix.size(), suffix.size(), suffix) == 0;
         }
 
         std::string strtrim(const std::string& str, const std::string& trimChars)

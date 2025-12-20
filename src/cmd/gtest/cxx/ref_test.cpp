@@ -84,33 +84,26 @@ static int* getSizePtr()
 TEST(Ref, 003)
 {
     EXPECT_EQ(getSizeRef(), getSizeValue());
-    EXPECT_TRUE((&getSizeRef() != nullptr) && (&getSizeRef() == &g_ulSize) &&
-                (&getSizeConstRef() == &g_ulSize) && (&g_ulSize == getSizePtr()));
+    EXPECT_TRUE((&getSizeRef() != nullptr) && (&getSizeRef() == &g_ulSize) && (&getSizeConstRef() == &g_ulSize) && (&g_ulSize == getSizePtr()));
 
     int v0 = getSizeRef();
     int& v1 = getSizeRef();
     auto v2 = getSizeRef();
     auto& v3 = getSizeRef();
-    EXPECT_TRUE((&g_ulSize == &getSizeRef()) && (g_ulSize == v0) && (g_ulSize == v1) &&
-                (g_ulSize == v2) && (g_ulSize == v3) && (&v0 != &g_ulSize) && (&v1 == &g_ulSize) &&
-                (&v2 != &g_ulSize) && (&v3 == &g_ulSize));
-    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeRef()), int&>) &&
-                (true == std::is_same_v<decltype(v0), int>) &&
-                (true == std::is_same_v<decltype(v1), int&>) &&
-                (true == std::is_same_v<decltype(v2), int>) &&
+    EXPECT_TRUE((&g_ulSize == &getSizeRef()) && (g_ulSize == v0) && (g_ulSize == v1) && (g_ulSize == v2) && (g_ulSize == v3) && (&v0 != &g_ulSize) &&
+                (&v1 == &g_ulSize) && (&v2 != &g_ulSize) && (&v3 == &g_ulSize));
+    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeRef()), int&>) && (true == std::is_same_v<decltype(v0), int>) &&
+                (true == std::is_same_v<decltype(v1), int&>) && (true == std::is_same_v<decltype(v2), int>) &&
                 (true == std::is_same_v<decltype(v3), int&>));
 
     int v4 = getSizeConstRef();
     auto v5 = getSizeConstRef();
     auto& v6 = getSizeConstRef();
     const auto& v7 = getSizeConstRef();
-    EXPECT_TRUE((&g_ulSize == &getSizeConstRef()) && (g_ulSize == v4) && (g_ulSize == v5) &&
-                (g_ulSize == v6) && (g_ulSize == v7) && (&g_ulSize != &v4) && (&g_ulSize != &v5) &&
-                (&g_ulSize == &v6) && (&g_ulSize == &v7));
-    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeConstRef()), const int&>) &&
-                (true == std::is_same_v<decltype(v4), int>) &&
-                (true == std::is_same_v<decltype(v5), int>) &&
-                (true == std::is_same_v<decltype(v6), const int&>) &&
+    EXPECT_TRUE((&g_ulSize == &getSizeConstRef()) && (g_ulSize == v4) && (g_ulSize == v5) && (g_ulSize == v6) && (g_ulSize == v7) &&
+                (&g_ulSize != &v4) && (&g_ulSize != &v5) && (&g_ulSize == &v6) && (&g_ulSize == &v7));
+    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeConstRef()), const int&>) && (true == std::is_same_v<decltype(v4), int>) &&
+                (true == std::is_same_v<decltype(v5), int>) && (true == std::is_same_v<decltype(v6), const int&>) &&
                 (true == std::is_same_v<decltype(v7), const int&>));
 }
 
@@ -143,9 +136,7 @@ TEST(Ref, 005)
 
 TEST(Ref, 006)
 {
-    std::function<size_t(const std::string&)> fn0 = [](const std::string& str) -> size_t {
-        return str.length();
-    };
+    std::function<size_t(const std::string&)> fn0 = [](const std::string& str) -> size_t { return str.length(); };
     std::string str = "hello";
     EXPECT_EQ(fn0(str), 5);
     EXPECT_EQ(fn0("world"), 5);
@@ -177,8 +168,7 @@ TEST(Ref, 007)
     int value = 10;
     RefHolder refHolder(value);
     refHolder.incr();
-    EXPECT_TRUE((refHolder.getAddr() == &value) && (value == 11) &&
-                (refHolder.getValue() == value));
+    EXPECT_TRUE((refHolder.getAddr() == &value) && (value == 11) && (refHolder.getValue() == value));
 }
 
 TEST(Ref, 008)

@@ -1,6 +1,6 @@
-#include "spdlog/spdlog.h"
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "spdlog/spdlog.h"
 
 static void initLog()
 {
