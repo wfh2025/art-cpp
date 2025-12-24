@@ -7,7 +7,8 @@ static void initLog()
     /**
      * 引入LOG,解决cout在多线程情况下并发错乱问题
      */
-    spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%P] [%t] [%s:%#] [%^%l%$] %v");
+    // spdlog::set_pattern("[%Y-%m-%d %H:%M:%S.%e] [%P] [%t] [%s:%#] [%^%l%$] %v");
+    spdlog::set_pattern("%s:%#    %v");
     spdlog::set_level(spdlog::level::debug);
 }
 int main(int argc, char** argv)

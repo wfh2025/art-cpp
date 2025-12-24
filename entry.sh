@@ -20,22 +20,31 @@ function build-deps() {
 }
 
 function build-aws-sdk-cpp() {
-    # TODO: 调试中
+    # caution: 下载流程
+    # git clone https://github.com/aws/aws-sdk-cpp && \
+    #     cd aws-sdk-cpp && \
+    #     git checkout 1.11.715 && \
+    #     git submodule update --init --recursive
+
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/aws-sdk-cpp"
     local src="${PROJ_SRC}/third-party/aws-sdk-cpp"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
-
+    
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
           -DCMAKE_BUILD_TYPE=Release \
           -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
-          -DCMAKE_INSTALL_PREFIX="${install_dir}" -DLEGACY_BUILD=ON
-    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel
-
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DBUILD_SHARED_LIBS=OFF \
+          -DENABLE_TESTING=OFF \
+          -DAUTORUN_UNIT_TESTS=OFF -DBUILD_ONLY="s3"
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --config=Release --parallel
+    ${PROJ_CMAKE} --install "${PROJ_BUILD}" --config=Release
     rm -fr "${build_dir}"
 }
+
 function build-zlog() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/zlog"

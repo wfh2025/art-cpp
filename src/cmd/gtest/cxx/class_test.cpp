@@ -9,6 +9,7 @@
 #include "gtest/gtest.h"
 #include "ut_config.h"
 #include "utils.h"
+
 #ifdef RUN_ALL_TEST_CASE
 TEST(ClassBasic, 015)
 {

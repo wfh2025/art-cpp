@@ -133,6 +133,7 @@ struct Command
 };
 
 #ifdef RUN_ALL_TEST_CASE
+
 TEST(OOP, 002)
 {
     std::vector<CommandArg> userAttrArgs = {

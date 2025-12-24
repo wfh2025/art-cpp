@@ -6,7 +6,7 @@
 #include "gtest/gtest.h"
 #include "s3/aws_s3.hpp"
 #include "ut_config.h"
-
+#ifdef RUN_ALL_TEST_CASE
 TEST(buildListObjectsResultToXml, 001)
 {
     auto output = s3::ListObjectsResult{};
@@ -55,7 +55,6 @@ TEST(buildListObjectsResultToXml, 001)
     std::cout << str;
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(timeToISO8601, 001)
 {
     std::string str = "";
