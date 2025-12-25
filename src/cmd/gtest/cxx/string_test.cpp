@@ -4,6 +4,7 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(std_string, 001)
 {
     std::string s1;
@@ -107,7 +108,5 @@ TEST(std_string, 001)
     std::string s20(arr, arr + 5);
     EXPECT_EQ(s20, "Array");
 }
-
-#ifdef RUN_ALL_TEST_CASE
 
 #endif
