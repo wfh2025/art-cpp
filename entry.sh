@@ -34,14 +34,14 @@ function build-aws-sdk-cpp() {
     
     ${PROJ_CMAKE} -B "${build_dir}" \
           -S "${src}" \
-          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_BUILD_TYPE=Debug \
           -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
           -DCMAKE_INSTALL_PREFIX="${install_dir}" \
           -DBUILD_SHARED_LIBS=OFF \
           -DENABLE_TESTING=OFF \
-          -DAUTORUN_UNIT_TESTS=OFF -DBUILD_ONLY="s3"
-    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --config=Release --parallel
-    ${PROJ_CMAKE} --install "${PROJ_BUILD}" --config=Release
+          -DAUTORUN_UNIT_TESTS=OFF
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --config=Debug --parallel 8
+    ${PROJ_CMAKE} --install "${PROJ_BUILD}" --config=Debug
     rm -fr "${build_dir}"
 }
 
