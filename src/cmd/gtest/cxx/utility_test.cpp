@@ -4,6 +4,7 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(std_pair, 001)
 {
     std::pair<std::string, int> p0;
@@ -27,7 +28,5 @@ TEST(std_pair, 001)
     EXPECT_EQ(p7.first, "EFG");
     EXPECT_EQ(p7.second, 4);
 }
-
-#ifdef RUN_ALL_TEST_CASE
 
 #endif

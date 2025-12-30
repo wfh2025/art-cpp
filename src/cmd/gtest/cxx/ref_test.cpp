@@ -1,113 +1,54 @@
 #include <functional>
-#include <iostream>
-#include <map>
-#include <string>
-#include <type_traits>
-#include <vector>
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "spdlog/spdlog.h"
 #include "ut_config.h"
-
-static char* fnVal(std::string str)
-{
-    return str.data();
-}
-static char* fnLeftRef(std::string& str)
-{
-    return str.data();
-}
-static const char* fnConstLeftRef(const std::string& str)
-{
-    return str.data();
-}
-static char* fnRightRef(std::string&& str)
-{
-    return str.data();
-}
-static const char* fnConstRightRef(const std::string&& str)
-{
-    return str.data();
-}
-
 #ifdef RUN_ALL_TEST_CASE
-TEST(Ref, 001)
+TEST(ref, 011)
 {
-    int a = 10;
-    int& v0 = a;
-    int& v1 = a;
-    int& v11 = v1;
+    int ulSize = 3;
+    std::function<int&()> getSizeRef = [&]() -> int& { return ulSize; };
+    std::function<const int&()> getSizeConstRef = [&]() -> const int& { return ulSize; };
+    std::function<int()> getSizeValue = [&]() -> int { return ulSize; };
+    std::function<int*()> getSizePtr = [&]() -> int* { return &ulSize; };
 
-    const int& v3 = 5;
-    const int& v4 = a + 3;
-    EXPECT_TRUE((v11 == a) && (v0 == a) && (v0 == v1));
-    EXPECT_TRUE((&a == &v0) && (&v0 == &v1) && (&v1 == &v11));
-
-    int v5[3] = {1, 2, 3};
-    int (&v6)[3] = v5;
-    EXPECT_EQ(&v5, &v6);
-
-    v6[1] = 99;
-    EXPECT_THAT(v5, ::testing::ElementsAre(1, 99, 3));
-    EXPECT_THAT(v6, ::testing::ElementsAre(1, 99, 3));
-}
-
-TEST(Ref, 002)
-{
-    int v0 = 2;
-    int v1 = 3;
-    int& ref0 = v0;
-    ref0 = v1;
-
-    EXPECT_TRUE((&ref0 == &v0) && (&ref0 != &v1));
-    EXPECT_TRUE((v0 == v1) && (v0 == 3) && (ref0 == v1));
-}
-static int g_ulSize = 3;
-static int& getSizeRef()
-{
-    return g_ulSize;
-}
-
-static const int& getSizeConstRef()
-{
-    return g_ulSize;
-}
-static int getSizeValue()
-{
-    return g_ulSize;
-}
-static int* getSizePtr()
-{
-    return &g_ulSize;
-}
-
-TEST(Ref, 003)
-{
     EXPECT_EQ(getSizeRef(), getSizeValue());
-    EXPECT_TRUE((&getSizeRef() != nullptr) && (&getSizeRef() == &g_ulSize) && (&getSizeConstRef() == &g_ulSize) && (&g_ulSize == getSizePtr()));
+    EXPECT_TRUE((&getSizeRef() != nullptr) && (&getSizeRef() == &ulSize) && (&getSizeConstRef() == &ulSize) && (&ulSize == getSizePtr()));
 
+    // 如果类型不是引用，即使函数返回引用，也是存在复制
     int v0 = getSizeRef();
     int& v1 = getSizeRef();
-    auto v2 = getSizeRef();
-    auto& v3 = getSizeRef();
-    EXPECT_TRUE((&g_ulSize == &getSizeRef()) && (g_ulSize == v0) && (g_ulSize == v1) && (g_ulSize == v2) && (g_ulSize == v3) && (&v0 != &g_ulSize) &&
-                (&v1 == &g_ulSize) && (&v2 != &g_ulSize) && (&v3 == &g_ulSize));
-    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeRef()), int&>) && (true == std::is_same_v<decltype(v0), int>) &&
-                (true == std::is_same_v<decltype(v1), int&>) && (true == std::is_same_v<decltype(v2), int>) &&
-                (true == std::is_same_v<decltype(v3), int&>));
+    EXPECT_TRUE((&ulSize == &v1) && (&ulSize != &v0));
 
-    int v4 = getSizeConstRef();
-    auto v5 = getSizeConstRef();
-    auto& v6 = getSizeConstRef();
-    const auto& v7 = getSizeConstRef();
-    EXPECT_TRUE((&g_ulSize == &getSizeConstRef()) && (g_ulSize == v4) && (g_ulSize == v5) && (g_ulSize == v6) && (g_ulSize == v7) &&
-                (&g_ulSize != &v4) && (&g_ulSize != &v5) && (&g_ulSize == &v6) && (&g_ulSize == &v7));
-    EXPECT_TRUE((true == std::is_same_v<decltype(getSizeConstRef()), const int&>) && (true == std::is_same_v<decltype(v4), int>) &&
-                (true == std::is_same_v<decltype(v5), int>) && (true == std::is_same_v<decltype(v6), const int&>) &&
-                (true == std::is_same_v<decltype(v7), const int&>));
+    // 如果类型不是引用，即使函数返回引用，也是存在复制，auto也是类似
+    auto v2 = getSizeRef();  // v2类型: int
+    auto& v3 = getSizeRef(); // v3类型: int&
+    EXPECT_TRUE((&ulSize == &v3) && (&ulSize != &v2));
+    EXPECT_TRUE((std::is_same_v<decltype(v2), int>) && (std::is_same_v<decltype(v3), int&>));
+
+    int v4 = getSizeConstRef();        // 拷贝
+    const int v5 = getSizeConstRef();  // 拷贝
+    const int& v6 = getSizeConstRef(); // 引用
+    EXPECT_TRUE((&v4 != &ulSize) && (&v5 != &ulSize) && (&v6 == &ulSize));
+
+    auto v7 = getSizeConstRef();        // int 拷贝
+    auto& v8 = getSizeConstRef();       // const int &, 引用
+    const auto& v9 = getSizeConstRef(); // const int &, 引用
+    EXPECT_TRUE((&v7 != &ulSize) && (&v8 == &ulSize) && (&v9 == &ulSize));
+    EXPECT_TRUE((std::is_same_v<decltype(v7), int>) && (std::is_same_v<decltype(v8), const int&>) && (std::is_same_v<decltype(v9), const int&>));
+
+    int v10 = getSizeValue();
+    const int& v11 = getSizeValue();
+    EXPECT_TRUE((&v10 != &ulSize) && (&v11 != &ulSize));
+
+    auto v12 = getSizeValue();
+    const auto& v13 = getSizeValue();
+    EXPECT_TRUE((&v12 != &ulSize) && (&v13 != &ulSize));
+    EXPECT_TRUE((std::is_same_v<decltype(v12), int>) && (std::is_same_v<decltype(v13), const int&>));
 }
 
-TEST(Ref, 004)
+TEST(ref, 010)
 {
     std::vector<int> v0 = {1, 2, 3};
     for (int ele : v0)
@@ -122,27 +63,7 @@ TEST(Ref, 004)
     EXPECT_THAT(v0, ::testing::ElementsAre(2, 4, 6));
 }
 
-TEST(Ref, 005)
-{
-    int* p = nullptr;
-    {
-        int local = 3;
-        int& r = local;
-        p = &r;
-        EXPECT_EQ(*p, local);
-    }
-    // p失效
-}
-
-TEST(Ref, 006)
-{
-    std::function<size_t(const std::string&)> fn0 = [](const std::string& str) -> size_t { return str.length(); };
-    std::string str = "hello";
-    EXPECT_EQ(fn0(str), 5);
-    EXPECT_EQ(fn0("world"), 5);
-}
-
-TEST(Ref, 007)
+TEST(ref, 009)
 {
     class RefHolder
     {
@@ -171,7 +92,7 @@ TEST(Ref, 007)
     EXPECT_TRUE((refHolder.getAddr() == &value) && (value == 11) && (refHolder.getValue() == value));
 }
 
-TEST(Ref, 008)
+TEST(ref, 008)
 {
     class Base
     {
@@ -195,38 +116,7 @@ TEST(Ref, 008)
     EXPECT_EQ(ref.name(), "Derived");
 }
 
-TEST(Ref, 009)
-{
-    int a = 1;
-    int b = 2;
-    std::vector<std::reference_wrapper<int>> refs = {a, b};
-
-    EXPECT_TRUE((&refs[0].get() == &a) && (&refs[1].get() == &b));
-    refs[0].get() = 10;
-    EXPECT_TRUE((refs[0].get() == a) && (a == 10));
-}
-
-TEST(Ref, 010)
-{
-    std::vector<int> data = {1, 2, 3};
-    std::vector<int>& ref = data;
-    std::vector<int> moved = std::move(data);
-
-    EXPECT_TRUE(data.empty() && (ref.size() == 0) && (moved.size() == 3));
-}
-
-TEST(Ref, 011)
-{
-    int v0 = 3;
-    int v1 = 4;
-    int& v2 = v0;
-    int&& v3 = 100;
-    int&& v4 = v0 + v1;
-    EXPECT_TRUE((v0 == 3) && (v1 == 4) && (v2 == 3) && (v4 == 7));
-    int&& v5 = std::move(v0); // 基本类型move: 拷贝，原值不变
-}
-
-TEST(Ref, 012)
+TEST(ref, 007)
 {
     // vector类型move: 原来值为空，不可使用原来值
     std::vector<int> v0 = {1, 2, 3};
@@ -246,4 +136,76 @@ TEST(Ref, 012)
     EXPECT_TRUE((v5.use_count() == 1) && (v5 != nullptr));
 }
 
+TEST(ref, 006)
+{
+    int a = 1;
+    int b = 2;
+    std::vector<std::reference_wrapper<int>> refs = {a, b};
+
+    EXPECT_TRUE((&refs[0].get() == &a) && (&refs[1].get() == &b));
+    refs[0].get() = 10;
+    EXPECT_TRUE((refs[0].get() == a) && (a == 10));
+}
+
+TEST(ref, 005)
+{
+    std::vector<int> data = {1, 2, 3};
+    std::vector<int>& ref = data;
+    std::vector<int> moved = std::move(data);
+    EXPECT_TRUE(data.empty() && (ref.size() == 0) && (moved.size() == 3));
+}
+
+TEST(ref, 004)
+{
+    int v0 = 3;
+    int v1 = 4;
+    int& v2 = v0;
+    int&& v3 = 100;
+    int&& v4 = v0 + v1;
+    EXPECT_TRUE((v0 == 3) && (v1 == 4) && (v2 == 3) && (v4 == 7));
+    int&& v5 = std::move(v0); // 基本类型move: 拷贝，原值不变
+}
+
+TEST(ref, 003)
+{
+    std::function<size_t(const std::string&)> fn0 = [](const std::string& str) -> size_t { return str.length(); };
+    std::string str = "hello";
+    EXPECT_EQ(fn0(str), 5);
+    EXPECT_EQ(fn0("world"), 5);
+}
+
+TEST(ref, 002)
+{
+    int v0 = 2;
+    int v1 = 3;
+    int& ref0 = v0;
+    ref0 = v1;
+    EXPECT_TRUE((&ref0 == &v0) && (&ref0 != &v1));
+    EXPECT_TRUE((v0 == 3) && (v1 == 3) && (ref0 == 3));
+}
+
+TEST(ref, 001)
+{
+    int a = 10;
+    int& v0 = a;
+    int& v1 = a;
+    int& v11 = v1;
+    int& v111 = v11;
+    v11 = 8;
+    EXPECT_TRUE((v111 == v11) && (v11 == a) && (v0 == a) && (v0 == v1) && (a == 8));
+
+    SPDLOG_INFO("&a: {}, &v0: {}, &v1: {}, &v11: {}, &v111: {}", fmt::ptr(&a), fmt::ptr(&v0), fmt::ptr(&v1), fmt::ptr(&v11), fmt::ptr(&v111));
+
+    const int& v3 = 5;
+    const int& v4 = a + 3;
+    EXPECT_TRUE((&a == &v0) && (&v0 == &v1) && (&v1 == &v11));
+
+    int v5[3] = {1, 2, 3};
+    int (&v6)[3] = v5;
+    EXPECT_EQ(&v5, &v6);
+
+    v6[1] = 99;
+    EXPECT_THAT(v5, ::testing::ElementsAre(1, 99, 3));
+    EXPECT_THAT(v6, ::testing::ElementsAre(1, 99, 3));
+}
 #endif

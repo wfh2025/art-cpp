@@ -33,6 +33,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gtest/archi
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/string_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/oop_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/ref_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/cxx/functional_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/stl_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/any_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/s3_test.cpp"
