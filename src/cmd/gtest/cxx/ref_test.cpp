@@ -5,7 +5,7 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 #ifdef RUN_ALL_TEST_CASE
-TEST(ref, 011)
+TEST(cxx_ref, 011)
 {
     int ulSize = 3;
     std::function<int&()> getSizeRef = [&]() -> int& { return ulSize; };
@@ -48,7 +48,7 @@ TEST(ref, 011)
     EXPECT_TRUE((std::is_same_v<decltype(v12), int>) && (std::is_same_v<decltype(v13), const int&>));
 }
 
-TEST(ref, 010)
+TEST(cxx_ref, 010)
 {
     std::vector<int> v0 = {1, 2, 3};
     for (int ele : v0)
@@ -63,7 +63,7 @@ TEST(ref, 010)
     EXPECT_THAT(v0, ::testing::ElementsAre(2, 4, 6));
 }
 
-TEST(ref, 009)
+TEST(cxx_ref, 009)
 {
     class RefHolder
     {
@@ -92,7 +92,7 @@ TEST(ref, 009)
     EXPECT_TRUE((refHolder.getAddr() == &value) && (value == 11) && (refHolder.getValue() == value));
 }
 
-TEST(ref, 008)
+TEST(cxx_ref, 008)
 {
     class Base
     {
@@ -116,7 +116,7 @@ TEST(ref, 008)
     EXPECT_EQ(ref.name(), "Derived");
 }
 
-TEST(ref, 007)
+TEST(cxx_ref, 007)
 {
     // vector类型move: 原来值为空，不可使用原来值
     std::vector<int> v0 = {1, 2, 3};
@@ -136,7 +136,7 @@ TEST(ref, 007)
     EXPECT_TRUE((v5.use_count() == 1) && (v5 != nullptr));
 }
 
-TEST(ref, 006)
+TEST(cxx_ref, 006)
 {
     int a = 1;
     int b = 2;
@@ -147,7 +147,7 @@ TEST(ref, 006)
     EXPECT_TRUE((refs[0].get() == a) && (a == 10));
 }
 
-TEST(ref, 005)
+TEST(cxx_ref, 005)
 {
     std::vector<int> data = {1, 2, 3};
     std::vector<int>& ref = data;
@@ -155,7 +155,7 @@ TEST(ref, 005)
     EXPECT_TRUE(data.empty() && (ref.size() == 0) && (moved.size() == 3));
 }
 
-TEST(ref, 004)
+TEST(cxx_ref, 004)
 {
     int v0 = 3;
     int v1 = 4;
@@ -166,7 +166,7 @@ TEST(ref, 004)
     int&& v5 = std::move(v0); // 基本类型move: 拷贝，原值不变
 }
 
-TEST(ref, 003)
+TEST(cxx_ref, 003)
 {
     std::function<size_t(const std::string&)> fn0 = [](const std::string& str) -> size_t { return str.length(); };
     std::string str = "hello";
@@ -174,7 +174,7 @@ TEST(ref, 003)
     EXPECT_EQ(fn0("world"), 5);
 }
 
-TEST(ref, 002)
+TEST(cxx_ref, 002)
 {
     int v0 = 2;
     int v1 = 3;
@@ -184,7 +184,7 @@ TEST(ref, 002)
     EXPECT_TRUE((v0 == 3) && (v1 == 3) && (ref0 == 3));
 }
 
-TEST(ref, 001)
+TEST(cxx_ref, 001)
 {
     int a = 10;
     int& v0 = a;

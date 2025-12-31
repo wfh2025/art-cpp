@@ -8,10 +8,9 @@
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
 #include "ut_config.h"
-#include "utils.h"
 
 #ifdef RUN_ALL_TEST_CASE
-TEST(ClassBasic, 015)
+TEST(cxx_class, 015)
 {
     class Base
     {
@@ -55,7 +54,7 @@ TEST(ClassBasic, 015)
     }
 }
 
-TEST(ClassBasic, 014)
+TEST(cxx_class, 014)
 {
     class Student
     {
@@ -104,7 +103,7 @@ TEST(ClassBasic, 014)
     }
 }
 
-TEST(ClassBasic, 013)
+TEST(cxx_class, 013)
 {
     // 1. 基类构造函数与析构函数不能被继承
     // 2. 派生类对基类成员的继承没有选择权,不能选择继承或不继承某些成员
@@ -198,7 +197,7 @@ void updateGPointAttrs(GPoint& pt, double x, double y)
     printf("line: %d, updateGPointAttrs(GPoint& pt, double x, double y), x: %.2f, y: %.2f \n", __LINE__, pt._x, pt._y);
 }
 
-TEST(ClassBasic, 012)
+TEST(cxx_class, 012)
 {
     GPoint p1 = {3, 5};
     GPoint p2 = {4, 6};
@@ -207,7 +206,7 @@ TEST(ClassBasic, 012)
     updateGPointAttrs(p2, 10.0, 11.0);
 }
 
-TEST(ClassBasic, 011)
+TEST(cxx_class, 011)
 {
     class Person
     {
@@ -272,7 +271,7 @@ TEST(ClassBasic, 011)
     }
 }
 
-TEST(ClassBasic, 010)
+TEST(cxx_class, 010)
 {
     class Sheep
     {
@@ -304,7 +303,7 @@ TEST(ClassBasic, 010)
     }
 }
 
-TEST(ClassBasic, 009)
+TEST(cxx_class, 009)
 {
     class Sheep
     {
@@ -322,7 +321,7 @@ TEST(ClassBasic, 009)
     EXPECT_NE(s2._name.data(), s1._name.data());
 }
 
-TEST(ClassBasic, 008)
+TEST(cxx_class, 008)
 {
     class Sheep
     {
@@ -388,7 +387,7 @@ TEST(ClassBasic, 008)
     }
 }
 
-TEST(ClassBasic, 007)
+TEST(cxx_class, 007)
 {
     class Birth
     {
@@ -415,7 +414,7 @@ TEST(ClassBasic, 007)
     EXPECT_TRUE(stu._name == "Li" && stu._birth._year == 2000 && stu._birth._month == 10 && stu._birth._day == 14);
 }
 
-TEST(ClassBasic, 006)
+TEST(cxx_class, 006)
 {
     class ClassA
     {
@@ -443,7 +442,7 @@ TEST(ClassBasic, 006)
     ClassB objB;
 }
 
-TEST(ClassBasic, 005)
+TEST(cxx_class, 005)
 {
     class Clock
     {
@@ -471,7 +470,7 @@ TEST(ClassBasic, 005)
     EXPECT_EQ(c0.getKey(), "9-5-2");
 }
 
-TEST(ClassBasic, 004)
+TEST(cxx_class, 004)
 {
     class Clock
     {
@@ -491,7 +490,7 @@ TEST(ClassBasic, 004)
     EXPECT_EQ(clock.getKey(), "10-20-30");
 }
 
-TEST(ClassBasic, 003)
+TEST(cxx_class, 003)
 {
     class Student
     {
@@ -530,7 +529,7 @@ TEST(ClassBasic, 003)
     // 4. 构造函数权限一般是public
 }
 
-TEST(ClassBasic, 002)
+TEST(cxx_class, 002)
 {
     class Student
     {
@@ -557,7 +556,7 @@ TEST(ClassBasic, 002)
     delete pstStu;
 }
 
-TEST(ClassBasic, 001)
+TEST(cxx_class, 001)
 {
     class Student
     {

@@ -134,7 +134,7 @@ struct Command
 
 #ifdef RUN_ALL_TEST_CASE
 
-TEST(OOP, 002)
+TEST(cxx_oop, 002)
 {
     std::vector<CommandArg> userAttrArgs = {
         CommandArg::create().name("attr0").defaultValue("attr0-default").summary("attr0-summary").build(),
@@ -189,7 +189,7 @@ TEST(OOP, 002)
     EXPECT_EQ(command.argsMap["attr1"].defaultValue, "attr1-default");
 }
 
-TEST(OOP, 001)
+TEST(cxx_oop, 001)
 {
     auto commandArg = CommandArg::create().name("xxx").defaultValue("yyy").summary("zzz").build();
     EXPECT_EQ(commandArg.name, "xxx");

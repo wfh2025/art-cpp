@@ -1,6 +1,6 @@
 #include "fmt/core.h"
-#include "ut_config.h"
 #include "gtest/gtest.h"
+#include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(format, 001)
