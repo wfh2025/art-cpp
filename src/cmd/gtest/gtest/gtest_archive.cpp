@@ -4,7 +4,21 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "gtest_def.hpp"
+#include "spdlog/spdlog.h"
 #include "ut_config.h"
+
+TEST(gut_Point2i, 001)
+{
+    {
+        SPDLOG_INFO("{:-^50}", "Point2i p0(3,2);");
+        gut::Point2i p0(3, 2);
+    }
+    {
+        SPDLOG_INFO("{:-^50}", "Point2i p0");
+        gut::Point2i p0;
+    }
+}
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(UnitTest, 005)

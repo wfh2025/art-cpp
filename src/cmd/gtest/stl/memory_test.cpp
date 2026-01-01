@@ -156,7 +156,7 @@ TEST(std_shared_ptr, 003)
         SPDLOG_INFO("Succeed to exec new, ptr: {}", fmt::ptr(rawPtr));
         std::shared_ptr<int> ptr(rawPtr, deleter);
         rawPtr = nullptr;
-        SPDLOG_INFO("Succeed to exit scope");
+        SPDLOG_INFO("Succeed to shared_ptr get(), ptr: {}", fmt::ptr(ptr.get()));
     }
 }
 
