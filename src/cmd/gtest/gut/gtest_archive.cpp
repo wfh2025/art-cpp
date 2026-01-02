@@ -8,6 +8,7 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(gut_Point2i, 001)
 {
     {
@@ -62,7 +63,6 @@ TEST(gut_Point2i, 001)
     }
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(UnitTest, 005)
 {
     // 自定义函数

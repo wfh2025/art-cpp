@@ -22,8 +22,8 @@ target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}
                                                     "${CMAKE_SOURCE_DIR}/third-party/cmdline"
 )
 
-target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gtest/gtest_archive.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/gtest/gtest_def.cpp"
+target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_archive.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_def.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/lambda_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/class_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/oop_test.cpp"

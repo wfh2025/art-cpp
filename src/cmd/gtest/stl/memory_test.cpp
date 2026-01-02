@@ -4,10 +4,115 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "gut/gtest_def.hpp"
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
+TEST(std_shared_ptr, 011)
+{
+    {
+        SPDLOG_INFO("{:-^50}", "change other ptr by reset()");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+        if (ptr != nullptr)
+        {
+            SPDLOG_INFO("before reset, ptr: {}", fmt::ptr(ptr.get()));
+        }
+        EXPECT_NE(ptr, nullptr);
+        ptr.reset();
+        if (ptr == nullptr)
+        {
+            SPDLOG_INFO("after reset, ptr: {}", fmt::ptr(ptr.get()));
+        }
+        EXPECT_EQ(ptr, nullptr);
+        SPDLOG_INFO("no operation");
+    }
+
+    {
+        SPDLOG_INFO("{:-^50}", "change other ptr by reset");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+        ptr.reset(new gut::Point2i(60, 70)); // 不允许对裸指针reset多次
+        EXPECT_EQ(ptr->_x, 60);
+        SPDLOG_INFO("no operation");
+    }
+    {
+        SPDLOG_INFO("{:-^50}", "change other ptr");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+
+        std::shared_ptr<gut::Point2i> ptr2 = std::make_shared<gut::Point2i>(60, 70);
+        EXPECT_EQ(ptr2.use_count(), 1);
+        EXPECT_NE(ptr.get(), ptr2.get());
+
+        // 释放旧的资源，接管新的资源;
+        // 仅支持shared_ptr对象赋值，不支持裸指针赋值
+        ptr = ptr2;
+
+        EXPECT_EQ(ptr.use_count(), 2);
+        EXPECT_EQ(ptr2.use_count(), 2);
+        EXPECT_EQ(ptr.get(), ptr2.get());
+        SPDLOG_INFO("no operation");
+    }
+    {
+        SPDLOG_INFO("{:-^50}", "std::make_shared set nullptr manual");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+        ptr = nullptr; /* 提前释放析构函数 */
+        SPDLOG_INFO("no operation");
+    }
+    {
+        SPDLOG_INFO("{:-^50}", "std::make_shared compare, ptr");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+        if (ptr != nullptr)
+        {
+            // 运算符重载: bool operator!=(const shared_ptr<T>& sp, std::nullptr_t) noexcept
+            SPDLOG_INFO("if (ptr != nullptr), ptr: {}", fmt::ptr(ptr.get()));
+        }
+        if (ptr)
+        {
+            // bool转换运算符: explicit operator bool() const noexcept
+            SPDLOG_INFO("if (ptr), ptr: {}", fmt::ptr(ptr.get()));
+        }
+
+        EXPECT_NE(ptr, nullptr);
+    }
+    {
+        SPDLOG_INFO("{:-^50}", "std::make_shared compare, nullptr");
+        std::shared_ptr<gut::Point2i> ptr;
+        if (ptr == nullptr)
+        {
+            // 运算符重载: bool operator==(const shared_ptr<T>& sp, std::nullptr_t) noexcept
+            SPDLOG_INFO("if (ptr == nullptr), ptr: {}", fmt::ptr(ptr.get()));
+        }
+        if (!ptr)
+        {
+            // bool转换运算符: explicit operator bool() const noexcept
+            SPDLOG_INFO("if (!ptr), ptr: {}", fmt::ptr(ptr.get()));
+        }
+
+        EXPECT_EQ(ptr, nullptr);
+    }
+}
+
+TEST(std_shared_ptr, 010)
+{
+    {
+        SPDLOG_INFO("{:-^50}", "std::make_shared class");
+        std::shared_ptr<gut::Point2i> ptr = std::make_shared<gut::Point2i>(30, 40);
+        /**
+         * ptr: shared_ptr对象
+         * &ptr: shared_ptr对象地址
+         * ptr.get(): 堆上gut::Point2i对象地址
+         * &(*ptr): 堆上gut::Point2i对象地址，*ptr通过shared_ptr的'*'运算符重载指向了gut::Point2i对象
+         * (*(&ptr)).get(): (*(&ptr))本质上还是ptr，实际上就是ptr.get()
+         *
+         * 日志打印参考:
+         * &ptr: 0x16fd12c00, pt0: 0x129804148,  &(*ptr): 0x129804148, pt1: 0x129804148
+         */
+        SPDLOG_INFO("&ptr: {}, pt0: {},  &(*ptr): {}, pt1: {}", fmt::ptr(&ptr), fmt::ptr(ptr.get()), fmt::ptr(&(*ptr)), fmt::ptr((*(&ptr)).get()));
+        EXPECT_NE(ptr, nullptr);
+        EXPECT_EQ(ptr.use_count(), 1);
+    }
+}
+
 TEST(std_shared_ptr, 009)
 {
     struct Data
@@ -173,25 +278,4 @@ TEST(std_shared_ptr, 002)
     EXPECT_EQ(ptr2->size(), rawSize);
 }
 
-TEST(std_shared_ptr, 001)
-{
-    {
-        std::shared_ptr<int> ptr = std::make_shared<int>(42);
-        EXPECT_NE(ptr, nullptr);
-        EXPECT_EQ(*ptr, 42);
-        EXPECT_EQ(ptr.use_count(), 1);
-    }
-    {
-        std::shared_ptr<std::string> ptr1 = std::make_shared<std::string>("Hello");
-        std::shared_ptr<std::string> ptr2 = ptr1;
-        EXPECT_EQ(*ptr1, *ptr2);
-        EXPECT_NE(&ptr1, &ptr2);
-        EXPECT_TRUE((ptr1.use_count() == 2) && (ptr2.use_count() == 2));
-        {
-            std::shared_ptr<std::string> ptr3 = ptr2;
-            EXPECT_TRUE((ptr1.use_count() == 3) && (ptr2.use_count() == 3) && (ptr3.use_count() == 3));
-        }
-        EXPECT_TRUE((ptr1.use_count() == 2) && (ptr2.use_count() == 2));
-    }
-}
 #endif
