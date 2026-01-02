@@ -11,10 +11,52 @@
 TEST(gut_Point2i, 001)
 {
     {
+        /* 移动赋值 */
+        SPDLOG_INFO("{:-^50}", "move assign");
+        gut::Point2i p0{30, 40};
+        gut::Point2i p1;
+        p1 = std::move(p0);
+    }
+    {
+        /* 移动构造 */
+        SPDLOG_INFO("{:-^50}", "move constructor");
+        gut::Point2i p0{30, 40};
+        gut::Point2i p1 = std::move(p0);
+    }
+    {
+        /* 拷贝赋值 */
+        SPDLOG_INFO("{:-^50}", "copy assgin");
+        gut::Point2i p0{30, 40};
+        gut::Point2i p1{70, 80};
+        p1 = p0;
+    }
+    {
+        /* 拷贝构造函数 */
+        SPDLOG_INFO("{:-^50}", "copy constructor");
+        gut::Point2i p0{30, 40};
+        gut::Point2i p1(p0);
+        gut::Point2i p2 = p0;
+    }
+    {
+        /* 转换构造函数 */
+        SPDLOG_INFO("{:-^50}", "function input pair");
+        auto fn = [](gut::Point2i pt) {};
+        std::pair<int, int> values(30, 40);
+        fn(values);
+    }
+    {
+        /* 转换构造函数 */
+        SPDLOG_INFO("{:-^50}", "constructor with pair");
+        std::pair<int, int> values(30, 40);
+        gut::Point2i po(values);
+    }
+    {
+        /* 带参构造函数 */
         SPDLOG_INFO("{:-^50}", "Point2i p0(3,2);");
         gut::Point2i p0(3, 2);
     }
     {
+        /* 默认构造函数 */
         SPDLOG_INFO("{:-^50}", "Point2i p0");
         gut::Point2i p0;
     }
