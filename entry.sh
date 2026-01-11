@@ -19,6 +19,28 @@ function build-deps() {
     build-abseil-cpp
 }
 
+function build-folly() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/folly"
+    local src="${PROJ_SRC}/third-party/folly-2026.01.05.00"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" \
+          -DBUILD_BENCHMARKS=OFF \
+          -DBUILD_TESTS=OFF \
+          -DBUILD_BROKEN_TESTS=OFF \
+          -DBUILD_HANGING_TESTS=OFF -DBUILD_SLOW_TESTS=OFF
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
 function build-aws-sdk-cpp() {
     # caution: 下载流程
     # git clone https://github.com/aws/aws-sdk-cpp && \
