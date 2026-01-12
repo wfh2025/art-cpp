@@ -7,6 +7,7 @@
 #include "gut/gtest_def.hpp"
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
+
 #ifdef RUN_ALL_TEST_CASE
 TEST(std_shared_ptr, 001)
 {
@@ -220,5 +221,21 @@ TEST(std_shared_ptr, 002)
         std::shared_ptr<int> ptr;
         ptr.reset(new int, std::default_delete<int>());
     }
+}
+
+TEST(std_shared_ptr, 003)
+{
+    std::shared_ptr<int> gPtr = std::make_shared<int>(100);
+
+    auto fn0 = [&]() -> std::shared_ptr<int> { return gPtr; };
+    auto fn1 = [&]() -> std::shared_ptr<int>& { return gPtr; };
+
+    EXPECT_TRUE((gPtr != nullptr) && (gPtr.use_count() == 1));
+    auto tmpPtr0 = fn0();
+    EXPECT_TRUE((tmpPtr0 != nullptr) && (tmpPtr0.use_count() == 2));
+    EXPECT_TRUE((gPtr != nullptr) && (gPtr.use_count() == 2));
+
+    std::shared_ptr<int>& tmpPtr1 = fn1();
+    EXPECT_TRUE((tmpPtr1 != nullptr) && (tmpPtr1.use_count() == 2));
 }
 #endif
