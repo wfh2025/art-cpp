@@ -1,6 +1,8 @@
 set(TARGET_NAME "art-base")
 set(OUTPUT_NAME "art_base")
-set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/art_str.cpp")
+set(SRCS 
+    "${CMAKE_CURRENT_SOURCE_DIR}/art_str.cpp"
+)
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}")
 set(COMPILE_OPTIONS -pthread -ggdb -Wno-unused-value 
                     -Wno-unused-parameter 
