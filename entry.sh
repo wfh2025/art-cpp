@@ -47,6 +47,7 @@ function build-aws-sdk-cpp() {
     #     cd aws-sdk-cpp && \
     #     git checkout 1.11.715 && \
     #     git submodule update --init --recursive
+    # 构建S3: -DBUILD_ONLY="s3"
 
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/aws-sdk-cpp"
@@ -61,7 +62,7 @@ function build-aws-sdk-cpp() {
           -DCMAKE_INSTALL_PREFIX="${install_dir}" \
           -DBUILD_SHARED_LIBS=OFF \
           -DENABLE_TESTING=OFF \
-          -DAUTORUN_UNIT_TESTS=OFF
+          -DAUTORUN_UNIT_TESTS=OFF -DBUILD_ONLY="s3"
     ${PROJ_CMAKE} --build "${PROJ_BUILD}" --config=Debug --parallel 8
     ${PROJ_CMAKE} --install "${PROJ_BUILD}" --config=Debug
     rm -fr "${build_dir}"
@@ -407,6 +408,19 @@ function build-opencv() {
 
 function rm-rubbish() {
     find . -name ".DS_Store" -type f -delete
+}
+
+function list-static-lib-with-prefix() {
+    # ./entry.sh list-static-lib-with-prefix /Users/wu.feihu/ws/art-cpp/deps/aws-sdk-cpp/lib '"${ART_CXX_DEPS_DIR}/aws-sdk-cpp/lib/' '"'
+    local dir=$1
+    local prefix=$2
+    local suffix=$3
+    local ext=.a
+
+    for file_path in "${dir}"/*"${ext}"; do
+        file_name=$(basename "${file_path}")
+        echo "${prefix}""${file_name}""${suffix}"
+    done
 }
 
 function main() {
