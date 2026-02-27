@@ -9,7 +9,6 @@ export PROJ_CXX=$(which c++)
 
 function build-deps() {
     build-fmt
-    build-zlib
     build-gflags
     build-pugixml
     build-leveldb
@@ -17,6 +16,7 @@ function build-deps() {
     build-googletest
     build-nlohmann-json
     build-abseil-cpp
+    build-spdlog
 }
 
 function build-folly() {
