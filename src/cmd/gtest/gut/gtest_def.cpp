@@ -29,8 +29,8 @@ namespace gut
     {
         SPDLOG_INFO("Point2i::Point2i(const Point2i& other), "
                     "this->x: {}, this->y: {}, this: {}, &this->x: {}, &this->y: {}, "
-                    "&(other._x): {}, &(other._y): {}",
-                    this->_x, this->_y, fmt::ptr(this), fmt::ptr(&this->_x), fmt::ptr(&this->_y), fmt::ptr(&other._x), fmt::ptr(&other._y));
+                    "&other: {}, &(other._x): {}, &(other._y): {}",
+                    this->_x, this->_y, fmt::ptr(this), fmt::ptr(&this->_x), fmt::ptr(&this->_y), fmt::ptr(&other), fmt::ptr(&other._x), fmt::ptr(&other._y));
     }
 
     Point2i::Point2i(Point2i&& other) noexcept : _x(other._x), _y(other._y)
