@@ -2,9 +2,65 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "gut/gtest_def.hpp"
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
+
 #ifdef RUN_ALL_TEST_CASE
+TEST(cxx_ref, 016)
+{
+    auto fn4 = [](const gut::Point2i&& pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
+    {
+        gut::Point2i pt{2, 3};
+        fn4(std::move(pt));
+        SPDLOG_INFO("{}", std::string(50, '-'));
+        fn4(gut::Point2i{4, 5});
+        SPDLOG_INFO("{}", std::string(50, '-'));
+    }
+}
+
+TEST(cxx_ref, 015)
+{
+    auto fn3 = [](gut::Point2i&& pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
+    {
+        gut::Point2i pt{2, 3};
+        fn3(std::move(pt));
+        SPDLOG_INFO("{}", std::string(50, '-'));
+        fn3(gut::Point2i{4, 5});
+        SPDLOG_INFO("{}", std::string(50, '-'));
+    }
+}
+TEST(cxx_ref, 014)
+{
+    auto fn2 = [](const gut::Point2i& pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
+    {
+        gut::Point2i pt{2, 3};
+        fn2(pt);
+        SPDLOG_INFO("{}", std::string(50, '-'));
+        fn2(gut::Point2i{4, 5});
+        SPDLOG_INFO("{}", std::string(50, '-'));
+    }
+}
+TEST(cxx_ref, 013)
+{
+    auto fn1 = [](gut::Point2i& pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
+    {
+        gut::Point2i pt{5, 6};
+        fn1(pt);
+    }
+}
+TEST(cxx_ref, 012)
+{
+    auto fn0 = [](gut::Point2i pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
+    {
+        gut::Point2i pt{2, 3};
+        fn0(pt);
+        SPDLOG_INFO("{}", std::string(50, '-'));
+        fn0(gut::Point2i{4, 5});
+        SPDLOG_INFO("{}", std::string(50, '-'));
+    }
+}
+
 TEST(cxx_ref, 011)
 {
     int ulSize = 3;
