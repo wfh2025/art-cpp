@@ -7,6 +7,15 @@
 #include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE
+TEST(cxx_ref, 017)
+{
+    std::vector<gut::Point2i> pts;
+    pts.push_back(gut::Point2i{2, 3});
+    SPDLOG_INFO("{}", std::string(50, '-'));
+    pts.emplace_back(4, 5);
+    SPDLOG_INFO("{}", std::string(50, '-'));
+}
+
 TEST(cxx_ref, 016)
 {
     auto fn4 = [](const gut::Point2i&& pt) { SPDLOG_INFO("&pt: {}", fmt::ptr(&pt)); };
