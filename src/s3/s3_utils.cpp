@@ -11,4 +11,44 @@ namespace s3
         auto tm = std::gmtime(&t);
         return (std::stringstream() << std::put_time(tm, "%Y-%m-%dT%H:%M:%S.000Z")).str();
     }
+
+    OptStr::OptStr() : _hasVal(false), _val() {}
+
+    OptStr::OptStr(const std::string& val) : _hasVal(true), _val(val) {}
+
+    OptStr::OptStr(std::string&& val) : _hasVal(true), _val(std::move(val)) {}
+
+    OptStr& OptStr::operator=(const std::string& val)
+    {
+        _hasVal = true;
+        _val = val;
+        return *this;
+    }
+
+    OptStr& OptStr::operator=(std::string&& val)
+    {
+        _hasVal = true;
+        _val = std::move(val);
+        return *this;
+    }
+
+    bool OptStr::has() const
+    {
+        return _hasVal;
+    }
+
+    const std::string& OptStr::value() const
+    {
+        return _val;
+    }
+    std::string& OptStr::value()
+    {
+        return _val;
+    }
+
+    void OptStr::reset()
+    {
+        _hasVal = false;
+        _val.clear();
+    }
 } // namespace s3

@@ -1,5 +1,4 @@
-#ifndef _SDS_WRAP_H_
-#define _SDS_WRAP_H_
+#pragma once
 
 #include <stdarg.h>
 #include <stddef.h>
@@ -76,6 +75,4 @@ void sds_free(void* ptr);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif
