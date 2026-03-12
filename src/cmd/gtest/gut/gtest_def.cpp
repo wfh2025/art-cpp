@@ -78,4 +78,79 @@ namespace gut
     {
         SPDLOG_INFO("~Point2i(), this: {}, x: {}, y: {}", fmt::ptr(this), _x, _y);
     }
+
+    X::X() : _val(0)
+    {
+        SPDLOG_INFO("fn: X(), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
+    X::X(int v) : _val(v)
+    {
+        SPDLOG_INFO("fn: X(int v), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
+    X::X(const X& other)
+    {
+        SPDLOG_INFO("fn: X(const X& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+    }
+
+    X::X(X&& other) : _val(other._val)
+    {
+        SPDLOG_INFO("fn: X(X&& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+    }
+
+    X& X::operator=(const X& other)
+    {
+        SPDLOG_INFO("fn: X& operator=(const X& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+        return *this;
+    }
+
+    X& X::operator=(X&& other)
+    {
+        SPDLOG_INFO("fn: X& operator=(X&& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+        return *this;
+    }
+
+    X::~X()
+    {
+        SPDLOG_INFO("fn: ~X(), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
+    Y::Y() : _val(0)
+    {
+        SPDLOG_INFO("fn: Y(), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
+    Y::Y(int v) : _val(v)
+    {
+        SPDLOG_INFO("fn: Y(int v), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
+    Y::Y(const Y& other) : _val(other._val)
+    {
+        SPDLOG_INFO("fn: Y(const Y& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+    }
+
+    Y::Y(Y&& other) : _val(other._val)
+    {
+        SPDLOG_INFO("fn: Y(Y&& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+    }
+
+    Y& Y::operator=(const Y& other)
+    {
+        SPDLOG_INFO("fn: Y& operator=(const Y& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+        return *this;
+    }
+
+    Y& Y::operator=(Y&& other)
+    {
+        SPDLOG_INFO("fn: Y& operator=(Y&& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
+        return *this;
+    }
+
+    Y::~Y()
+    {
+        SPDLOG_INFO("fn: ~Y(), this: {}, val: {}", fmt::ptr(this), _val);
+    }
+
 } // namespace gut

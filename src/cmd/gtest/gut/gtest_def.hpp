@@ -110,4 +110,35 @@ namespace gut
         int _x;
         int _y;
     };
+
+    class X
+    {
+    public:
+        X();
+        X(int v);
+        X(const X& other);
+        X(X&& other);
+        X& operator=(X&& other);
+        X& operator=(const X& other);
+        ~X();
+
+    private:
+        int _val;
+    };
+
+    class Y
+    {
+    public:
+        Y();
+        Y(int v);
+        Y(const Y& other);
+        Y(Y&& other);
+        Y& operator=(Y&& other);
+        Y& operator=(const Y& other);
+        ~Y();
+
+    private:
+        int _val;
+    };
+
 }; // namespace gut

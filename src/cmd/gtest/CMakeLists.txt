@@ -48,6 +48,10 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/cmdline_test.cpp"
 )
 
+target_compile_definitions("${TARGET_NAME}" PRIVATE 
+                            SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
+)
+
 target_compile_options("${TARGET_NAME}" PRIVATE -pthread 
                                                 -ggdb
                                                 -Wno-unused-value
