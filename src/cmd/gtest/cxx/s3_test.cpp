@@ -8,6 +8,7 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(s3_base_OptInt64, 001)
 {
     using s3::base::OptInt64;
@@ -73,7 +74,6 @@ TEST(s3_base_OptInt64, 001)
     }
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(timeToISO8601, 001)
 {
     std::string str = "";

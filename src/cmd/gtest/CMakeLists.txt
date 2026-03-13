@@ -26,6 +26,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_def.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/lambda_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/class_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/cxx/cpy_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/oop_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/ref_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/stl_test.cpp"

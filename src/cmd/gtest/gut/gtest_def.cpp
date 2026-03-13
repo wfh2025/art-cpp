@@ -89,7 +89,7 @@ namespace gut
         SPDLOG_INFO("fn: X(int v), this: {}, val: {}", fmt::ptr(this), _val);
     }
 
-    X::X(const X& other)
+    X::X(const X& other) : _val(other._val)
     {
         SPDLOG_INFO("fn: X(const X& other), this: {}, other: {}", fmt::ptr(this), fmt::ptr(&other));
     }
