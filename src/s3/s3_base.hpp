@@ -27,19 +27,20 @@ namespace s3
         {
         public:
             OptStr();
+            OptStr(const char* s);
             OptStr(const std::string& val);
             OptStr(std::string&& val);
             OptStr& operator=(const std::string& val);
+            OptStr& operator=(const char* s);
             OptStr& operator=(std::string&& val);
-            ~OptStr();
-            bool has() const;
+            ~OptStr() noexcept;
+            bool has() const noexcept;
             const std::string& value() const;
-            std::string& value();
-            void reset();
+            void reset() noexcept;
 
         private:
-            bool _hasVal;
-            std::string _val;
+            bool _has;        // 是否有值
+            std::string _val; // 实际值
         };
     } // namespace base
 } // namespace s3

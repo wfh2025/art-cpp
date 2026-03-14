@@ -8,6 +8,53 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
+TEST(s3_base_OptStr, 002)
+{
+    using s3::base::OptStr;
+    {
+        SPDLOG_INFO("{:-^80}", "001");
+        OptStr op;
+        EXPECT_TRUE(op.has() == false);
+    }
+    {
+        SPDLOG_INFO("{:-^80}", "002");
+        OptStr op{};
+        EXPECT_TRUE(op.has() == false);
+    }
+    {
+        SPDLOG_INFO("{:-^80}", "003");
+        // OptStr op(); // 声明
+        // EXPECT_TRUE(op.has() == false);
+    }
+    {
+        SPDLOG_INFO("{:-^80}", "004");
+        OptStr op = "abc";
+        EXPECT_TRUE((op.has() == true) && (op.value() == "abc"));
+        op.reset();
+        EXPECT_TRUE(op.has() == false);
+    }
+    {
+        SPDLOG_INFO("{:-^80}", "005");
+        OptStr op;
+        EXPECT_TRUE(op.has() == false);
+
+        op = "5";
+        EXPECT_TRUE((op.has() == true) && (op.value() == "5"));
+
+        op = "3";
+        EXPECT_TRUE((op.has() == true) && (op.value() == "3"));
+    }
+    {
+        struct S
+        {
+            OptStr opt;
+        };
+        SPDLOG_INFO("{:-^80}", "006");
+        S s;
+        EXPECT_TRUE(s.opt.has() == false);
+    }
+}
+
 #ifdef RUN_ALL_TEST_CASE
 TEST(s3_base_OptInt64, 001)
 {

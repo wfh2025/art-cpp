@@ -31,7 +31,6 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/ref_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/stl_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/cxx/any_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/cxx/s3_test.cpp"                                    
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/algorithm_test.cpp"                                        
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/memory_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/limits_test.cpp"
@@ -47,6 +46,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/leveldb_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/xml_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/cmdline_test.cpp"
+                                        "${CMAKE_SOURCE_DIR}/s3/s3_base_test.cpp"
 )
 
 target_compile_definitions("${TARGET_NAME}" PRIVATE 
