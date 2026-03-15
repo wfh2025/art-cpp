@@ -7,14 +7,14 @@ namespace s3
 {
     namespace base
     {
-        class OptInt32
+        class OptI32
         {
         public:
-            OptInt32() noexcept;
-            OptInt32(int32_t val) noexcept;
-            ~OptInt32() noexcept;
+            OptI32() noexcept;
+            OptI32(int32_t val) noexcept;
+            ~OptI32() noexcept;
 
-            OptInt32& operator=(int32_t val) noexcept;
+            OptI32& operator=(int32_t val) noexcept;
             bool has() const noexcept;
             int32_t value() const noexcept; // caution: 调用value()前提: has() == true
             void reset() noexcept;
@@ -24,14 +24,14 @@ namespace s3
             int32_t _val; // 实际值
         };
 
-        class OptInt64
+        class OptI64
         {
         public:
-            OptInt64() noexcept;
-            OptInt64(int64_t val) noexcept;
-            ~OptInt64() noexcept;
+            OptI64() noexcept;
+            OptI64(int64_t val) noexcept;
+            ~OptI64() noexcept;
 
-            OptInt64& operator=(int64_t val) noexcept;
+            OptI64& operator=(int64_t val) noexcept;
             bool has() const noexcept;
             int64_t value() const noexcept; // caution: 调用value()前提: has() == true
             void reset() noexcept;

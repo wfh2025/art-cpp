@@ -5,77 +5,77 @@ namespace s3
 {
     namespace base
     {
-        OptInt32::OptInt32() noexcept : _has(false), _val(0)
+        OptI32::OptI32() noexcept : _has(false), _val(0)
         {
-            SPDLOG_DEBUG("fn: OptInt32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
-        OptInt32::OptInt32(int32_t val) noexcept : _has(true), _val(val)
+        OptI32::OptI32(int32_t val) noexcept : _has(true), _val(val)
         {
-            SPDLOG_DEBUG("fn: OptInt32(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
-
-        OptInt32::~OptInt32() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptInt32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI32(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
 
-        OptInt32& OptInt32::operator=(int32_t val) noexcept
+        OptI32::~OptI32() noexcept
+        {
+            SPDLOG_DEBUG("fn: ~OptI32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptI32& OptI32::operator=(int32_t val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptInt32& operator=(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI32& operator=(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 
-        bool OptInt32::has() const noexcept
+        bool OptI32::has() const noexcept
         {
             return _has;
         }
 
-        int32_t OptInt32::value() const noexcept
+        int32_t OptI32::value() const noexcept
         {
             return _val;
         }
 
-        void OptInt32::reset() noexcept
+        void OptI32::reset() noexcept
         {
             _has = false;
             _val = 0;
         }
 
-        OptInt64::OptInt64() noexcept : _has(false), _val(0)
+        OptI64::OptI64() noexcept : _has(false), _val(0)
         {
-            SPDLOG_DEBUG("fn: OptInt64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
-        OptInt64::OptInt64(int64_t val) noexcept : _has(true), _val(val)
+        OptI64::OptI64(int64_t val) noexcept : _has(true), _val(val)
         {
-            SPDLOG_DEBUG("fn: OptInt64(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
-
-        OptInt64::~OptInt64() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptInt64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI64(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
 
-        OptInt64& OptInt64::operator=(int64_t val) noexcept
+        OptI64::~OptI64() noexcept
+        {
+            SPDLOG_DEBUG("fn: ~OptI64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptI64& OptI64::operator=(int64_t val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptInt64& operator=(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            SPDLOG_DEBUG("fn: OptI64& operator=(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 
-        bool OptInt64::has() const noexcept
+        bool OptI64::has() const noexcept
         {
             return _has;
         }
 
-        int64_t OptInt64::value() const noexcept
+        int64_t OptI64::value() const noexcept
         {
             return _val;
         }
 
-        void OptInt64::reset() noexcept
+        void OptI64::reset() noexcept
         {
             _has = false;
             _val = 0;

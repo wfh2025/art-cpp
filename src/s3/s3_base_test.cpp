@@ -77,34 +77,34 @@ TEST(s3_base_OptStr, 002)
 }
 
 #ifdef RUN_ALL_TEST_CASE
-TEST(s3_base_OptInt64, 001)
+TEST(s3_base_OptI64, 001)
 {
-    using s3::base::OptInt64;
+    using s3::base::OptI64;
     {
         SPDLOG_INFO("{:-^80}", "001");
-        OptInt64 op;
+        OptI64 op;
         EXPECT_TRUE(op.has() == false);
     }
     {
         SPDLOG_INFO("{:-^80}", "002");
-        OptInt64 op{};
+        OptI64 op{};
         EXPECT_TRUE(op.has() == false);
     }
     {
         SPDLOG_INFO("{:-^80}", "003");
         // 函数声明
-        // OptInt64 op();
+        // OptI64 op();
     }
     {
         SPDLOG_INFO("{:-^80}", "004");
-        OptInt64 op = 4;
+        OptI64 op = 4;
         EXPECT_TRUE((op.has() == true) && (op.value() == 4));
         op.reset();
         EXPECT_TRUE(op.has() == false);
     }
     {
         SPDLOG_INFO("{:-^80}", "005");
-        OptInt64 op;
+        OptI64 op;
         EXPECT_TRUE(op.has() == false);
 
         op = 5;
@@ -116,7 +116,7 @@ TEST(s3_base_OptInt64, 001)
     {
         struct S
         {
-            OptInt64 opt;
+            OptI64 opt;
         };
         SPDLOG_INFO("{:-^80}", "006");
         S s;
@@ -125,7 +125,7 @@ TEST(s3_base_OptInt64, 001)
     {
         struct S
         {
-            OptInt64 opt = 2;
+            OptI64 opt = 2;
         };
         SPDLOG_INFO("{:-^80}", "007");
         S s;
@@ -134,7 +134,7 @@ TEST(s3_base_OptInt64, 001)
     {
         struct S
         {
-            OptInt64 opt{2};
+            OptI64 opt{2};
         };
         SPDLOG_INFO("{:-^80}", "008");
         S s;

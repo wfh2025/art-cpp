@@ -15,7 +15,7 @@ namespace s3
             s3::base::OptStr contentDisposition;
             s3::base::OptStr contentEncoding;
             s3::base::OptStr contentLanguage;
-            s3::base::OptInt64 contentLength{0};
+            s3::base::OptI64 contentLength{0};
             s3::base::OptStr contentMD5;
             // ChecksumAlgorithm m_checksumAlgorithm{ChecksumAlgorithm::NOT_SET};
             s3::base::OptStr checksumCRC32;
