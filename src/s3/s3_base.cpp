@@ -81,6 +81,82 @@ namespace s3
             _val = 0;
         }
 
+        OptF32::OptF32() noexcept : _has(false), _val(0.0f)
+        {
+            SPDLOG_DEBUG("fn: OptF32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+        OptF32::OptF32(float val) noexcept : _has(true), _val(val)
+        {
+            SPDLOG_DEBUG("fn: OptF32(float val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptF32::~OptF32() noexcept
+        {
+            SPDLOG_DEBUG("fn: ~OptF32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptF32& OptF32::operator=(float val) noexcept
+        {
+            _has = true;
+            _val = val;
+            SPDLOG_DEBUG("fn: OptF32& operator=(float val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            return *this;
+        }
+
+        bool OptF32::has() const noexcept
+        {
+            return _has;
+        }
+
+        float OptF32::value() const noexcept
+        {
+            return _val;
+        }
+
+        void OptF32::reset() noexcept
+        {
+            _has = false;
+            _val = 0.0f;
+        }
+
+        OptF64::OptF64() noexcept : _has(false), _val(0.0)
+        {
+            SPDLOG_DEBUG("fn: OptF64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+        OptF64::OptF64(double val) noexcept : _has(true), _val(val)
+        {
+            SPDLOG_DEBUG("fn: OptF64(double val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptF64::~OptF64() noexcept
+        {
+            SPDLOG_DEBUG("fn: ~OptF64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptF64& OptF64::operator=(double val) noexcept
+        {
+            _has = true;
+            _val = val;
+            SPDLOG_DEBUG("fn: OptF64& operator=(double val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            return *this;
+        }
+
+        bool OptF64::has() const noexcept
+        {
+            return _has;
+        }
+
+        double OptF64::value() const noexcept
+        {
+            return _val;
+        }
+
+        void OptF64::reset() noexcept
+        {
+            _has = false;
+            _val = 0.0;
+        }
+
         OptStr::OptStr() noexcept : _has(false), _val()
         {
             SPDLOG_DEBUG("fn: OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));

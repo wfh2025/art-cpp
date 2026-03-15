@@ -41,6 +41,40 @@ namespace s3
             int64_t _val; // 实际值
         };
 
+        class OptF32
+        {
+        public:
+            OptF32() noexcept;
+            OptF32(float val) noexcept;
+            ~OptF32() noexcept;
+
+            OptF32& operator=(float val) noexcept;
+            bool has() const noexcept;
+            float value() const noexcept; // caution: 调用value()前提: has() == true
+            void reset() noexcept;
+
+        private:
+            bool _has;   // 是否有值
+            float _val; // 实际值
+        };
+
+        class OptF64
+        {
+        public:
+            OptF64() noexcept;
+            OptF64(double val) noexcept;
+            ~OptF64() noexcept;
+
+            OptF64& operator=(double val) noexcept;
+            bool has() const noexcept;
+            double value() const noexcept; // caution: 调用value()前提: has() == true
+            void reset() noexcept;
+
+        private:
+            bool _has;    // 是否有值
+            double _val; // 实际值
+        };
+
         class OptStr
         {
         public:
