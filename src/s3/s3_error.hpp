@@ -149,13 +149,13 @@ namespace s3
 
         struct S3ErrorInfo
         {
-            S3ErrorCode s3ErrorCode;
+            s3::err::S3ErrorCode s3ErrorCode;
             const char* s3ErrorName;
             const char* s3ErrorDescription;
-            http::HttpStatusCode httpStatusCode;
+            s3::http::HttpStatusCode httpStatusCode;
         };
 
-        const S3ErrorInfo& getS3ErrorInfo(S3ErrorCode s3ErrorCode);
+        const s3::err::S3ErrorInfo& getS3ErrorInfo(s3::err::S3ErrorCode s3ErrorCode);
 
     } // namespace err
 } // namespace s3
