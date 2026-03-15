@@ -49,7 +49,7 @@ namespace s3
             OptStr(const std::string& val);
             OptStr(std::string&& val);
             OptStr& operator=(const std::string& val);
-            OptStr& operator=(const char* s);   // caution: 禁止s指向_val所持有的内存区间 [data(), data()+size())
+            OptStr& operator=(const char* s); // caution: 禁止s指向_val所持有的内存区间 [data(), data()+size())
             OptStr& operator=(std::string&& val);
             ~OptStr() noexcept;
             bool has() const noexcept;
