@@ -81,7 +81,7 @@ namespace s3
             _val = 0;
         }
 
-        OptStr::OptStr() : _has(false), _val()
+        OptStr::OptStr() noexcept : _has(false), _val()
         {
             SPDLOG_DEBUG("fn: OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
         }
@@ -140,7 +140,7 @@ namespace s3
             return _has;
         }
 
-        const std::string& OptStr::value() const
+        const std::string& OptStr::value() const noexcept
         {
             return _val;
         }

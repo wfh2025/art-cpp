@@ -43,7 +43,7 @@ namespace s3
         class OptStr
         {
         public:
-            OptStr();
+            OptStr() noexcept;
             OptStr(const char* s);
             OptStr(const std::string& val);
             OptStr(std::string&& val);
@@ -52,7 +52,7 @@ namespace s3
             OptStr& operator=(std::string&& val);
             ~OptStr() noexcept;
             bool has() const noexcept;
-            const std::string& value() const; // caution: 调用value()前提: has() == true
+            const std::string& value() const noexcept; // caution: 调用value()前提: has() == true
             void reset() noexcept;
 
         private:
