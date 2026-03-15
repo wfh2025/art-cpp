@@ -53,6 +53,27 @@ TEST(s3_base_OptStr, 002)
         S s;
         EXPECT_TRUE(s.opt.has() == false);
     }
+    {
+        struct S
+        {
+            OptStr opt = "2";
+        };
+        SPDLOG_INFO("{:-^80}", "007");
+        S s;
+        EXPECT_TRUE((s.opt.has() == true) && (s.opt.value() == "2"));
+    }
+    {
+        struct S
+        {
+            OptStr opt{"2"};
+        };
+        SPDLOG_INFO("{:-^80}", "008");
+        S s;
+        EXPECT_TRUE((s.opt.has() == true) && (s.opt.value() == "2"));
+    }
+
+    int32_t x;
+    int64_t y;
 }
 
 #ifdef RUN_ALL_TEST_CASE

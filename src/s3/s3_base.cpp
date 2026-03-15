@@ -5,21 +5,59 @@ namespace s3
 {
     namespace base
     {
-        OptInt64::OptInt64() : _has(false), _val(0)
+        OptInt32::OptInt32() noexcept : _has(false), _val(0)
+        {
+            SPDLOG_DEBUG("fn: OptInt32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+        OptInt32::OptInt32(int32_t val) noexcept : _has(true), _val(val)
+        {
+            SPDLOG_DEBUG("fn: OptInt32(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptInt32::~OptInt32() noexcept
+        {
+            SPDLOG_DEBUG("fn: ~OptInt32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+        }
+
+        OptInt32& OptInt32::operator=(int32_t val) noexcept
+        {
+            _has = true;
+            _val = val;
+            SPDLOG_DEBUG("fn: OptInt32& operator=(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
+            return *this;
+        }
+
+        bool OptInt32::has() const noexcept
+        {
+            return _has;
+        }
+
+        int32_t OptInt32::value() const noexcept
+        {
+            return _val;
+        }
+
+        void OptInt32::reset() noexcept
+        {
+            _has = false;
+            _val = 0;
+        }
+
+        OptInt64::OptInt64() noexcept : _has(false), _val(0)
         {
             SPDLOG_DEBUG("fn: OptInt64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
-        OptInt64::OptInt64(int64_t val) : _has(true), _val(val)
+        OptInt64::OptInt64(int64_t val) noexcept : _has(true), _val(val)
         {
             SPDLOG_DEBUG("fn: OptInt64(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
 
-        OptInt64::~OptInt64()
+        OptInt64::~OptInt64() noexcept
         {
             SPDLOG_DEBUG("fn: ~OptInt64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
 
-        OptInt64& OptInt64::operator=(int64_t val)
+        OptInt64& OptInt64::operator=(int64_t val) noexcept
         {
             _has = true;
             _val = val;
@@ -27,17 +65,17 @@ namespace s3
             return *this;
         }
 
-        bool OptInt64::has() const
+        bool OptInt64::has() const noexcept
         {
             return _has;
         }
 
-        int64_t OptInt64::value() const
+        int64_t OptInt64::value() const noexcept
         {
             return _val;
         }
 
-        void OptInt64::reset()
+        void OptInt64::reset() noexcept
         {
             _has = false;
             _val = 0;
@@ -48,7 +86,7 @@ namespace s3
             SPDLOG_DEBUG("fn: OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
         }
 
-        OptStr::OptStr(const char* s) : _has(true), _val(s)
+        OptStr::OptStr(const char* s) : _has(s != nullptr), _val((s != nullptr) ? s : "")
         {
             SPDLOG_DEBUG("fn: OptStr(const char* s), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
         }
@@ -74,8 +112,15 @@ namespace s3
 
         OptStr& OptStr::operator=(const char* s)
         {
-            _has = true;
-            _val = s;
+            if (s != nullptr)
+            {
+                _has = true;
+                _val = s;
+            }
+            else
+            {
+                reset();
+            }
             SPDLOG_DEBUG("fn: OptStr& operator=(const char* s), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
                          fmt::ptr(_val.data()));
             return *this;
@@ -110,4 +155,4 @@ namespace s3
             SPDLOG_DEBUG("fn: ~OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
         }
     } // namespace base
-}; // namespace s3
+} // namespace s3
