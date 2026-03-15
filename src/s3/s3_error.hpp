@@ -3,7 +3,7 @@
 #include <string>
 #include <system_error>
 
-#include "s3_def.hpp"
+#include "s3_http.hpp"
 namespace s3
 {
     // https://docs.aws.amazon.com/AmazonS3/latest/API/ErrorResponses.html
@@ -151,7 +151,7 @@ namespace s3
         S3ErrorCode s3ErrorCode;
         const char* s3ErrorName;
         const char* s3ErrorDescription;
-        HttpStatusCode httpStatusCode;
+        http::HttpStatusCode httpStatusCode;
     };
 
     const S3ErrorInfo& getS3ErrorInfo(S3ErrorCode s3ErrorCode);
