@@ -96,6 +96,7 @@ namespace s3
             SPDLOG_DEBUG("fn: OptStr(const std::string& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
                          fmt::ptr(_val.data()));
         }
+        
         OptStr::OptStr(std::string&& val) : _has(true), _val(std::move(val))
         {
             SPDLOG_DEBUG("fn: OptStr(std::string&& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
