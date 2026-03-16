@@ -25,8 +25,8 @@ function build-tinyformat() {
     local install_dir="${PROJ_DEPS}/tinyformat"
     local src="${PROJ_SRC}/third-party/tinyformat-2.3.0"
 
-    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}/include/tinyformat"
-    ln -f -s "${src}/tinyformat.h" "${install_dir}/include/tinyformat/tinyformat.h"
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}/include"
+    ln -f -s "${src}" "${install_dir}/include/tinyformat"
     rm -fr "${build_dir}"
 }
 
