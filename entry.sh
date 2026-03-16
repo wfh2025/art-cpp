@@ -16,7 +16,18 @@ function build-deps() {
     build-googletest
     build-nlohmann-json
     build-abseil-cpp
+    build-tinyformat
     build-spdlog
+}
+
+function build-tinyformat() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/tinyformat"
+    local src="${PROJ_SRC}/third-party/tinyformat-2.3.0"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}/include/tinyformat"
+    ln -f -s "${src}/tinyformat.h" "${install_dir}/include/tinyformat/tinyformat.h"
+    rm -fr "${build_dir}"
 }
 
 function build-folly() {

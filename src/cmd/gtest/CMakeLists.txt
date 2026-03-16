@@ -19,6 +19,7 @@ target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}
                                                     "${ART_CXX_DEPS_DIR}/pugixml/include"
                                                     "${ART_CXX_DEPS_DIR}/poco/include"
                                                     "${ART_CXX_DEPS_DIR}/spdlog/include"
+                                                    "${ART_CXX_DEPS_DIR}/tinyformat/include"
                                                     "${CMAKE_SOURCE_DIR}/third-party/cmdline"
 )
 

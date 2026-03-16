@@ -6,8 +6,10 @@
 #include "gtest/gtest.h"
 #include "s3/aws_s3.hpp"
 #include "spdlog/spdlog.h"
+#include "tinyformat/tinyformat.h"
 #include "ut_config.h"
 
+#ifdef RUN_ALL_TEST_CASE
 TEST(s3_base_OptStr, 002)
 {
     using s3::base::OptStr;
@@ -76,7 +78,6 @@ TEST(s3_base_OptStr, 002)
     int64_t y;
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(s3_base_OptI64, 001)
 {
     using s3::base::OptI64;

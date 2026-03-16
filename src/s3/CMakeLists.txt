@@ -11,6 +11,7 @@ set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/aws_s3.cpp"
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${ART_CXX_DEPS_DIR}/pugixml/include"
                  "${ART_CXX_DEPS_DIR}/spdlog/include"
+                 "${ART_CXX_DEPS_DIR}/tinyformat/include"
 )
 set(COMPILE_OPTIONS -pthread -ggdb -Wno-unused-value 
                     -Wno-unused-parameter
