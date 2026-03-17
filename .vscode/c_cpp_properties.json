@@ -5,7 +5,8 @@
             "includePath": [
                 "${workspaceFolder}/**",
                 "/opt/homebrew/opt/tbb/include",
-                "/opt/homebrew/opt/openssl/include"
+                "/opt/homebrew/opt/openssl/include",
+                "${workspaceFolder}/deps/tinyformat/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",

@@ -12,6 +12,7 @@ set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${ART_CXX_DEPS_DIR}/pugixml/include"
                  "${ART_CXX_DEPS_DIR}/spdlog/include"
                  "${ART_CXX_DEPS_DIR}/tinyformat/include"
+                 "${ART_CXX_DEPS_DIR}/fmt/include"
 )
 set(COMPILE_OPTIONS -pthread -ggdb -Wno-unused-value 
                     -Wno-unused-parameter
@@ -34,6 +35,7 @@ target_link_libraries("${TARGET_NAME}-static" PRIVATE -pthread
                                                "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
                                                "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                               "${ART_CXX_DEPS_DIR}/fmt/lib/libfmt.a"
 )
 
 add_library("${TARGET_NAME}-shared" SHARED "${SRCS}")
@@ -51,4 +53,6 @@ target_compile_definitions("${TARGET_NAME}-shared" PRIVATE
 target_link_libraries("${TARGET_NAME}-shared" PRIVATE -pthread  
                                                "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
+                                               "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                               "${ART_CXX_DEPS_DIR}/fmt/lib/libfmt.a"
 )
