@@ -15,7 +15,6 @@ namespace s3
             Processing = 102,
             EarlyHints = 103,
             UploadResumptionSupported = 104,
-
             OK = 200,
             Created = 201,
             Accepted = 202,
@@ -26,7 +25,6 @@ namespace s3
             MultiStatus = 207,
             AlreadyReported = 208,
             ImUsed = 226,
-
             MultipleChoices = 300,
             MovedPermanently = 301,
             Found = 302,
@@ -35,7 +33,6 @@ namespace s3
             UseProxy = 305,
             TemporaryRedirect = 307,
             PermanentRedirect = 308,
-
             BadRequest = 400,
             Unauthorized = 401,
             PaymentRequired = 402,
@@ -64,7 +61,6 @@ namespace s3
             TooManyRequests = 429,
             RequestHeaderFieldsTooLarge = 431,
             UnavailableForLegalReasons = 451,
-
             InternalServerError = 500,
             NotImplemented = 501,
             BadGateway = 502,

@@ -2,8 +2,7 @@
 
 #include <unordered_map>
 
-#include "fmt/core.h"
-#include "fmt/format.h"
+#include "spdlog/spdlog.h"
 
 namespace
 {
@@ -19,13 +18,23 @@ namespace
             },
         },
         {
-            s3::err::S3ErrorCode::Unknown,
+            s3::err::S3ErrorCode::InternalError,
             {
-                s3::err::S3ErrorCode::Unknown,
-                "Unknown",
-                "Unknown S3 error.",
+                s3::err::S3ErrorCode::InternalError,
+                "InternalError",
+                "An internal error occurred. Try again.",
                 0,
                 s3::http::HttpStatusCode::InternalServerError,
+            },
+        },
+        {
+            s3::err::S3ErrorCode::AccessGrantsQuotaExceededError,
+            {
+                s3::err::S3ErrorCode::AccessGrantsQuotaExceededError,
+                "AccessGrantsQuotaExceededError",
+                "The access grants quota has been exceeded. Access Grants Quota: {}. Please reach out to S3 if an increase is required.",
+                1,
+                s3::http::HttpStatusCode::Conflict,
             },
         },
     };
@@ -53,11 +62,13 @@ namespace s3
                 return info.messageTemplate == nullptr ? "" : std::string(info.messageTemplate);
             }
 
-            if (info.messageTemplate == nullptr) {
-              return "";
+            if (info.messageTemplate == nullptr)
+            {
+                return "";
             }
-            if (args.empty()) {
-              return std::string(info.messageTemplate);
+            if (args.empty())
+            {
+                return std::string(info.messageTemplate);
             }
 
             auto fr = fmt::runtime(info.messageTemplate);
@@ -117,7 +128,7 @@ namespace s3
                                    args[12], args[13], args[14], args[15]);
             }
             default: {
-                break;
+                return info.messageTemplate;
             }
             }
             return "";
