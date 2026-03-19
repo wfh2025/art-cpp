@@ -1,6 +1,7 @@
 #pragma once
 
 #include <cstdint>
+#include <string>
 
 namespace s3
 {
@@ -74,7 +75,56 @@ namespace s3
             NetworkAuthenticationRequired = 511,
         };
 
-        const char* getHttpStatusDescription(HttpStatusCode statusCode);
+        // HTTP 方法定义，参考：
+        // https://www.iana.org/assignments/http-methods/http-methods.xhtml
+        enum class HttpMethod : int
+        {
+            Unknown,           // 不是http实际method,仅表示无效的Method
+            Acl,               // ACL
+            BaselineControl,   // BASELINE-CONTROL
+            Bind,              // BIND
+            Checkin,           // CHECKIN
+            Checkout,          // CHECKOUT
+            Connect,           // CONNECT
+            Copy,              // COPY
+            Delete,            // DELETE
+            Get,               // GET
+            Head,              // HEAD
+            Label,             // LABEL
+            Link,              // LINK
+            Lock,              // LOCK
+            Merge,             // MERGE
+            Mkactivity,        // MKACTIVITY
+            Mkcalendar,        // MKCALENDAR
+            Mkcol,             // MKCOL
+            Mkredirectref,     // MKREDIRECTREF
+            Mkworkspace,       // MKWORKSPACE
+            Move,              // MOVE
+            Options,           // OPTIONS
+            Orderpatch,        // ORDERPATCH
+            Patch,             // PATCH
+            Post,              // POST
+            Pri,               // PRI
+            Propfind,          // PROPFIND
+            Proppatch,         // PROPPATCH
+            Put,               // PUT
+            Query,             // QUERY
+            Rebind,            // REBIND
+            Report,            // REPORT
+            Search,            // SEARCH
+            Trace,             // TRACE
+            Unbind,            // UNBIND
+            Uncheckout,        // UNCHECKOUT
+            Unlink,            // UNLINK
+            Unlock,            // UNLOCK
+            Update,            // UPDATE
+            Updateredirectref, // UPDATEREDIRECTREF
+            VersionControl,    // VERSION-CONTROL
+        };
+
+        const char* statusText(HttpStatusCode statusCode);
+        const char* methodText(HttpMethod method);
+        HttpMethod parseMethod(const std::string& s);
 
     } // namespace http
 } // namespace s3

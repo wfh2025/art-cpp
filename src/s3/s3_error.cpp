@@ -18,6 +18,16 @@ namespace
             },
         },
         {
+            s3::err::S3ErrorCode::Unknown,
+            {
+                s3::err::S3ErrorCode::Unknown,
+                "",
+                "",
+                0,
+                s3::http::HttpStatusCode::InternalServerError,
+            },
+        },
+        {
             s3::err::S3ErrorCode::InternalError,
             {
                 s3::err::S3ErrorCode::InternalError,
@@ -66,9 +76,11 @@ namespace s3
             {
                 return "";
             }
-            if (args.empty())
+
+            if (info.argCount != args.size())
             {
-                return std::string(info.messageTemplate);
+                // TODO: log
+                return info.messageTemplate == nullptr ? "" : std::string(info.messageTemplate);
             }
 
             auto fr = fmt::runtime(info.messageTemplate);
@@ -131,7 +143,6 @@ namespace s3
                 return info.messageTemplate;
             }
             }
-            return "";
         }
         std::string formatErrorMessage(const S3ErrorInfo& info)
         {
