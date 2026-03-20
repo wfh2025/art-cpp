@@ -1,5 +1,5 @@
-#include "fmt/core.h"
 #include "gtest/gtest.h"
+#include "spdlog/spdlog.h"
 #include "ut_config.h"
 
 #ifdef RUN_ALL_TEST_CASE

@@ -2,7 +2,6 @@
 
 #include <utility>
 
-#include "fmt/core.h"
 #include "spdlog/spdlog.h"
 
 namespace gut
