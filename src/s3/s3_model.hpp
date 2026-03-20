@@ -10,8 +10,8 @@ namespace s3
     {
         struct PutObjectRequest
         {
-            s3::base::OptStr bucket;                       // URI: Bucket
-            s3::base::OptStr key;                          // URI: Key
+            std::string bucket;                            // URI: Bucket
+            std::string key;                               // URI: Key
             s3::base::OptStr cacheControl;                 // Cache-Control
             s3::base::OptStr contentDisposition;           // Content-Disposition
             s3::base::OptStr contentEncoding;              // Content-Encoding
@@ -76,8 +76,8 @@ namespace s3
 
         struct GetObjectRequest
         {
-            s3::base::OptStr bucket;                     // URI: Bucket
-            s3::base::OptStr key;                        // URI: Key
+            std::string bucket;                          // URI: Bucket
+            std::string key;                             // URI: Key
             s3::base::OptI64 partNumber;                 // Query String: partNumber
             s3::base::OptStr responseCacheControl;       // Query String: response-cache-control
             s3::base::OptStr responseContentDisposition; // Query String: response-content-disposition
@@ -142,8 +142,8 @@ namespace s3
 
         struct AbortMultipartUploadRequest
         {
-            s3::base::OptStr bucket;                  // URI: Bucket
-            s3::base::OptStr key;                     // URI: Key
+            std::string bucket;                       // URI: Bucket
+            std::string key;                          // URI: Key
             s3::base::OptStr uploadId;                // Query String: uploadId
             s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
             s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
@@ -152,9 +152,8 @@ namespace s3
 
         struct CreateMultipartUploadRequest
         {
-            s3::base::OptStr bucket;                       // URI: Bucket
-            s3::base::OptStr key;                          // URI: Key
-            s3::base::OptStr uploads;                      // Query String: uploads
+            std::string bucket;                            // URI: Bucket
+            std::string key;                               // URI: Key
             s3::base::OptStr amzAcl;                       // Header: x-amz-acl
             s3::base::OptStr cacheControl;                 // Header: Cache-Control
             s3::base::OptStr contentDisposition;           // Header: Content-Disposition
@@ -208,8 +207,8 @@ namespace s3
 
         struct CompleteMultipartUploadRequest
         {
-            s3::base::OptStr bucket;                 // URI: Bucket
-            s3::base::OptStr key;                    // URI: Key
+            std::string bucket;                      // URI: Bucket
+            std::string key;                         // URI: Key
             s3::base::OptStr uploadId;               // Query String: uploadId
             s3::base::OptStr ifMatch;                // Header: If-Match
             s3::base::OptStr ifNoneMatch;            // Header: If-None-Match
@@ -244,8 +243,8 @@ namespace s3
 
         struct DeleteObjectRequest
         {
-            s3::base::OptStr bucket;                        // URI: Bucket
-            s3::base::OptStr key;                           // URI: Key
+            std::string bucket;                             // URI: Bucket
+            std::string key;                                // URI: Key
             s3::base::OptStr versionId;                     // Query String: versionId
             s3::base::OptStr mfa;                           // Header: x-amz-mfa
             s3::base::OptBool amzBypassGovernanceRetention; // Header: x-amz-bypass-governance-retention
@@ -265,7 +264,7 @@ namespace s3
 
         struct DeleteObjectsRequest
         {
-            s3::base::OptStr bucket;                        // URI: Bucket
+            std::string bucket;                             // URI: Bucket
             s3::base::OptStr contentMD5;                    // Header: Content-MD5
             s3::base::OptStr amzChecksumAlgorithm;          // Header: x-amz-checksum-algorithm
             s3::base::OptStr amzSdkChecksumAlgorithm;       // Header: x-amz-sdk-checksum-algorithm
@@ -284,8 +283,8 @@ namespace s3
 
         struct DeleteObjectTaggingRequest
         {
-            s3::base::OptStr bucket;                 // URI: Bucket
-            s3::base::OptStr key;                    // URI: Key
+            std::string bucket;                      // URI: Bucket
+            std::string key;                         // URI: Key
             s3::base::OptStr versionId;              // Query String: versionId
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
             s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
@@ -298,8 +297,8 @@ namespace s3
 
         struct GetObjectTaggingRequest
         {
-            s3::base::OptStr bucket;                 // URI: Bucket
-            s3::base::OptStr key;                    // URI: Key
+            std::string bucket;                      // URI: Bucket
+            std::string key;                         // URI: Key
             s3::base::OptStr versionId;              // Query String: versionId
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
             s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
@@ -314,8 +313,8 @@ namespace s3
 
         struct HeadObjectRequest
         {
-            s3::base::OptStr bucket;                  // URI: Bucket
-            s3::base::OptStr key;                     // URI: Key
+            std::string bucket;                       // URI: Bucket
+            std::string key;                          // URI: Key
             s3::base::OptStr ifMatch;                 // Header: If-Match
             s3::base::OptStr ifModifiedSince;         // Header: If-Modified-Since
             s3::base::OptStr ifNoneMatch;             // Header: If-None-Match
@@ -373,7 +372,7 @@ namespace s3
 
         struct ListObjectsRequest
         {
-            s3::base::OptStr bucket;                 // URI: Bucket
+            std::string bucket;                      // URI: Bucket
             s3::base::OptStr delimiter;              // Query String: delimiter
             s3::base::OptStr encodingType;           // Query String: encoding-type
             s3::base::OptStr marker;                 // Query String: marker
@@ -391,7 +390,7 @@ namespace s3
 
         struct ListObjectsV2Request
         {
-            s3::base::OptStr bucket;                      // URI: Bucket
+            std::string bucket;                           // URI: Bucket
             s3::base::OptStr listType;                    // Query String: list-type
             s3::base::OptStr continuationToken;           // Query String: continuation-token
             s3::base::OptStr delimiter;                   // Query String: delimiter
@@ -413,7 +412,7 @@ namespace s3
 
         struct ListObjectVersionsRequest
         {
-            s3::base::OptStr bucket;                 // URI: Bucket
+            std::string bucket;                      // URI: Bucket
             s3::base::OptStr delimiter;              // Query String: delimiter
             s3::base::OptStr encodingType;           // Query String: encoding-type
             s3::base::OptStr keyMarker;              // Query String: key-marker
@@ -432,11 +431,11 @@ namespace s3
 
         struct ListPartsRequest
         {
-            s3::base::OptStr bucket;                  // URI: Bucket
-            s3::base::OptStr key;                     // URI: Key
+            std::string bucket;                       // URI: Bucket
+            std::string key;                          // URI: Key
             s3::base::OptI64 maxParts;                // Query String: max-parts
             s3::base::OptI64 partNumberMarker;        // Query String: part-number-marker
-            s3::base::OptStr uploadId;                // Query String: uploadId
+            std::string uploadId;                     // Query String: uploadId
             s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
             s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
             s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
@@ -454,8 +453,8 @@ namespace s3
 
         struct PutObjectTaggingRequest
         {
-            s3::base::OptStr bucket;                  // URI: Bucket
-            s3::base::OptStr key;                     // URI: Key
+            std::string bucket;                       // URI: Bucket
+            std::string key;                          // URI: Key
             s3::base::OptStr versionId;               // Query String: versionId
             s3::base::OptStr contentMD5;              // Header: Content-MD5
             s3::base::OptStr amzChecksumAlgorithm;    // Header: x-amz-checksum-algorithm
@@ -472,10 +471,10 @@ namespace s3
 
         struct UploadPartRequest
         {
-            s3::base::OptStr bucket;                  // URI: Bucket
-            s3::base::OptStr key;                     // URI: Key
-            s3::base::OptI64 partNumber;              // Query String: partNumber
-            s3::base::OptStr uploadId;                // Query String: uploadId
+            std::string bucket;                       // URI: Bucket
+            std::string key;                          // URI: Key
+            int64_t partNumber;                       // Query String: partNumber
+            std::string uploadId;                     // Query String: uploadId
             s3::base::OptI64 contentLength;           // Header: Content-Length
             s3::base::OptStr contentMD5;              // Header: Content-MD5
             s3::base::OptStr amzSdkChecksumAlgorithm; // Header: x-amz-sdk-checksum-algorithm
@@ -495,7 +494,7 @@ namespace s3
         struct UploadPartResult
         {
             s3::base::OptStr amzServerSideEncryption; // Header: x-amz-server-side-encryption
-            s3::base::OptStr eTag;                    // Header: ETag
+            std::string eTag;                         // Header: ETag
             s3::base::OptStr amzChecksumCrc32;        // Header: x-amz-checksum-crc32
             s3::base::OptStr amzChecksumCrc32c;       // Header: x-amz-checksum-crc32c
             s3::base::OptStr amzChecksumCrc64nvme;    // Header: x-amz-checksum-crc64nvme
