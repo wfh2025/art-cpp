@@ -10,49 +10,501 @@ namespace s3
     {
         struct PutObjectRequest
         {
-            s3::base::OptStr bucket;
-            s3::base::OptStr cacheControl;
-            s3::base::OptStr contentDisposition;
-            s3::base::OptStr contentEncoding;
-            s3::base::OptStr contentLanguage;
-            s3::base::OptI64 contentLength{0};
-            s3::base::OptStr contentMD5;
-            // ChecksumAlgorithm m_checksumAlgorithm{ChecksumAlgorithm::NOT_SET};
-            s3::base::OptStr checksumCRC32;
-            s3::base::OptStr checksumCRC32C;
-            s3::base::OptStr checksumCRC64NVME;
-            s3::base::OptStr checksumSHA1;
-            s3::base::OptStr checksumSHA256;
-            // Aws::Utils::DateTime m_expires{};
-            s3::base::OptStr ifMatch;
-            s3::base::OptStr ifNoneMatch;
-            s3::base::OptStr grantFullControl;
-            s3::base::OptStr grantRead;
-            s3::base::OptStr grantReadACP;
-            s3::base::OptStr grantWriteACP;
-            s3::base::OptStr key;
-            int64_t writeOffsetBytes{0};
-            // Aws::Map<Aws::String, Aws::String> m_metadata;
-            // ServerSideEncryption m_serverSideEncryption{ServerSideEncryption::NOT_SET};
-            // StorageClass m_storageClass{StorageClass::NOT_SET};
-            s3::base::OptStr websiteRedirectLocation;
-            s3::base::OptStr sSECustomerAlgorithm;
-            s3::base::OptStr sSECustomerKey;
-            s3::base::OptStr sSECustomerKeyMD5;
-            s3::base::OptStr sSEKMSKeyId;
-            s3::base::OptStr sSEKMSEncryptionContext;
-            bool m_bucketKeyEnabled{false};
-            // RequestPayer m_requestPayer{RequestPayer::NOT_SET};
-            s3::base::OptStr tagging;
-            // ObjectLockMode m_objectLockMode{ObjectLockMode::NOT_SET};
-            // Aws::Utils::DateTime m_objectLockRetainUntilDate{};
-            // ObjectLockLegalHoldStatus m_objectLockLegalHoldStatus{ObjectLockLegalHoldStatus::NOT_SET};
-            s3::base::OptStr expectedBucketOwner;
-            // Aws::Map<Aws::String, Aws::String> m_customizedAccessLogTag;
+            s3::base::OptStr bucket;                       // URI: Bucket
+            s3::base::OptStr key;                          // URI: Key
+            s3::base::OptStr cacheControl;                 // Cache-Control
+            s3::base::OptStr contentDisposition;           // Content-Disposition
+            s3::base::OptStr contentEncoding;              // Content-Encoding
+            s3::base::OptStr contentLanguage;              // Content-Language
+            s3::base::OptI64 contentLength;                // Content-Length
+            s3::base::OptStr contentMD5;                   // Content-MD5
+            s3::base::OptStr contentType;                  // Content-Type
+            s3::base::OptStr expires;                      // Expires
+            s3::base::OptStr ifMatch;                      // If-Match
+            s3::base::OptStr ifNoneMatch;                  // If-None-Match
+            s3::base::OptStr amzAcl;                       // x-amz-acl
+            s3::base::OptStr amzSdkChecksumAlgorithm;      // x-amz-sdk-checksum-algorithm
+            s3::base::OptStr amzChecksumCrc32;             // x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;            // x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;         // x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;              // x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;            // x-amz-checksum-sha256
+            s3::base::OptStr amzExpectedBucketOwner;       // x-amz-expected-bucket-owner
+            s3::base::OptStr amzGrantFullControl;          // x-amz-grant-full-control
+            s3::base::OptStr amzGrantRead;                 // x-amz-grant-read
+            s3::base::OptStr amzGrantReadAcp;              // x-amz-grant-read-acp
+            s3::base::OptStr amzGrantWriteAcp;             // x-amz-grant-write-acp
+            s3::base::OptStr amzObjectLockLegalHold;       // x-amz-object-lock-legal-hold
+            s3::base::OptStr amzObjectLockMode;            // x-amz-object-lock-mode
+            s3::base::OptStr amzObjectLockRetainUntilDate; // x-amz-object-lock-retain-until-date
+            s3::base::OptStr amzRequestPayer;              // x-amz-request-payer
+            s3::base::OptStr amzServerSideEncryption;      // x-amz-server-side-encryption
+            s3::base::OptStr amzSseAwsKmsKeyId;            // x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptBool amzSseBucketKeyEnabled;      // x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzSseContext;                // x-amz-server-side-encryption-context
+            s3::base::OptStr amzSseCustomerAlgorithm;      // x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;            // x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;         // x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzStorageClass;              // x-amz-storage-class
+            s3::base::OptStr amzTagging;                   // x-amz-tagging
+            s3::base::OptStr amzTrailer;                   // x-amz-trailer
+            s3::base::OptStr amzWebsiteRedirectLocation;   // x-amz-website-redirect-location
+            s3::base::OptI64 amzWriteOffsetBytes;          // x-amz-write-offset-bytes
         };
 
         // https://github.com/aws/aws-sdk-cpp/blob/main/generated/src/aws-cpp-sdk-s3/include/aws/s3/model/PutObjectResult.h
         struct PutObjectResult
-        {};
+        {
+            s3::base::OptStr amzExpiration;           // x-amz-expiration
+            s3::base::OptStr eTag;                    // ETag
+            s3::base::OptStr amzChecksumCrc32;        // x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;       // x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;    // x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;         // x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;       // x-amz-checksum-sha256
+            s3::base::OptStr amzChecksumType;         // x-amz-checksum-type
+            s3::base::OptStr amzServerSideEncryption; // x-amz-server-side-encryption
+            s3::base::OptStr amzVersionId;            // x-amz-version-id
+            s3::base::OptStr amzSseCustomerAlgorithm; // x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKeyMd5;    // x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;       // x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptStr amzSseContext;           // x-amz-server-side-encryption-context
+            s3::base::OptBool amzSseBucketKeyEnabled; // x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptI64 amzObjectSize;           // x-amz-object-size
+            s3::base::OptStr amzRequestCharged;       // x-amz-request-charged
+        };
+
+        struct GetObjectRequest
+        {
+            s3::base::OptStr bucket;                     // URI: Bucket
+            s3::base::OptStr key;                        // URI: Key
+            s3::base::OptI64 partNumber;                 // Query String: partNumber
+            s3::base::OptStr responseCacheControl;       // Query String: response-cache-control
+            s3::base::OptStr responseContentDisposition; // Query String: response-content-disposition
+            s3::base::OptStr responseContentEncoding;    // Query String: response-content-encoding
+            s3::base::OptStr responseContentLanguage;    // Query String: response-content-language
+            s3::base::OptStr responseContentType;        // Query String: response-content-type
+            s3::base::OptStr responseExpires;            // Query String: response-expires
+            s3::base::OptStr versionId;                  // Query String: versionId
+            s3::base::OptStr ifMatch;                    // Header: If-Match
+            s3::base::OptStr ifModifiedSince;            // Header: If-Modified-Since
+            s3::base::OptStr ifNoneMatch;                // Header: If-None-Match
+            s3::base::OptStr ifUnmodifiedSince;          // Header: If-Unmodified-Since
+            s3::base::OptStr range;                      // Header: Range
+            s3::base::OptStr amzSseCustomerAlgorithm;    // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;          // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;       // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzRequestPayer;            // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;     // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzChecksumMode;            // Header: x-amz-checksum-mode
+        };
+
+        struct GetObjectResult
+        {
+            s3::base::OptBool amzDeleteMarker;             // Header: x-amz-delete-marker
+            s3::base::OptStr acceptRanges;                 // Header: accept-ranges
+            s3::base::OptStr amzExpiration;                // Header: x-amz-expiration
+            s3::base::OptStr amzRestore;                   // Header: x-amz-restore
+            s3::base::OptStr lastModified;                 // Header: Last-Modified
+            s3::base::OptI64 contentLength;                // Header: Content-Length
+            s3::base::OptStr eTag;                         // Header: ETag
+            s3::base::OptStr amzChecksumCrc32;             // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;            // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;         // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;              // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;            // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzChecksumType;              // Header: x-amz-checksum-type
+            s3::base::OptI64 amzMissingMeta;               // Header: x-amz-missing-meta
+            s3::base::OptStr amzVersionId;                 // Header: x-amz-version-id
+            s3::base::OptStr cacheControl;                 // Header: Cache-Control
+            s3::base::OptStr contentDisposition;           // Header: Content-Disposition
+            s3::base::OptStr contentEncoding;              // Header: Content-Encoding
+            s3::base::OptStr contentLanguage;              // Header: Content-Language
+            s3::base::OptStr contentRange;                 // Header: Content-Range
+            s3::base::OptStr contentType;                  // Header: Content-Type
+            s3::base::OptStr expires;                      // Header: Expires
+            s3::base::OptStr amzWebsiteRedirectLocation;   // Header: x-amz-website-redirect-location
+            s3::base::OptStr amzServerSideEncryption;      // Header: x-amz-server-side-encryption
+            s3::base::OptStr amzSseCustomerAlgorithm;      // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKeyMd5;         // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;            // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptBool amzSseBucketKeyEnabled;      // Header: x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzStorageClass;              // Header: x-amz-storage-class
+            s3::base::OptStr amzRequestCharged;            // Header: x-amz-request-charged
+            s3::base::OptStr amzReplicationStatus;         // Header: x-amz-replication-status
+            s3::base::OptI64 amzMpPartsCount;              // Header: x-amz-mp-parts-count
+            s3::base::OptI64 amzTaggingCount;              // Header: x-amz-tagging-count
+            s3::base::OptStr amzObjectLockMode;            // Header: x-amz-object-lock-mode
+            s3::base::OptStr amzObjectLockRetainUntilDate; // Header: x-amz-object-lock-retain-until-date
+            s3::base::OptStr amzObjectLockLegalHold;       // Header: x-amz-object-lock-legal-hold
+            std::string body;                              // Body: Object data (binary payload)
+        };
+
+        struct AbortMultipartUploadRequest
+        {
+            s3::base::OptStr bucket;                  // URI: Bucket
+            s3::base::OptStr key;                     // URI: Key
+            s3::base::OptStr uploadId;                // Query String: uploadId
+            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzIfMatchInitiatedTime; // Header: x-amz-if-match-initiated-time
+        };
+
+        struct CreateMultipartUploadRequest
+        {
+            s3::base::OptStr bucket;                       // URI: Bucket
+            s3::base::OptStr key;                          // URI: Key
+            s3::base::OptStr uploads;                      // Query String: uploads
+            s3::base::OptStr amzAcl;                       // Header: x-amz-acl
+            s3::base::OptStr cacheControl;                 // Header: Cache-Control
+            s3::base::OptStr contentDisposition;           // Header: Content-Disposition
+            s3::base::OptStr contentEncoding;              // Header: Content-Encoding
+            s3::base::OptStr contentLanguage;              // Header: Content-Language
+            s3::base::OptStr contentType;                  // Header: Content-Type
+            s3::base::OptStr expires;                      // Header: Expires
+            s3::base::OptStr amzGrantFullControl;          // Header: x-amz-grant-full-control
+            s3::base::OptStr amzGrantRead;                 // Header: x-amz-grant-read
+            s3::base::OptStr amzGrantReadAcp;              // Header: x-amz-grant-read-acp
+            s3::base::OptStr amzGrantWriteAcp;             // Header: x-amz-grant-write-acp
+            s3::base::OptStr amzServerSideEncryption;      // Header: x-amz-server-side-encryption
+            s3::base::OptStr amzStorageClass;              // Header: x-amz-storage-class
+            s3::base::OptStr amzWebsiteRedirectLocation;   // Header: x-amz-website-redirect-location
+            s3::base::OptStr amzSseCustomerAlgorithm;      // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;            // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;         // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;            // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptStr amzSseContext;                // Header: x-amz-server-side-encryption-context
+            s3::base::OptBool amzSseBucketKeyEnabled;      // Header: x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzRequestPayer;              // Header: x-amz-request-payer
+            s3::base::OptStr amzTagging;                   // Header: x-amz-tagging
+            s3::base::OptStr amzObjectLockMode;            // Header: x-amz-object-lock-mode
+            s3::base::OptStr amzObjectLockRetainUntilDate; // Header: x-amz-object-lock-retain-until-date
+            s3::base::OptStr amzObjectLockLegalHold;       // Header: x-amz-object-lock-legal-hold
+            s3::base::OptStr amzExpectedBucketOwner;       // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzChecksumAlgorithm;         // Header: x-amz-checksum-algorithm
+            s3::base::OptStr amzChecksumType;              // Header: x-amz-checksum-type
+        };
+
+        struct CreateMultipartUploadResult
+        {
+            s3::base::OptStr amzAbortDate;            // Header: x-amz-abort-date
+            s3::base::OptStr amzAbortRuleId;          // Header: x-amz-abort-rule-id
+            s3::base::OptStr amzServerSideEncryption; // Header: x-amz-server-side-encryption
+            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;       // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptStr amzSseContext;           // Header: x-amz-server-side-encryption-context
+            s3::base::OptBool amzSseBucketKeyEnabled; // Header: x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
+            s3::base::OptStr amzChecksumAlgorithm;    // Header: x-amz-checksum-algorithm
+            s3::base::OptStr amzChecksumType;         // Header: x-amz-checksum-type
+            std::string body;                         // Body: InitiateMultipartUploadResult XML
+        };
+
+        struct AbortMultipartUploadResult
+        {
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+        };
+
+        struct CompleteMultipartUploadRequest
+        {
+            s3::base::OptStr bucket;                 // URI: Bucket
+            s3::base::OptStr key;                    // URI: Key
+            s3::base::OptStr uploadId;               // Query String: uploadId
+            s3::base::OptStr ifMatch;                // Header: If-Match
+            s3::base::OptStr ifNoneMatch;            // Header: If-None-Match
+            s3::base::OptStr amzChecksumCrc32;       // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;      // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;   // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;        // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;      // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzChecksumType;        // Header: x-amz-checksum-type
+            s3::base::OptStr amzMpObjectSize;        // Header: x-amz-mp-object-size
+            s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
+            std::string body;                        // Body: CompleteMultipartUpload XML
+        };
+
+        struct CompleteMultipartUploadResult
+        {
+            s3::base::OptStr amzExpiration;           // Header: x-amz-expiration
+            s3::base::OptStr amzServerSideEncryption; // Header: x-amz-server-side-encryption
+            s3::base::OptStr amzVersionId;            // Header: x-amz-version-id
+            s3::base::OptStr amzSseAwsKmsKeyId;       // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptBool amzSseBucketKeyEnabled; // Header: x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
+            s3::base::OptStr amzChecksumCrc32;        // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;       // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;    // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;         // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;       // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzChecksumType;         // Header: x-amz-checksum-type
+            std::string body;                         // Body: CompleteMultipartUploadResult XML
+        };
+
+        struct DeleteObjectRequest
+        {
+            s3::base::OptStr bucket;                        // URI: Bucket
+            s3::base::OptStr key;                           // URI: Key
+            s3::base::OptStr versionId;                     // Query String: versionId
+            s3::base::OptStr mfa;                           // Header: x-amz-mfa
+            s3::base::OptBool amzBypassGovernanceRetention; // Header: x-amz-bypass-governance-retention
+            s3::base::OptStr amzRequestPayer;               // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;        // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr ifMatch;                       // Header: If-Match
+            s3::base::OptStr amzIfMatchLastModifiedTime;    // Header: x-amz-if-match-last-modified-time
+            s3::base::OptStr amzIfMatchSize;                // Header: x-amz-if-match-size
+        };
+
+        struct DeleteObjectResult
+        {
+            s3::base::OptBool amzDeleteMarker;  // Header: x-amz-delete-marker
+            s3::base::OptStr amzVersionId;      // Header: x-amz-version-id
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+        };
+
+        struct DeleteObjectsRequest
+        {
+            s3::base::OptStr bucket;                        // URI: Bucket
+            s3::base::OptStr contentMD5;                    // Header: Content-MD5
+            s3::base::OptStr amzChecksumAlgorithm;          // Header: x-amz-checksum-algorithm
+            s3::base::OptStr amzSdkChecksumAlgorithm;       // Header: x-amz-sdk-checksum-algorithm
+            s3::base::OptStr mfa;                           // Header: x-amz-mfa
+            s3::base::OptBool amzBypassGovernanceRetention; // Header: x-amz-bypass-governance-retention
+            s3::base::OptStr amzRequestPayer;               // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;        // Header: x-amz-expected-bucket-owner
+            std::string body;                               // Body: Delete XML
+        };
+
+        struct DeleteObjectsResult
+        {
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: DeleteResult XML
+        };
+
+        struct DeleteObjectTaggingRequest
+        {
+            s3::base::OptStr bucket;                 // URI: Bucket
+            s3::base::OptStr key;                    // URI: Key
+            s3::base::OptStr versionId;              // Query String: versionId
+            s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
+        };
+
+        struct DeleteObjectTaggingResult
+        {
+            s3::base::OptStr amzVersionId; // Header: x-amz-version-id
+        };
+
+        struct GetObjectTaggingRequest
+        {
+            s3::base::OptStr bucket;                 // URI: Bucket
+            s3::base::OptStr key;                    // URI: Key
+            s3::base::OptStr versionId;              // Query String: versionId
+            s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
+        };
+
+        struct GetObjectTaggingResult
+        {
+            s3::base::OptStr amzVersionId;      // Header: x-amz-version-id
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: Tagging XML
+        };
+
+        struct HeadObjectRequest
+        {
+            s3::base::OptStr bucket;                  // URI: Bucket
+            s3::base::OptStr key;                     // URI: Key
+            s3::base::OptStr ifMatch;                 // Header: If-Match
+            s3::base::OptStr ifModifiedSince;         // Header: If-Modified-Since
+            s3::base::OptStr ifNoneMatch;             // Header: If-None-Match
+            s3::base::OptStr ifUnmodifiedSince;       // Header: If-Unmodified-Since
+            s3::base::OptStr range;                   // Header: Range
+            s3::base::OptStr versionId;               // Query String: versionId
+            s3::base::OptI64 partNumber;              // Query String: partNumber
+            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;       // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzChecksumMode;         // Header: x-amz-checksum-mode
+        };
+
+        struct HeadObjectResult
+        {
+            s3::base::OptBool amzDeleteMarker;             // Header: x-amz-delete-marker
+            s3::base::OptStr acceptRanges;                 // Header: accept-ranges
+            s3::base::OptStr amzExpiration;                // Header: x-amz-expiration
+            s3::base::OptStr amzRestore;                   // Header: x-amz-restore
+            s3::base::OptStr amzArchiveStatus;             // Header: x-amz-archive-status
+            s3::base::OptStr lastModified;                 // Header: Last-Modified
+            s3::base::OptI64 contentLength;                // Header: Content-Length
+            s3::base::OptStr eTag;                         // Header: ETag
+            s3::base::OptStr amzChecksumCrc32;             // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;            // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;         // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;              // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;            // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzChecksumType;              // Header: x-amz-checksum-type
+            s3::base::OptI64 amzMissingMeta;               // Header: x-amz-missing-meta
+            s3::base::OptStr amzVersionId;                 // Header: x-amz-version-id
+            s3::base::OptStr cacheControl;                 // Header: Cache-Control
+            s3::base::OptStr contentDisposition;           // Header: Content-Disposition
+            s3::base::OptStr contentEncoding;              // Header: Content-Encoding
+            s3::base::OptStr contentLanguage;              // Header: Content-Language
+            s3::base::OptStr contentType;                  // Header: Content-Type
+            s3::base::OptStr expires;                      // Header: Expires
+            s3::base::OptStr amzWebsiteRedirectLocation;   // Header: x-amz-website-redirect-location
+            s3::base::OptStr amzServerSideEncryption;      // Header: x-amz-server-side-encryption
+            s3::base::OptStr amzSseCustomerAlgorithm;      // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKeyMd5;         // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;            // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptBool amzSseBucketKeyEnabled;      // Header: x-amz-server-side-encryption-bucket-key-enabled
+            s3::base::OptStr amzStorageClass;              // Header: x-amz-storage-class
+            s3::base::OptStr amzRequestCharged;            // Header: x-amz-request-charged
+            s3::base::OptStr amzReplicationStatus;         // Header: x-amz-replication-status
+            s3::base::OptI64 amzMpPartsCount;              // Header: x-amz-mp-parts-count
+            s3::base::OptI64 amzTaggingCount;              // Header: x-amz-tagging-count
+            s3::base::OptStr amzObjectLockMode;            // Header: x-amz-object-lock-mode
+            s3::base::OptStr amzObjectLockRetainUntilDate; // Header: x-amz-object-lock-retain-until-date
+            s3::base::OptStr amzObjectLockLegalHold;       // Header: x-amz-object-lock-legal-hold
+        };
+
+        struct ListObjectsRequest
+        {
+            s3::base::OptStr bucket;                 // URI: Bucket
+            s3::base::OptStr delimiter;              // Query String: delimiter
+            s3::base::OptStr encodingType;           // Query String: encoding-type
+            s3::base::OptStr marker;                 // Query String: marker
+            s3::base::OptI64 maxKeys;                // Query String: max-keys
+            s3::base::OptStr prefix;                 // Query String: prefix
+            s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
+        };
+
+        struct ListObjectsResult
+        {
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: ListBucketResult XML
+        };
+
+        struct ListObjectsV2Request
+        {
+            s3::base::OptStr bucket;                      // URI: Bucket
+            s3::base::OptStr listType;                    // Query String: list-type
+            s3::base::OptStr continuationToken;           // Query String: continuation-token
+            s3::base::OptStr delimiter;                   // Query String: delimiter
+            s3::base::OptStr encodingType;                // Query String: encoding-type
+            s3::base::OptBool fetchOwner;                 // Query String: fetch-owner
+            s3::base::OptI64 maxKeys;                     // Query String: max-keys
+            s3::base::OptStr prefix;                      // Query String: prefix
+            s3::base::OptStr startAfter;                  // Query String: start-after
+            s3::base::OptStr amzRequestPayer;             // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;      // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzOptionalObjectAttributes; // Header: x-amz-optional-object-attributes
+        };
+
+        struct ListObjectsV2Result
+        {
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: ListBucketResult XML
+        };
+
+        struct ListObjectVersionsRequest
+        {
+            s3::base::OptStr bucket;                 // URI: Bucket
+            s3::base::OptStr delimiter;              // Query String: delimiter
+            s3::base::OptStr encodingType;           // Query String: encoding-type
+            s3::base::OptStr keyMarker;              // Query String: key-marker
+            s3::base::OptI64 maxKeys;                // Query String: max-keys
+            s3::base::OptStr prefix;                 // Query String: prefix
+            s3::base::OptStr versionIdMarker;        // Query String: version-id-marker
+            s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
+        };
+
+        struct ListObjectVersionsResult
+        {
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: ListVersionsResult XML
+        };
+
+        struct ListPartsRequest
+        {
+            s3::base::OptStr bucket;                  // URI: Bucket
+            s3::base::OptStr key;                     // URI: Key
+            s3::base::OptI64 maxParts;                // Query String: max-parts
+            s3::base::OptI64 partNumberMarker;        // Query String: part-number-marker
+            s3::base::OptStr uploadId;                // Query String: uploadId
+            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
+            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;       // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
+        };
+
+        struct ListPartsResult
+        {
+            s3::base::OptStr amzAbortDate;      // Header: x-amz-abort-date
+            s3::base::OptStr amzAbortRuleId;    // Header: x-amz-abort-rule-id
+            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            std::string body;                   // Body: ListPartsResult XML
+        };
+
+        struct PutObjectTaggingRequest
+        {
+            s3::base::OptStr bucket;                  // URI: Bucket
+            s3::base::OptStr key;                     // URI: Key
+            s3::base::OptStr versionId;               // Query String: versionId
+            s3::base::OptStr contentMD5;              // Header: Content-MD5
+            s3::base::OptStr amzChecksumAlgorithm;    // Header: x-amz-checksum-algorithm
+            s3::base::OptStr amzSdkChecksumAlgorithm; // Header: x-amz-sdk-checksum-algorithm
+            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
+            std::string body;                         // Body: Tagging XML
+        };
+
+        struct PutObjectTaggingResult
+        {
+            s3::base::OptStr amzVersionId; // Header: x-amz-version-id
+        };
+
+        struct UploadPartRequest
+        {
+            s3::base::OptStr bucket;                  // URI: Bucket
+            s3::base::OptStr key;                     // URI: Key
+            s3::base::OptI64 partNumber;              // Query String: partNumber
+            s3::base::OptStr uploadId;                // Query String: uploadId
+            s3::base::OptI64 contentLength;           // Header: Content-Length
+            s3::base::OptStr contentMD5;              // Header: Content-MD5
+            s3::base::OptStr amzSdkChecksumAlgorithm; // Header: x-amz-sdk-checksum-algorithm
+            s3::base::OptStr amzChecksumCrc32;        // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;       // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;    // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;         // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;       // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
+            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
+            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKey;       // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
+            std::string body;                         // Body: Part data (binary payload)
+        };
+
+        struct UploadPartResult
+        {
+            s3::base::OptStr amzServerSideEncryption; // Header: x-amz-server-side-encryption
+            s3::base::OptStr eTag;                    // Header: ETag
+            s3::base::OptStr amzChecksumCrc32;        // Header: x-amz-checksum-crc32
+            s3::base::OptStr amzChecksumCrc32c;       // Header: x-amz-checksum-crc32c
+            s3::base::OptStr amzChecksumCrc64nvme;    // Header: x-amz-checksum-crc64nvme
+            s3::base::OptStr amzChecksumSha1;         // Header: x-amz-checksum-sha1
+            s3::base::OptStr amzChecksumSha256;       // Header: x-amz-checksum-sha256
+            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
+            s3::base::OptStr amzSseAwsKmsKeyId;       // Header: x-amz-server-side-encryption-aws-kms-key-id
+            s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
+        };
     } // namespace model
 } // namespace s3
