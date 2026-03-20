@@ -6,6 +6,7 @@ namespace s3
     namespace base
     {
         OptBool::OptBool() noexcept : _has(false), _val(false) {}
+
         OptBool::OptBool(bool val) noexcept : _has(true), _val(val) {}
 
         OptBool::~OptBool() noexcept {}
@@ -33,25 +34,16 @@ namespace s3
             _val = false;
         }
 
-        OptI32::OptI32() noexcept : _has(false), _val(0)
-        {
-            SPDLOG_DEBUG("fn: OptI32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
-        OptI32::OptI32(int32_t val) noexcept : _has(true), _val(val)
-        {
-            SPDLOG_DEBUG("fn: OptI32(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptI32::OptI32() noexcept : _has(false), _val(0) {}
 
-        OptI32::~OptI32() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptI32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptI32::OptI32(int32_t val) noexcept : _has(true), _val(val) {}
+
+        OptI32::~OptI32() noexcept {}
 
         OptI32& OptI32::operator=(int32_t val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptI32& operator=(int32_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 
@@ -75,6 +67,7 @@ namespace s3
         {
             SPDLOG_DEBUG("fn: OptI64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
         }
+
         OptI64::OptI64(int64_t val) noexcept : _has(true), _val(val)
         {
             SPDLOG_DEBUG("fn: OptI64(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
@@ -109,25 +102,16 @@ namespace s3
             _val = 0;
         }
 
-        OptF32::OptF32() noexcept : _has(false), _val(0.0f)
-        {
-            SPDLOG_DEBUG("fn: OptF32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
-        OptF32::OptF32(float val) noexcept : _has(true), _val(val)
-        {
-            SPDLOG_DEBUG("fn: OptF32(float val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptF32::OptF32() noexcept : _has(false), _val(0.0f) {}
 
-        OptF32::~OptF32() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptF32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptF32::OptF32(float val) noexcept : _has(true), _val(val) {}
+
+        OptF32::~OptF32() noexcept {}
 
         OptF32& OptF32::operator=(float val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptF32& operator=(float val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 
@@ -147,25 +131,15 @@ namespace s3
             _val = 0.0f;
         }
 
-        OptF64::OptF64() noexcept : _has(false), _val(0.0)
-        {
-            SPDLOG_DEBUG("fn: OptF64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
-        OptF64::OptF64(double val) noexcept : _has(true), _val(val)
-        {
-            SPDLOG_DEBUG("fn: OptF64(double val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptF64::OptF64() noexcept : _has(false), _val(0.0) {}
+        OptF64::OptF64(double val) noexcept : _has(true), _val(val) {}
 
-        OptF64::~OptF64() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptF64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptF64::~OptF64() noexcept {}
 
         OptF64& OptF64::operator=(double val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptF64& operator=(double val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 

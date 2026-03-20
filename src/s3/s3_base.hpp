@@ -13,7 +13,6 @@ namespace s3
             OptBool() noexcept;
             OptBool(bool val) noexcept;
             ~OptBool() noexcept;
-
             OptBool& operator=(bool val) noexcept;
             bool has() const noexcept;
             bool value() const noexcept; // caution: 调用value()前提: has() == true
@@ -30,7 +29,6 @@ namespace s3
             OptI32() noexcept;
             OptI32(int32_t val) noexcept;
             ~OptI32() noexcept;
-
             OptI32& operator=(int32_t val) noexcept;
             bool has() const noexcept;
             int32_t value() const noexcept; // caution: 调用value()前提: has() == true
@@ -47,7 +45,6 @@ namespace s3
             OptI64() noexcept;
             OptI64(int64_t val) noexcept;
             ~OptI64() noexcept;
-
             OptI64& operator=(int64_t val) noexcept;
             bool has() const noexcept;
             int64_t value() const noexcept; // caution: 调用value()前提: has() == true
@@ -64,7 +61,6 @@ namespace s3
             OptF32() noexcept;
             OptF32(float val) noexcept;
             ~OptF32() noexcept;
-
             OptF32& operator=(float val) noexcept;
             bool has() const noexcept;
             float value() const noexcept; // caution: 调用value()前提: has() == true
@@ -81,7 +77,6 @@ namespace s3
             OptF64() noexcept;
             OptF64(double val) noexcept;
             ~OptF64() noexcept;
-
             OptF64& operator=(double val) noexcept;
             bool has() const noexcept;
             double value() const noexcept; // caution: 调用value()前提: has() == true
