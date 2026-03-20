@@ -132,6 +132,7 @@ namespace s3
         }
 
         OptF64::OptF64() noexcept : _has(false), _val(0.0) {}
+
         OptF64::OptF64(double val) noexcept : _has(true), _val(val) {}
 
         OptF64::~OptF64() noexcept {}
@@ -229,6 +230,7 @@ namespace s3
             _has = false;
             _val.clear();
         }
+
         OptStr::~OptStr() noexcept
         {
             SPDLOG_DEBUG("fn: ~OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));

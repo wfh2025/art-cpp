@@ -30,9 +30,8 @@ target_compile_definitions("${TARGET_NAME}-static" PRIVATE
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-static" PRIVATE -pthread  
-                                               "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
-                                               "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
-                                               "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                                "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
 )
 
 add_library("${TARGET_NAME}-shared" SHARED "${SRCS}")
@@ -48,7 +47,6 @@ target_compile_definitions("${TARGET_NAME}-shared" PRIVATE
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-shared" PRIVATE -pthread  
-                                               "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
-                                               "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
-                                               "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                                "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
+                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
 )
