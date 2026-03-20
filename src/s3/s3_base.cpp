@@ -5,6 +5,34 @@ namespace s3
 {
     namespace base
     {
+        OptBool::OptBool() noexcept : _has(false), _val(false) {}
+        OptBool::OptBool(bool val) noexcept : _has(true), _val(val) {}
+
+        OptBool::~OptBool() noexcept {}
+
+        OptBool& OptBool::operator=(bool val) noexcept
+        {
+            _has = true;
+            _val = val;
+            return *this;
+        }
+
+        bool OptBool::has() const noexcept
+        {
+            return _has;
+        }
+
+        bool OptBool::value() const noexcept
+        {
+            return _val;
+        }
+
+        void OptBool::reset() noexcept
+        {
+            _has = false;
+            _val = false;
+        }
+
         OptI32::OptI32() noexcept : _has(false), _val(0)
         {
             SPDLOG_DEBUG("fn: OptI32(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));

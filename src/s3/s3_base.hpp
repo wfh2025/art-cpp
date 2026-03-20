@@ -7,6 +7,23 @@ namespace s3
 {
     namespace base
     {
+        class OptBool
+        {
+        public:
+            OptBool() noexcept;
+            OptBool(bool val) noexcept;
+            ~OptBool() noexcept;
+
+            OptBool& operator=(bool val) noexcept;
+            bool has() const noexcept;
+            bool value() const noexcept; // caution: 调用value()前提: has() == true
+            void reset() noexcept;
+
+        private:
+            bool _has; // 是否有值
+            bool _val; // 实际值
+        };
+
         class OptI32
         {
         public:
@@ -54,7 +71,7 @@ namespace s3
             void reset() noexcept;
 
         private:
-            bool _has;   // 是否有值
+            bool _has;  // 是否有值
             float _val; // 实际值
         };
 
@@ -71,7 +88,7 @@ namespace s3
             void reset() noexcept;
 
         private:
-            bool _has;    // 是否有值
+            bool _has;   // 是否有值
             double _val; // 实际值
         };
 
