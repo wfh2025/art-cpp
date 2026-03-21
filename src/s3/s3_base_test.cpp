@@ -147,10 +147,10 @@ TEST(timeToISO8601, 001)
 {
     std::string str = "";
     std::chrono::system_clock::time_point tp0 = std::chrono::system_clock::now();
-    str = s3::timeToISO8601(tp0);
+    str = s3::utils::timeToISO8601(tp0);
 
     std::chrono::system_clock::time_point tp1(std::chrono::milliseconds(1698706800123));
-    str = s3::timeToISO8601(tp1);
+    str = s3::utils::timeToISO8601(tp1);
     std::cout << str << std::endl;
 }
 #endif
