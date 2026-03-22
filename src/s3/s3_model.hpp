@@ -1,8 +1,11 @@
 #pragma once
 
+#include <map>
 #include <string>
+#include <vector>
 
-#include "s3/s3_base.hpp"
+#include "model/Delete.hpp"
+#include "s3_base.hpp"
 
 namespace s3
 {
@@ -137,7 +140,6 @@ namespace s3
             s3::base::OptStr amzObjectLockMode;            // Header: x-amz-object-lock-mode
             s3::base::OptStr amzObjectLockRetainUntilDate; // Header: x-amz-object-lock-retain-until-date
             s3::base::OptStr amzObjectLockLegalHold;       // Header: x-amz-object-lock-legal-hold
-            std::string body;                              // Body: Object data (binary payload)
         };
 
         struct AbortMultipartUploadRequest
@@ -197,7 +199,7 @@ namespace s3
             s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
             s3::base::OptStr amzChecksumAlgorithm;    // Header: x-amz-checksum-algorithm
             s3::base::OptStr amzChecksumType;         // Header: x-amz-checksum-type
-            std::string body;                         // Body: InitiateMultipartUploadResult XML
+            std::string uploadId;                     // Body
         };
 
         struct AbortMultipartUploadResult
@@ -232,13 +234,14 @@ namespace s3
             s3::base::OptStr amzSseAwsKmsKeyId;       // Header: x-amz-server-side-encryption-aws-kms-key-id
             s3::base::OptBool amzSseBucketKeyEnabled; // Header: x-amz-server-side-encryption-bucket-key-enabled
             s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
-            s3::base::OptStr amzChecksumCrc32;        // Header: x-amz-checksum-crc32
-            s3::base::OptStr amzChecksumCrc32c;       // Header: x-amz-checksum-crc32c
-            s3::base::OptStr amzChecksumCrc64nvme;    // Header: x-amz-checksum-crc64nvme
-            s3::base::OptStr amzChecksumSha1;         // Header: x-amz-checksum-sha1
-            s3::base::OptStr amzChecksumSha256;       // Header: x-amz-checksum-sha256
-            s3::base::OptStr amzChecksumType;         // Header: x-amz-checksum-type
-            std::string body;                         // Body: CompleteMultipartUploadResult XML
+            s3::base::OptStr location;                // Body
+            std::string eTag;                         // Body
+            s3::base::OptStr checksumCrc32;           // Body
+            s3::base::OptStr checksumCrc32c;          // Body
+            s3::base::OptStr checksumCrc64nvme;       // Body
+            s3::base::OptStr checksumSha1;            // Body
+            s3::base::OptStr checksumSha256;          // Body
+            s3::base::OptStr checksumType;            // Body
         };
 
         struct DeleteObjectRequest
@@ -272,7 +275,7 @@ namespace s3
             s3::base::OptBool amzBypassGovernanceRetention; // Header: x-amz-bypass-governance-retention
             s3::base::OptStr amzRequestPayer;               // Header: x-amz-request-payer
             s3::base::OptStr amzExpectedBucketOwner;        // Header: x-amz-expected-bucket-owner
-            std::string body;                               // Body: Delete XML
+            Delete deleteNode;                              // Body: Delete XML node
         };
 
         struct DeleteObjectsResult
@@ -306,9 +309,9 @@ namespace s3
 
         struct GetObjectTaggingResult
         {
-            s3::base::OptStr amzVersionId;      // Header: x-amz-version-id
-            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
-            std::string body;                   // Body: Tagging XML
+            s3::base::OptStr amzVersionId;              // Header: x-amz-version-id
+            s3::base::OptStr amzRequestCharged;         // Header: x-amz-request-charged
+            std::map<std::string, std::string> tagging; // Body: Tagging XML
         };
 
         struct HeadObjectRequest
@@ -382,10 +385,43 @@ namespace s3
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
         };
 
+        struct Owner
+        {
+            s3::base::OptStr id;
+            s3::base::OptStr displayName;
+        };
+
+        struct CommonPrefix
+        {
+            std::string prefix;
+        };
+
+        struct Object
+        {
+            s3::base::OptStr key;
+            s3::base::OptStr lastModified;
+            s3::base::OptStr eTag;
+            std::vector<std::string> checksumAlgorithm;
+            s3::base::OptStr checksumType;
+            s3::base::OptI64 size;
+            s3::base::OptStr storageClass;
+            Owner owner;
+            s3::base::OptStr restoreStatus;
+        };
+
         struct ListObjectsResult
         {
             s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
-            std::string body;                   // Body: ListBucketResult XML
+            s3::base::OptBool isTruncated;      // Body: isTruncated
+            s3::base::OptStr marker;            // Body: isTruncated
+            s3::base::OptStr nextMarker;        // Body: nextMarker
+            std::vector<Object> contents;       // Body: contents
+            s3::base::OptStr name;
+            s3::base::OptStr prefix;
+            s3::base::OptStr delimiter;
+            s3::base::OptI64 maxKeys;
+            std::vector<CommonPrefix> commonPrefixes;
+            s3::base::OptStr encodingType;
         };
 
         struct ListObjectsV2Request
@@ -423,10 +459,46 @@ namespace s3
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
         };
 
+        struct ObjectVersion
+        {
+            std::string eTag;
+            std::vector<std::string> checksumAlgorithm;
+            s3::base::OptStr checksumType;
+            s3::base::OptI64 size;
+            s3::base::OptStr storageClass;
+            s3::base::OptStr key;
+            s3::base::OptStr versionId;
+            s3::base::OptBool isLatest;
+            s3::base::OptStr lastModified;
+            Owner owner;
+            s3::base::OptStr restoreStatus;
+        };
+
+        struct DeleteMarkerEntry
+        {
+            Owner owner;
+            s3::base::OptStr key;
+            s3::base::OptStr versionId;
+            s3::base::OptBool isLatest;
+            s3::base::OptStr lastModified;
+        };
+
         struct ListObjectVersionsResult
         {
             s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
-            std::string body;                   // Body: ListVersionsResult XML
+            s3::base::OptBool isTruncated;      // Body
+            s3::base::OptStr keyMarker;         // Body
+            s3::base::OptStr versionIdMarker;
+            s3::base::OptStr nextKeyMarker;
+            s3::base::OptStr nextVersionIdMarker;
+            std::vector<ObjectVersion> versions;
+            std::vector<DeleteMarkerEntry> deleteMarkers;
+            s3::base::OptStr name;
+            s3::base::OptStr prefix;
+            s3::base::OptStr delimiter;
+            s3::base::OptI64 maxKeys;
+            std::vector<CommonPrefix> commonPrefixes;
+            s3::base::OptStr encodingType;
         };
 
         struct ListPartsRequest
