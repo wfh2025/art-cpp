@@ -4,17 +4,20 @@
 #include <string>
 #include <vector>
 
+#include "model/ChecksumAlgorithm.hpp"
 #include "model/CommonPrefix.hpp"
 #include "model/Delete.hpp"
 #include "model/DeleteMarkerEntry.hpp"
 #include "model/Object.hpp"
 #include "model/ObjectVersion.hpp"
+#include "model/StorageClass.hpp"
 #include "s3_base.hpp"
 
 namespace s3
 {
     namespace model
     {
+
         struct PutObjectRequest
         {
             std::string bucket;                            // URI: Bucket
