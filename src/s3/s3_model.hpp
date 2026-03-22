@@ -4,7 +4,11 @@
 #include <string>
 #include <vector>
 
+#include "model/CommonPrefix.hpp"
 #include "model/Delete.hpp"
+#include "model/DeleteMarkerEntry.hpp"
+#include "model/Object.hpp"
+#include "model/ObjectVersion.hpp"
 #include "s3_base.hpp"
 
 namespace s3
@@ -385,30 +389,6 @@ namespace s3
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
         };
 
-        struct Owner
-        {
-            s3::base::OptStr id;
-            s3::base::OptStr displayName;
-        };
-
-        struct CommonPrefix
-        {
-            std::string prefix;
-        };
-
-        struct Object
-        {
-            s3::base::OptStr key;
-            s3::base::OptStr lastModified;
-            s3::base::OptStr eTag;
-            std::vector<std::string> checksumAlgorithm;
-            s3::base::OptStr checksumType;
-            s3::base::OptI64 size;
-            s3::base::OptStr storageClass;
-            Owner owner;
-            s3::base::OptStr restoreStatus;
-        };
-
         struct ListObjectsResult
         {
             s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
@@ -457,30 +437,6 @@ namespace s3
             s3::base::OptStr versionIdMarker;        // Query String: version-id-marker
             s3::base::OptStr amzRequestPayer;        // Header: x-amz-request-payer
             s3::base::OptStr amzExpectedBucketOwner; // Header: x-amz-expected-bucket-owner
-        };
-
-        struct ObjectVersion
-        {
-            std::string eTag;
-            std::vector<std::string> checksumAlgorithm;
-            s3::base::OptStr checksumType;
-            s3::base::OptI64 size;
-            s3::base::OptStr storageClass;
-            s3::base::OptStr key;
-            s3::base::OptStr versionId;
-            s3::base::OptBool isLatest;
-            s3::base::OptStr lastModified;
-            Owner owner;
-            s3::base::OptStr restoreStatus;
-        };
-
-        struct DeleteMarkerEntry
-        {
-            Owner owner;
-            s3::base::OptStr key;
-            s3::base::OptStr versionId;
-            s3::base::OptBool isLatest;
-            s3::base::OptStr lastModified;
         };
 
         struct ListObjectVersionsResult
