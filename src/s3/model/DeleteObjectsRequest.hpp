@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+#include "Delete.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
