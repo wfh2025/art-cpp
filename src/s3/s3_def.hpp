@@ -42,9 +42,6 @@ namespace s3
         ListParts,
     };
 
-    namespace api
-    {
-        const char* text(S3ApiKind apiKind) noexcept;
-        S3ApiKind parse(const std::string& s) noexcept;
-    } // namespace api
+    const char* s3ApiKindToString(S3ApiKind apiKind) noexcept;
+    S3ApiKind stringToS3ApiKind(const std::string& s) noexcept;
 } // namespace s3

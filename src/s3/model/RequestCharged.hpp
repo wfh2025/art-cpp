@@ -7,11 +7,10 @@ namespace s3
 {
     namespace model
     {
-        enum class StorageClass : int32_t
+        enum class RequestCharged
         {
             NotSet,
-            Standard,
-            Archive,
+            Requester,
         };
     } // namespace model
 } // namespace s3

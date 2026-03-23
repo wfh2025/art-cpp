@@ -7,11 +7,13 @@ namespace s3
 {
     namespace model
     {
-        enum class StorageClass : int32_t
+        enum class ServerSideEncryption
         {
             NotSet,
-            Standard,
-            Archive,
+            AES256,
+            AwsFsx,
+            AwsKms,
+            AwsKmsDsse,
         };
     } // namespace model
 } // namespace s3

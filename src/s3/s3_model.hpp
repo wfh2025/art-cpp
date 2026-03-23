@@ -43,5 +43,12 @@
 namespace s3
 {
     namespace model
-    {} // namespace model
+    {
+        const char* storageClassToString(const StorageClass storageClass);
+        StorageClass stringToStorageClass(const std::string& str);
+        const char* checksumTypeToString(const ChecksumType checksumType);
+        ChecksumType stringToChecksumType(const std::string& str);
+        const char* requestPayerToString(const RequestPayer requestPayer);
+        RequestPayer stringToRequestPayer(const std::string& str);
+    } // namespace model
 } // namespace s3

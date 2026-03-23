@@ -29,5 +29,41 @@ namespace s3
             }
             return StorageClass::NotSet;
         }
+
+        const char* checksumTypeToString(const ChecksumType checksumType)
+        {
+            switch (checksumType)
+            {
+            case ChecksumType::Composite:
+                return "COMPOSITE";
+            case ChecksumType::FullObject:
+                return "FULL_OBJECT";
+            default:
+                return "notset";
+            }
+        }
+
+        ChecksumType stringToChecksumType(const std::string& str)
+        {
+            if (str == "COMPOSITE")
+            {
+                return ChecksumType::Composite;
+            }
+            if (str == "FULL_OBJECT")
+            {
+                return ChecksumType::FullObject;
+            }
+            return ChecksumType::NotSet;
+        }
+        const char* requestPayerToString(const RequestPayer requestPayer)
+        {
+            // TODO
+            return nullptr;
+        }
+        RequestPayer stringToRequestPayer(const std::string& str)
+        {
+            // TODO
+            return RequestPayer::NotSet;
+        }
     } // namespace model
 } // namespace s3

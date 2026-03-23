@@ -8,6 +8,7 @@ set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/aws_s3.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_utils.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_http.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_model.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_req.cpp"
 )
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${CMAKE_SOURCE_DIR}"
