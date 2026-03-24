@@ -9,7 +9,7 @@ namespace s3
 {
     namespace req
     {
-        s3::err::S3ErrorCode parsePutObjectTaggingBodyXml(const std::string& body, std::map<std::string, std::string>& tagging)
+        s3::err::S3ErrorCode parsePutObjectTaggingBodyXml(const std::string& body, s3::model::Tagging& tagging)
         {
             // TODO
             return s3::err::S3ErrorCode::Ok;
