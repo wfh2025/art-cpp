@@ -6,9 +6,14 @@ namespace s3
 {
     namespace model
     {
-        struct DeleteObjectTaggingResult
+        enum class ReplicationStatus
         {
-            s3::base::OptStr versionId; // Header: x-amz-version-id
+            NotSet,
+            Completed,
+            Pending,
+            Failed,
+            Replica
         };
+
     } // namespace model
 } // namespace s3

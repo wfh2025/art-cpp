@@ -11,7 +11,58 @@ namespace s3
     {
         s3::err::S3ErrorCode parsePutObjectTaggingBodyXml(const std::string& body, s3::model::Tagging& tagging)
         {
-            // TODO
+            tagging.tagSet.clear();
+            if (body.empty())
+            {
+                return s3::err::S3ErrorCode::IncompleteBody;
+            }
+
+            pugi::xml_document doc;
+            pugi::xml_parse_result parseResult = doc.load_string(body.c_str());
+            if (!parseResult)
+            {
+                return s3::err::S3ErrorCode::InvalidRequest;
+            }
+
+            pugi::xml_node taggingNode = doc.child("Tagging");
+            if (!taggingNode)
+            {
+                return s3::err::S3ErrorCode::InvalidRequest;
+            }
+
+            pugi::xml_node tagSetNode = taggingNode.child("TagSet");
+            if (!tagSetNode)
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
+            }
+
+            for (pugi::xml_node tagNode = tagSetNode.child("Tag"); tagNode; tagNode = tagNode.next_sibling("Tag"))
+            {
+                pugi::xml_node keyNode = tagNode.child("Key");
+                pugi::xml_node valueNode = tagNode.child("Value");
+                if (!keyNode || !valueNode)
+                {
+                    return s3::err::S3ErrorCode::InvalidTag;
+                }
+
+                const char* keyText = keyNode.child_value();
+                const char* valueText = valueNode.child_value();
+                if (keyText == nullptr)
+                {
+                    return s3::err::S3ErrorCode::InvalidTag;
+                }
+
+                model::Tag tag;
+                tag.key = keyText;
+                tag.value = (valueText == nullptr) ? "" : valueText;
+                tagging.tagSet.push_back(tag);
+            }
+
+            if (tagging.tagSet.empty())
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
+            }
+
             return s3::err::S3ErrorCode::Ok;
         }
 
@@ -88,6 +139,11 @@ namespace s3
                 uploadParts.parts.push_back(part);
             }
 
+            return s3::err::S3ErrorCode::Ok;
+        }
+        s3::err::S3ErrorCode parseDeleteObjectsBodyXml(const std::string& body, model::Delete deleteNode)
+        {
+            // TODO
             return s3::err::S3ErrorCode::Ok;
         }
     } // namespace req

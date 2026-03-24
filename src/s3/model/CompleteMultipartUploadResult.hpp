@@ -14,8 +14,8 @@ namespace s3
             s3::model::ServerSideEncryption serverSideEncryption; // Header: x-amz-server-side-encryption
             s3::base::OptStr versionId;                           // Header: x-amz-version-id
             s3::base::OptStr sSEKMSKeyId;                         // Header: x-amz-server-side-encryption-aws-kms-key-id
-            s3::base::OptBool amzSseBucketKeyEnabled;             // Header: x-amz-server-side-encryption-bucket-key-enabled
             s3::model::RequestCharged requestCharged;             // Header: x-amz-request-charged
+            s3::base::OptBool bucketKeyEnabled;                   // Header: x-amz-server-side-encryption-bucket-key-enabled
             s3::base::OptStr location;                            // Body
             std::string bucket;                                   // Body
             std::string key;                                      // Body

@@ -6,9 +6,12 @@ namespace s3
 {
     namespace model
     {
-        struct DeleteObjectTaggingResult
+        enum class ArchiveStatus
         {
-            s3::base::OptStr versionId; // Header: x-amz-version-id
+            NotSet,
+            ARCHIVE_ACCESS,
+            DEEP_ARCHIVE_ACCESS
         };
+
     } // namespace model
 } // namespace s3

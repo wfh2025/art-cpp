@@ -1,6 +1,8 @@
 #pragma once
 #include <string>
 
+#include "ChecksumMode.hpp"
+#include "RequestPayer.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -23,12 +25,12 @@ namespace s3
             s3::base::OptStr ifNoneMatch;                // Header: If-None-Match
             s3::base::OptStr ifUnmodifiedSince;          // Header: If-Unmodified-Since
             s3::base::OptStr range;                      // Header: Range
-            s3::base::OptStr amzSseCustomerAlgorithm;    // Header: x-amz-server-side-encryption-customer-algorithm
-            s3::base::OptStr amzSseCustomerKey;          // Header: x-amz-server-side-encryption-customer-key
-            s3::base::OptStr amzSseCustomerKeyMd5;       // Header: x-amz-server-side-encryption-customer-key-MD5
-            s3::base::OptStr amzRequestPayer;            // Header: x-amz-request-payer
-            s3::base::OptStr amzExpectedBucketOwner;     // Header: x-amz-expected-bucket-owner
-            s3::base::OptStr amzChecksumMode;            // Header: x-amz-checksum-mode
+            s3::base::OptStr sSECustomerAlgorithm;       // Header: x-amz-server-side-encryption-customer-algorithm
+            s3::base::OptStr sSECustomerKey;             // Header: x-amz-server-side-encryption-customer-key
+            s3::base::OptStr sSECustomerKeyMD5;          // Header: x-amz-server-side-encryption-customer-key-MD5
+            RequestPayer requestPayer;                   // Header: x-amz-request-payer
+            s3::base::OptStr expectedBucketOwner;        // Header: x-amz-expected-bucket-owner
+            ChecksumMode checksumMode;                   // Header: x-amz-checksum-mode
         };
     } // namespace model
 } // namespace s3

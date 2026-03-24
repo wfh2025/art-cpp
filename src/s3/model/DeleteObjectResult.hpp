@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+#include "RequestCharged.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -8,9 +9,9 @@ namespace s3
     {
         struct DeleteObjectResult
         {
-            s3::base::OptBool amzDeleteMarker;  // Header: x-amz-delete-marker
-            s3::base::OptStr amzVersionId;      // Header: x-amz-version-id
-            s3::base::OptStr amzRequestCharged; // Header: x-amz-request-charged
+            s3::base::OptBool deleteMarker; // Header: x-amz-delete-marker
+            s3::base::OptStr versionId;     // Header: x-amz-version-id
+            RequestCharged requestCharged;  // Header: x-amz-request-charged
         };
     } // namespace model
 } // namespace s3

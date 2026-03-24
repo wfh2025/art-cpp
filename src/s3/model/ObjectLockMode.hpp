@@ -6,9 +6,11 @@ namespace s3
 {
     namespace model
     {
-        struct DeleteObjectTaggingResult
+        enum class ObjectLockMode
         {
-            s3::base::OptStr versionId; // Header: x-amz-version-id
+            NOT_SET,
+            GOVERNANCE,
+            COMPLIANCE
         };
     } // namespace model
 } // namespace s3

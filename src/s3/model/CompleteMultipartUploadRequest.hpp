@@ -13,14 +13,14 @@ namespace s3
         {
             std::string bucket;                       // URI: Bucket
             std::string key;                          // URI: Key
-            s3::base::OptStr uploadId;                // Query String: uploadId
+            std::string uploadId;                     // Query String: uploadId
             s3::base::OptStr checksumCrc32;           // Header: x-amz-checksum-crc32
             s3::base::OptStr checksumCrc32c;          // Header: x-amz-checksum-crc32c
             s3::base::OptStr checksumCrc64nvme;       // Header: x-amz-checksum-crc64nvme
             s3::base::OptStr checksumSha1;            // Header: x-amz-checksum-sha1
             s3::base::OptStr checksumSha256;          // Header: x-amz-checksum-sha256
             s3::model::ChecksumType checksumType;     // Header: x-amz-checksum-type
-            s3::base::OptStr mpObjectSize;            // Header: x-amz-mp-object-size
+            s3::base::OptI64 mpuObjectSize;           // Header: x-amz-mp-object-size
             s3::model::RequestPayer requestPayer;     // Header: x-amz-request-payer
             s3::base::OptStr expectedBucketOwner;     // Header: x-amz-expected-bucket-owner
             s3::base::OptStr ifMatch;                 // Header: If-Match

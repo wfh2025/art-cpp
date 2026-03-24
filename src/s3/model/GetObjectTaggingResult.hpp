@@ -1,7 +1,9 @@
 #pragma once
 #include <map>
 #include <string>
+#include <vector>
 
+#include "Tag.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -9,9 +11,9 @@ namespace s3
     {
         struct GetObjectTaggingResult
         {
-            s3::base::OptStr amzVersionId;              // Header: x-amz-version-id
-            s3::base::OptStr amzRequestCharged;         // Header: x-amz-request-charged
-            std::map<std::string, std::string> tagging; // Body: Tagging XML
+            s3::base::OptStr versionId; // Header: x-amz-version-id
+            std::vector<Tag> tagSet;
+            std::string requestId;
         };
     } // namespace model
 } // namespace s3

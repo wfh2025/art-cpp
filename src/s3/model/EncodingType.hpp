@@ -6,9 +6,10 @@ namespace s3
 {
     namespace model
     {
-        struct DeleteObjectTaggingResult
+        enum class EncodingType
         {
-            s3::base::OptStr versionId; // Header: x-amz-version-id
+            NotSet,
+            Url
         };
     } // namespace model
 } // namespace s3

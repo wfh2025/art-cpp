@@ -6,9 +6,10 @@ namespace s3
 {
     namespace model
     {
-        struct DeleteObjectTaggingResult
+        enum class OptionalObjectAttributes
         {
-            s3::base::OptStr versionId; // Header: x-amz-version-id
+            NotSet,
+            RestoreStatus
         };
     } // namespace model
 } // namespace s3
