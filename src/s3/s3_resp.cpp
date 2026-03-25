@@ -45,29 +45,29 @@ namespace s3
             {
                 root.append_child("Location").text().set(res.location.value().c_str());
             }
-            root.append_child("Bucket").text().set(res.bucket.c_str());
-            root.append_child("Key").text().set(res.key.c_str());
-            root.append_child("ETag").text().set(res.eTag.c_str());
+            root.append_child("Bucket").text().set(res.bucket.value().c_str());
+            root.append_child("Key").text().set(res.key.value().c_str());
+            root.append_child("ETag").text().set(res.eTag.value().c_str());
 
-            if (res.checksumCrc32.has())
+            if (res.checksumCRC32.has())
             {
-                root.append_child("ChecksumCRC32").text().set(res.checksumCrc32.value().c_str());
+                root.append_child("ChecksumCRC32").text().set(res.checksumCRC32.value().c_str());
             }
-            if (res.checksumCrc32c.has())
+            if (res.checksumCRC32C.has())
             {
-                root.append_child("ChecksumCRC32C").text().set(res.checksumCrc32c.value().c_str());
+                root.append_child("ChecksumCRC32C").text().set(res.checksumCRC32C.value().c_str());
             }
-            if (res.checksumCrc64nvme.has())
+            if (res.checksumCRC64NVME.has())
             {
-                root.append_child("ChecksumCRC64NVME").text().set(res.checksumCrc64nvme.value().c_str());
+                root.append_child("ChecksumCRC64NVME").text().set(res.checksumCRC64NVME.value().c_str());
             }
-            if (res.checksumSha1.has())
+            if (res.checksumSHA1.has())
             {
-                root.append_child("ChecksumSHA1").text().set(res.checksumSha1.value().c_str());
+                root.append_child("ChecksumSHA1").text().set(res.checksumSHA1.value().c_str());
             }
-            if (res.checksumSha256.has())
+            if (res.checksumSHA256.has())
             {
-                root.append_child("ChecksumSHA256").text().set(res.checksumSha256.value().c_str());
+                root.append_child("ChecksumSHA256").text().set(res.checksumSHA256.value().c_str());
             }
 
             if (res.checksumType != model::ChecksumType::NotSet)

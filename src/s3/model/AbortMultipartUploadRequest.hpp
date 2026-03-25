@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 
+#include "RequestPayer.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -8,12 +9,12 @@ namespace s3
     {
         struct AbortMultipartUploadRequest
         {
-            std::string bucket;                       // URI: Bucket
-            std::string key;                          // URI: Key
-            s3::base::OptStr uploadId;                // Query String: uploadId
-            s3::base::OptStr amzRequestPayer;         // Header: x-amz-request-payer
-            s3::base::OptStr amzExpectedBucketOwner;  // Header: x-amz-expected-bucket-owner
-            s3::base::OptStr amzIfMatchInitiatedTime; // Header: x-amz-if-match-initiated-time
+            s3::base::OptStr bucket;
+            s3::base::OptStr key;
+            s3::base::OptStr uploadId;
+            RequestPayer requestPayer;
+            s3::base::OptStr expectedBucketOwner;
+            s3::base::OptStr ifMatchInitiatedTime;
         };
 
     } // namespace model

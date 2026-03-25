@@ -1,6 +1,70 @@
 #pragma once
 #include <string>
 
+#include "AbortMultipartUploadRequest.hpp"
+#include "AbortMultipartUploadResult.hpp"
+#include "ArchiveStatus.hpp"
+#include "ChecksumAlgorithm.hpp"
+#include "ChecksumMode.hpp"
+#include "ChecksumType.hpp"
+#include "CommonPrefix.hpp"
+#include "CompleteMultipartUploadRequest.hpp"
+#include "CompleteMultipartUploadResult.hpp"
+#include "CompletedMultipartUpload.hpp"
+#include "CompletedPart.hpp"
+#include "CreateMultipartUploadRequest.hpp"
+#include "CreateMultipartUploadResult.hpp"
+#include "Delete.hpp"
+#include "DeleteMarkerEntry.hpp"
+#include "DeleteObjectRequest.hpp"
+#include "DeleteObjectResult.hpp"
+#include "DeleteObjectTaggingRequest.hpp"
+#include "DeleteObjectTaggingResult.hpp"
+#include "DeleteObjectsRequest.hpp"
+#include "DeleteObjectsResult.hpp"
+#include "DeletedObject.hpp"
+#include "EncodingType.hpp"
+#include "Error.hpp"
+#include "GetObjectRequest.hpp"
+#include "GetObjectResult.hpp"
+#include "GetObjectTaggingRequest.hpp"
+#include "GetObjectTaggingResult.hpp"
+#include "HeadObjectRequest.hpp"
+#include "HeadObjectResult.hpp"
+#include "Initiator.hpp"
+#include "ListMultipartUploadsRequest.hpp"
+#include "ListMultipartUploadsResult.hpp"
+#include "ListObjectVersionsRequest.hpp"
+#include "ListObjectVersionsResult.hpp"
+#include "ListObjectsRequest.hpp"
+#include "ListObjectsResult.hpp"
+#include "ListObjectsV2Request.hpp"
+#include "ListObjectsV2Result.hpp"
+#include "ListPartsRequest.hpp"
+#include "ListPartsResult.hpp"
+#include "MultipartUpload.hpp"
+#include "Object.hpp"
+#include "ObjectCannedACL.hpp"
+#include "ObjectIdentifier.hpp"
+#include "ObjectLockLegalHoldStatus.hpp"
+#include "ObjectLockMode.hpp"
+#include "ObjectVersion.hpp"
+#include "OptionalObjectAttributes.hpp"
+#include "Owner.hpp"
+#include "Part.hpp"
+#include "PutObjectRequest.hpp"
+#include "PutObjectResult.hpp"
+#include "PutObjectTaggingRequest.hpp"
+#include "PutObjectTaggingResult.hpp"
+#include "ReplicationStatus.hpp"
+#include "RequestCharged.hpp"
+#include "RequestPayer.hpp"
+#include "ServerSideEncryption.hpp"
+#include "StorageClass.hpp"
+#include "Tag.hpp"
+#include "Tagging.hpp"
+#include "UploadPartRequest.hpp"
+#include "UploadPartResult.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -8,18 +72,20 @@ namespace s3
     {
         struct CreateMultipartUploadResult
         {
-            s3::base::OptStr amzAbortDate;            // Header: x-amz-abort-date
-            s3::base::OptStr amzAbortRuleId;          // Header: x-amz-abort-rule-id
-            s3::base::OptStr amzServerSideEncryption; // Header: x-amz-server-side-encryption
-            s3::base::OptStr amzSseCustomerAlgorithm; // Header: x-amz-server-side-encryption-customer-algorithm
-            s3::base::OptStr amzSseCustomerKeyMd5;    // Header: x-amz-server-side-encryption-customer-key-MD5
-            s3::base::OptStr amzSseAwsKmsKeyId;       // Header: x-amz-server-side-encryption-aws-kms-key-id
-            s3::base::OptStr amzSseContext;           // Header: x-amz-server-side-encryption-context
-            s3::base::OptBool amzSseBucketKeyEnabled; // Header: x-amz-server-side-encryption-bucket-key-enabled
-            s3::base::OptStr amzRequestCharged;       // Header: x-amz-request-charged
-            s3::base::OptStr amzChecksumAlgorithm;    // Header: x-amz-checksum-algorithm
-            s3::base::OptStr amzChecksumType;         // Header: x-amz-checksum-type
-            std::string uploadId;                     // Body
+            s3::base::OptStr abortDate;
+            s3::base::OptStr abortRuleId;
+            s3::base::OptStr bucket;
+            s3::base::OptStr key;
+            std::string uploadId;
+            ServerSideEncryption serverSideEncryption;
+            s3::base::OptStr sSECustomerAlgorithm;
+            s3::base::OptStr sSECustomerKeyMD5;
+            s3::base::OptStr sSEKMSKeyId;
+            s3::base::OptStr sSEKMSEncryptionContext;
+            s3::base::OptBool bucketKeyEnabled;
+            RequestCharged requestCharged;
+            ChecksumAlgorithm checksumAlgorithm;
+            ChecksumType checksumType;
         };
     } // namespace model
 } // namespace s3

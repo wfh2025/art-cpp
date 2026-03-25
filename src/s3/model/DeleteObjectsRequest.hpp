@@ -5,13 +5,14 @@
 #include "Delete.hpp"
 #include "RequestPayer.hpp"
 #include "s3/s3_base.hpp"
+
 namespace s3
 {
     namespace model
     {
         struct DeleteObjectsRequest
         {
-            Delete deleteNode;                           // Body: Delete XML node
+            Delete delete_;                              // Body: Delete XML node
             std::string bucket;                          // URI: Bucket
             s3::base::OptStr mfa;                        // Header: x-amz-mfa
             RequestPayer requestPayer;                   // Header: x-amz-request-payer

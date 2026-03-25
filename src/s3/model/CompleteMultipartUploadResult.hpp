@@ -1,8 +1,70 @@
 #pragma once
 #include <string>
 
+#include "AbortMultipartUploadRequest.hpp"
+#include "AbortMultipartUploadResult.hpp"
+#include "ArchiveStatus.hpp"
+#include "ChecksumAlgorithm.hpp"
+#include "ChecksumMode.hpp"
+#include "ChecksumType.hpp"
+#include "CommonPrefix.hpp"
+#include "CompleteMultipartUploadRequest.hpp"
+#include "CompleteMultipartUploadResult.hpp"
+#include "CompletedMultipartUpload.hpp"
+#include "CompletedPart.hpp"
+#include "CreateMultipartUploadRequest.hpp"
+#include "CreateMultipartUploadResult.hpp"
+#include "Delete.hpp"
+#include "DeleteMarkerEntry.hpp"
+#include "DeleteObjectRequest.hpp"
+#include "DeleteObjectResult.hpp"
+#include "DeleteObjectTaggingRequest.hpp"
+#include "DeleteObjectTaggingResult.hpp"
+#include "DeleteObjectsRequest.hpp"
+#include "DeleteObjectsResult.hpp"
+#include "DeletedObject.hpp"
+#include "EncodingType.hpp"
+#include "Error.hpp"
+#include "GetObjectRequest.hpp"
+#include "GetObjectResult.hpp"
+#include "GetObjectTaggingRequest.hpp"
+#include "GetObjectTaggingResult.hpp"
+#include "HeadObjectRequest.hpp"
+#include "HeadObjectResult.hpp"
+#include "Initiator.hpp"
+#include "ListMultipartUploadsRequest.hpp"
+#include "ListMultipartUploadsResult.hpp"
+#include "ListObjectVersionsRequest.hpp"
+#include "ListObjectVersionsResult.hpp"
+#include "ListObjectsRequest.hpp"
+#include "ListObjectsResult.hpp"
+#include "ListObjectsV2Request.hpp"
+#include "ListObjectsV2Result.hpp"
+#include "ListPartsRequest.hpp"
+#include "ListPartsResult.hpp"
+#include "MultipartUpload.hpp"
+#include "Object.hpp"
+#include "ObjectCannedACL.hpp"
+#include "ObjectIdentifier.hpp"
+#include "ObjectLockLegalHoldStatus.hpp"
+#include "ObjectLockMode.hpp"
+#include "ObjectVersion.hpp"
+#include "OptionalObjectAttributes.hpp"
+#include "Owner.hpp"
+#include "Part.hpp"
+#include "PutObjectRequest.hpp"
+#include "PutObjectResult.hpp"
+#include "PutObjectTaggingRequest.hpp"
+#include "PutObjectTaggingResult.hpp"
+#include "ReplicationStatus.hpp"
 #include "RequestCharged.hpp"
+#include "RequestPayer.hpp"
 #include "ServerSideEncryption.hpp"
+#include "StorageClass.hpp"
+#include "Tag.hpp"
+#include "Tagging.hpp"
+#include "UploadPartRequest.hpp"
+#include "UploadPartResult.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {
@@ -10,22 +72,22 @@ namespace s3
     {
         struct CompleteMultipartUploadResult
         {
-            s3::base::OptStr expiration;                          // Header: x-amz-expiration
-            s3::model::ServerSideEncryption serverSideEncryption; // Header: x-amz-server-side-encryption
-            s3::base::OptStr versionId;                           // Header: x-amz-version-id
-            s3::base::OptStr sSEKMSKeyId;                         // Header: x-amz-server-side-encryption-aws-kms-key-id
-            s3::model::RequestCharged requestCharged;             // Header: x-amz-request-charged
-            s3::base::OptBool bucketKeyEnabled;                   // Header: x-amz-server-side-encryption-bucket-key-enabled
-            s3::base::OptStr location;                            // Body
-            std::string bucket;                                   // Body
-            std::string key;                                      // Body
-            std::string eTag;                                     // Body
-            s3::base::OptStr checksumCrc32;                       // Body
-            s3::base::OptStr checksumCrc32c;                      // Body
-            s3::base::OptStr checksumCrc64nvme;                   // Body
-            s3::base::OptStr checksumSha1;                        // Body
-            s3::base::OptStr checksumSha256;                      // Body
-            s3::model::ChecksumType checksumType;                 // Body
+            s3::base::OptStr location;
+            s3::base::OptStr bucket;
+            s3::base::OptStr key;
+            s3::base::OptStr expiration;
+            s3::base::OptStr eTag;
+            s3::base::OptStr checksumCRC32;
+            s3::base::OptStr checksumCRC32C;
+            s3::base::OptStr checksumCRC64NVME;
+            s3::base::OptStr checksumSHA1;
+            s3::base::OptStr checksumSHA256;
+            ChecksumType checksumType;
+            ServerSideEncryption serverSideEncryption;
+            s3::base::OptStr versionId;
+            s3::base::OptStr sSEKMSKeyId;
+            s3::base::OptBool bucketKeyEnabled;
+            RequestCharged requestCharged;
             s3::base::OptStr requestId;
         };
     } // namespace model

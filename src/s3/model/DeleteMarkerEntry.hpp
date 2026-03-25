@@ -1,7 +1,6 @@
 #pragma once
-#include <vector>
 
-#include "s3/model/Owner.hpp"
+#include "Owner.hpp"
 #include "s3/s3_base.hpp"
 
 namespace s3

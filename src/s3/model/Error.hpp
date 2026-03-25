@@ -2,8 +2,6 @@
 #include <string>
 #include <vector>
 
-#include "DeletedObject.hpp"
-#include "RequestCharged.hpp"
 #include "s3/s3_base.hpp"
 namespace s3
 {

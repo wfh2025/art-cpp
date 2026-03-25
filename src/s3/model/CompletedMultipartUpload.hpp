@@ -1,9 +1,7 @@
 #pragma once
-#include <string>
 #include <vector>
 
 #include "CompletedPart.hpp"
-#include "s3/s3_base.hpp"
 
 namespace s3
 {

@@ -1,5 +1,4 @@
 #pragma once
-#include <string>
 
 #include "s3/s3_base.hpp"
 namespace s3
@@ -8,7 +7,8 @@ namespace s3
     {
         struct PutObjectTaggingResult
         {
-            s3::base::OptStr amzVersionId; // Header: x-amz-version-id
+            s3::base::OptStr versionId; // Header: x-amz-version-id
+            s3::base::OptStr requestId;
         };
     } // namespace model
 } // namespace s3

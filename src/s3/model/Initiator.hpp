@@ -1,15 +1,15 @@
 #pragma once
 #include <string>
-#include <vector>
 
+#include "s3/s3_base.hpp"
 namespace s3
 {
     namespace model
     {
-        struct Tag
+        struct Initiator
         {
-            std::string key;
-            std::string value;
+            s3::base::OptStr iD;
+            s3::base::OptStr displayName;
         };
     } // namespace model
 } // namespace s3
