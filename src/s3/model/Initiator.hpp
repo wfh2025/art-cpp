@@ -8,7 +8,7 @@ namespace s3
     {
         struct Initiator
         {
-            s3::base::OptStr iD;
+            s3::base::OptStr id;
             s3::base::OptStr displayName;
         };
     } // namespace model
