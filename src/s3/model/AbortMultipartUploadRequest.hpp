@@ -9,9 +9,9 @@ namespace s3
     {
         struct AbortMultipartUploadRequest
         {
-            s3::base::OptStr bucket;
-            s3::base::OptStr key;
-            s3::base::OptStr uploadId;
+            std::string bucket;
+            std::string key;
+            std::string uploadId;
             RequestPayer requestPayer;
             s3::base::OptStr expectedBucketOwner;
             s3::base::OptStr ifMatchInitiatedTime;

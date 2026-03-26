@@ -11,14 +11,14 @@ namespace s3
     {
         struct HeadObjectRequest
         {
+            std::string bucket;
+            std::string key;
             RequestPayer requestPayer;
             ChecksumMode checksumMode;
-            s3::base::OptStr bucket;
             s3::base::OptStr ifMatch;
             s3::base::OptStr ifModifiedSince;
             s3::base::OptStr ifNoneMatch;
             s3::base::OptStr ifUnmodifiedSince;
-            s3::base::OptStr key;
             s3::base::OptStr range;
             s3::base::OptStr responseCacheControl;
             s3::base::OptStr responseContentDisposition;

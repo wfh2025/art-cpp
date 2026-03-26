@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "ChecksumType.hpp"
 #include "CompletedMultipartUpload.hpp"
 #include "RequestPayer.hpp"
@@ -11,10 +13,10 @@ namespace s3
     {
         struct CompleteMultipartUploadRequest
         {
-            s3::base::OptStr bucket;
-            s3::base::OptStr key;
+            std::string bucket;
+            std::string key;
+            std::string uploadId;
             CompletedMultipartUpload multipartUpload;
-            s3::base::OptStr uploadId;
             s3::base::OptStr checksumCRC32;
             s3::base::OptStr checksumCRC32C;
             s3::base::OptStr checksumCRC64NVME;

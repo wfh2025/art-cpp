@@ -15,6 +15,5 @@ namespace s3
             std::string code;
             std::string message;
         };
-
     } // namespace model
 } // namespace s3
