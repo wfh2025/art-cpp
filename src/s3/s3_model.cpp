@@ -55,14 +55,23 @@ namespace s3
             }
             return ChecksumType::NotSet;
         }
+
         const char* requestPayerToString(const RequestPayer requestPayer)
         {
-            // TODO
-            return nullptr;
+            switch (requestPayer)
+            {
+            case RequestPayer::Requester:
+                return "requester";
+            default:
+                return "notset";
+            }
         }
         RequestPayer stringToRequestPayer(const std::string& str)
         {
-            // TODO
+            if (str == "requester")
+            {
+                return RequestPayer::Requester;
+            }
             return RequestPayer::NotSet;
         }
     } // namespace model
