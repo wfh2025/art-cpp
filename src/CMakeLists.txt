@@ -11,9 +11,9 @@ set(ART_CXX_DEPS_DIR "${CMAKE_SOURCE_DIR}/../deps")
 
 add_subdirectory(base)
 add_subdirectory(s3)
-add_subdirectory(test-cxx)
-add_subdirectory(test-brew)
-add_subdirectory(smart-cmd)
+add_subdirectory("test-cxx")
+# add_subdirectory("test-brew")
+# add_subdirectory("smart-cmd")
 
 ###################################################################################################
 # https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html
