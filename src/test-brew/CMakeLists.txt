@@ -1,5 +1,5 @@
-set(TARGET_NAME "art-cmd-gtest-brew")
-set(EXEC_NAME "gtest-brew")
+set(TARGET_NAME "cmd-test-brew")
+set(EXEC_NAME "test-brew")
 
 add_executable("${TARGET_NAME}" "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 set_target_properties("${TARGET_NAME}" PROPERTIES CXX_STANDARD 20

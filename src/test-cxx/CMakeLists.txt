@@ -1,5 +1,5 @@
-set(TARGET_NAME "art-cmd-gtest")
-set(EXEC_NAME "gtest")
+set(TARGET_NAME "cmd-test-cxx")
+set(EXEC_NAME "test-cxx")
 
 add_executable("${TARGET_NAME}" "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
 set_target_properties("${TARGET_NAME}" PROPERTIES CXX_STANDARD 20
@@ -8,8 +8,8 @@ set_target_properties("${TARGET_NAME}" PROPERTIES CXX_STANDARD 20
                                                   OUTPUT_NAME "${EXEC_NAME}"
 )
 
-target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}"
-                                                    "${CMAKE_SOURCE_DIR}"
+target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}" 
+                                                    "${CMAKE_CURRENT_SOURCE_DIR}"
                                                     "${ART_CXX_DEPS_DIR}/abseil-cpp/include"
                                                     "${ART_CXX_DEPS_DIR}/gflags/include"
                                                     "${ART_CXX_DEPS_DIR}/googletest/include"

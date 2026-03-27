@@ -8,9 +8,12 @@ set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${OUTPUT_PREFIX}/lib")
 set(CMAKE_LIBRARY_OUTPUT_DIRECTORY "${OUTPUT_PREFIX}/lib")
 set(ART_CXX_DEPS_DIR "${CMAKE_SOURCE_DIR}/../deps")
 
-add_subdirectory(cmd)
+
 add_subdirectory(base)
 add_subdirectory(s3)
+add_subdirectory(test-cxx)
+add_subdirectory(test-brew)
+add_subdirectory(smart-cmd)
 
 ###################################################################################################
 # https://cmake.org/cmake/help/latest/manual/cmake-variables.7.html

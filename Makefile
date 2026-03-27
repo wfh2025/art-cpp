@@ -22,7 +22,7 @@ deps: clean
 clean:
 	${RM} "${BUILD_DIR}"
 run: build
-	DYLD_LIBRARY_PATH=${BUILD_DIR}/lib ${BUILD_DIR}/bin/gtest
+	DYLD_LIBRARY_PATH=${BUILD_DIR}/lib ${BUILD_DIR}/bin/test-cxx
 print-%:
 	@echo $* = $($*)
 .PHONY: all clean build deps run generate

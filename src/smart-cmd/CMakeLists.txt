@@ -1,4 +1,4 @@
-set(TARGET_NAME "art-cmd-smart-cmd")
+set(TARGET_NAME "cmd-smart-cmd")
 set(EXEC_NAME "smart-cmd")
 
 add_executable("${TARGET_NAME}" "${CMAKE_CURRENT_SOURCE_DIR}/main.cpp")
