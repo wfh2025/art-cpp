@@ -13,11 +13,11 @@ namespace s3
     {
         struct CreateMultipartUploadResult
         {
+            std::string bucket;
+            std::string key;
+            std::string uploadId;
             s3::base::OptStr abortDate;
             s3::base::OptStr abortRuleId;
-            s3::base::OptStr bucket;
-            s3::base::OptStr key;
-            std::string uploadId;
             ServerSideEncryption serverSideEncryption;
             s3::base::OptStr sSECustomerAlgorithm;
             s3::base::OptStr sSECustomerKeyMD5;

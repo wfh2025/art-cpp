@@ -46,7 +46,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/leveldb_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/xml_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/cmdline_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/s3_base_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/s3_test.cpp"
 )
 
 target_compile_definitions("${TARGET_NAME}" PRIVATE 

@@ -1,7 +1,6 @@
 set(TARGET_NAME "art-s3")
 set(OUTPUT_NAME "art_s3")
-set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/aws_s3.cpp" 
-         "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
+set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_resp.cpp"

@@ -16,6 +16,6 @@ namespace s3
     {
         s3::err::S3ErrorCode parsePutObjectTaggingBodyXml(const std::string& body, s3::model::Tagging& tagging);
         s3::err::S3ErrorCode parseCompleteMultipartUploadBodyXml(const std::string& body, model::CompletedMultipartUpload& uploadParts);
-        s3::err::S3ErrorCode parseDeleteObjectsBodyXml(const std::string& body, model::Delete deleteNode);
+        s3::err::S3ErrorCode parseDeleteObjectsBodyXml(const std::string& body, model::Delete& deleteNode);
     } // namespace req
 } // namespace s3
