@@ -289,15 +289,4 @@ TEST(s3_base_OptI64, 001)
         EXPECT_TRUE((s.opt.has() == true) && (s.opt.value() == 2));
     }
 }
-
-TEST(timeToISO8601, 001)
-{
-    std::string str = "";
-    std::chrono::system_clock::time_point tp0 = std::chrono::system_clock::now();
-    str = s3::utils::timeToISO8601(tp0);
-
-    std::chrono::system_clock::time_point tp1(std::chrono::milliseconds(1698706800123));
-    str = s3::utils::timeToISO8601(tp1);
-    std::cout << str << std::endl;
-}
 #endif

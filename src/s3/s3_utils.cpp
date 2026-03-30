@@ -1130,13 +1130,6 @@ namespace s3
             return parseInt64(std::string(s));
         }
 
-        std::string timeToISO8601(const std::chrono::system_clock::time_point& time)
-        {
-            auto t = std::chrono::system_clock::to_time_t(time);
-            auto tm = std::gmtime(&t);
-            return (std::stringstream() << std::put_time(tm, "%Y-%m-%dT%H:%M:%S.000Z")).str();
-        }
-
         s3::base::OptI64 parseInt64(const std::string& str)
         {
             s3::base::OptI64 optVal;
