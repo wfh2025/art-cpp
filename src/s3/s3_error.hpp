@@ -62,7 +62,5 @@ namespace s3
 
         const s3::err::S3ErrorInfo& getS3ErrorInfo(s3::err::S3ErrorCode s3ErrorCode);
         std::string formatErrorMessage(const S3ErrorInfo& info, const std::vector<std::string>& args);
-        std::string formatErrorMessage(const S3ErrorInfo& info);
-
     } // namespace err
 } // namespace s3

@@ -3,6 +3,7 @@
 #include <unordered_map>
 
 #include "spdlog/spdlog.h"
+#include "spdlog/fmt/bundled/args.h"
 
 namespace
 {
@@ -67,87 +68,20 @@ namespace s3
 
         std::string formatErrorMessage(const S3ErrorInfo& info, const std::vector<std::string>& args)
         {
-            if (args.empty())
-            {
-                return info.messageTemplate == nullptr ? "" : std::string(info.messageTemplate);
-            }
-
-            if (info.messageTemplate == nullptr)
-            {
-                return "";
-            }
-
+            // caution: messageTemplate不可能为空或空指针，因为在定义不同的S3ErrorInfo的时候就已经确认
             if (info.argCount != args.size())
             {
-                // TODO: log
-                return info.messageTemplate == nullptr ? "" : std::string(info.messageTemplate);
-            }
-
-            auto fr = fmt::runtime(info.messageTemplate);
-
-            switch (args.size())
-            {
-            case 1: {
-                return fmt::format(fr, args[0]);
-            }
-            case 2: {
-                return fmt::format(fr, args[0], args[1]);
-            }
-            case 3: {
-                return fmt::format(fr, args[0], args[1], args[2]);
-            }
-            case 4: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3]);
-            }
-            case 5: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4]);
-            }
-            case 6: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5]);
-            }
-            case 7: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6]);
-            }
-            case 8: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7]);
-            }
-            case 9: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8]);
-            }
-            case 10: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
-            }
-            case 11: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
-            }
-            case 12: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
-            }
-            case 13: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11],
-                                   args[12]);
-            }
-            case 14: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11],
-                                   args[12], args[13]);
-            }
-            case 15: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11],
-                                   args[12], args[13], args[14]);
-            }
-            case 16: {
-                return fmt::format(fr, args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11],
-                                   args[12], args[13], args[14], args[15]);
-            }
-            default: {
+                SPDLOG_ERROR("Failed to format error message. template: {}, expect args count: {}, actual args count: {}", info.messageTemplate, info.argCount, args.size());
                 return info.messageTemplate;
             }
-            }
-        }
-        std::string formatErrorMessage(const S3ErrorInfo& info)
-        {
-            return formatErrorMessage(info, std::vector<std::string>{});
-        }
 
+            fmt::dynamic_format_arg_store<fmt::format_context> store;
+            for (std::size_t i = 0; i < args.size(); ++i)
+            {
+                store.push_back(args[i]);
+            }
+
+            return fmt::vformat(info.messageTemplate, store);
+        }
     } // namespace err
 } // namespace s3
