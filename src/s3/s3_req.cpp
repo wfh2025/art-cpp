@@ -32,7 +32,7 @@ namespace s3
             pugi::xml_node tagSetNode = taggingNode.child("TagSet");
             if (tagSetNode.empty())
             {
-                return s3::err::S3ErrorCode::InvalidTag;
+                return s3::err::S3ErrorCode::InvalidTagTagging;
             }
 
             for (pugi::xml_node tagNode = tagSetNode.child("Tag"); !tagNode.empty(); tagNode = tagNode.next_sibling("Tag"))
@@ -41,17 +41,17 @@ namespace s3
                 pugi::xml_node valueNode = tagNode.child("Value");
                 if (keyNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidTag;
+                    return s3::err::S3ErrorCode::InvalidTagTagging;
                 }
                 if (valueNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidTag;
+                    return s3::err::S3ErrorCode::InvalidTagTagging;
                 }
 
                 const char* keyText = keyNode.child_value();
                 if (s3::utils::isNullOrEmpty(keyText))
                 {
-                    return s3::err::S3ErrorCode::InvalidTag;
+                    return s3::err::S3ErrorCode::InvalidTagTagging;
                 }
 
                 model::Tag tag;
@@ -62,7 +62,7 @@ namespace s3
 
             if (tagging.tagSet.empty())
             {
-                return s3::err::S3ErrorCode::InvalidTag;
+                return s3::err::S3ErrorCode::InvalidTagTagging;
             }
 
             return s3::err::S3ErrorCode::Ok;
