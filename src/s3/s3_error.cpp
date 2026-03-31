@@ -1702,7 +1702,7 @@ namespace
             {
                 s3::err::S3ErrorCode::EvaluatorLikePatternInvalidEscapeSequence,
                 "EvaluatorLikePatternInvalidEscapeSequence",
-                "An argument given to theLIKE expression was not valid.",
+                "An argument given to the LIKE expression was not valid.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -1878,7 +1878,7 @@ namespace
             {
                 s3::err::S3ErrorCode::InvalidJsonType,
                 "InvalidJsonType",
-                "TheJsonType value is not valid. OnlyDOCUMENT andLINES are supported.",
+                "The JsonType value is not valid. Only DOCUMENT and LINES are supported.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -1898,7 +1898,7 @@ namespace
             {
                 s3::err::S3ErrorCode::InvalidQuoteFields,
                 "InvalidQuoteFields",
-                "TheQuoteFields value is not valid. OnlyALWAYS andASNEEDED are supported.",
+                "The QuoteFields value is not valid. Only ALWAYS and ASNEEDED are supported.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -1998,7 +1998,7 @@ namespace
             {
                 s3::err::S3ErrorCode::LikeInvalidInputs,
                 "LikeInvalidInputs",
-                "The argument given to theLIKE clause in the SQL expression is not valid.",
+                "The argument given to the LIKE clause in the SQL expression is not valid.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
