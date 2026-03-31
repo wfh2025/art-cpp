@@ -1081,12 +1081,23 @@ namespace
         },
         {
             s3::err::S3ErrorCode::NotImplemented,
-            {s3::err::S3ErrorCode::NotImplemented, "NotImplemented", "A header you provided implies functionality that is not implemented.", 0,
-             s3::http::HttpStatusCode::NotImplemented},
+            {
+                s3::err::S3ErrorCode::NotImplemented,
+                "NotImplemented",
+                "A header you provided implies functionality that is not implemented.",
+                0,
+                s3::http::HttpStatusCode::NotImplemented,
+            },
         },
         {
             s3::err::S3ErrorCode::NotModified,
-            {s3::err::S3ErrorCode::NotModified, "NotModified", "The resource was not changed.", 0, s3::http::HttpStatusCode::NotModified},
+            {
+                s3::err::S3ErrorCode::NotModified,
+                "NotModified",
+                "The resource was not changed.",
+                0,
+                s3::http::HttpStatusCode::NotModified,
+            },
         },
         {
             s3::err::S3ErrorCode::NotSignedUp,
@@ -1517,8 +1528,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::MalformedPolicyAsync,
-            {s3::err::S3ErrorCode::MalformedPolicyAsync, "MalformedPolicy", "The specified policy syntax is not valid.", 0,
-             s3::http::HttpStatusCode::OK},
+            {
+                s3::err::S3ErrorCode::MalformedPolicyAsync,
+                "MalformedPolicy",
+                "The specified policy syntax is not valid.",
+                0,
+                s3::http::HttpStatusCode::OK,
+            },
         },
         {
             s3::err::S3ErrorCode::TooManyTags,
@@ -1547,21 +1563,43 @@ namespace
         },
         {
             s3::err::S3ErrorCode::ServiceUnavailable,
-            {s3::err::S3ErrorCode::ServiceUnavailable, "ServiceUnavailable", "Service is unable to handle request.", 0,
-             s3::http::HttpStatusCode::ServiceUnavailable},
+            {
+                s3::err::S3ErrorCode::ServiceUnavailable,
+                "ServiceUnavailable",
+                "Service is unable to handle request.",
+                0,
+                s3::http::HttpStatusCode::ServiceUnavailable,
+            },
         },
         {
             s3::err::S3ErrorCode::SlowDown,
-            {s3::err::S3ErrorCode::SlowDown, "SlowDown", "Please reduce your request rate.", 0, s3::http::HttpStatusCode::ServiceUnavailable},
+            {
+                s3::err::S3ErrorCode::SlowDown,
+                "SlowDown",
+                "Please reduce your request rate.",
+                0,
+                s3::http::HttpStatusCode::ServiceUnavailable,
+            },
         },
         {
             s3::err::S3ErrorCode::SlowDownObjectLambda,
-            {s3::err::S3ErrorCode::SlowDownObjectLambda, "SlowDown", "Reduce your request rate for operations involving AWS Lambda.", 0,
-             s3::http::HttpStatusCode::ServiceUnavailable},
+            {
+                s3::err::S3ErrorCode::SlowDownObjectLambda,
+                "SlowDown",
+                "Reduce your request rate for operations involving AWS Lambda.",
+                0,
+                s3::http::HttpStatusCode::ServiceUnavailable,
+            },
         },
         {
             s3::err::S3ErrorCode::SlowDownFSx,
-            {s3::err::S3ErrorCode::SlowDownFSx, "SlowDown", "Please reduce your request rate.", 0, s3::http::HttpStatusCode::ServiceUnavailable},
+            {
+                s3::err::S3ErrorCode::SlowDownFSx,
+                "SlowDown",
+                "Please reduce your request rate.",
+                0,
+                s3::http::HttpStatusCode::ServiceUnavailable,
+            },
         },
         {
             s3::err::S3ErrorCode::AmbiguousFieldName,
@@ -1575,7 +1613,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::Busy,
-            {s3::err::S3ErrorCode::Busy, "Busy", "The service is unavailable. Try again later.", 0, s3::http::HttpStatusCode::ServiceUnavailable},
+            {
+                s3::err::S3ErrorCode::Busy,
+                "Busy",
+                "The service is unavailable. Try again later.",
+                0,
+                s3::http::HttpStatusCode::ServiceUnavailable,
+            },
         },
         {
             s3::err::S3ErrorCode::CastFailed,
@@ -2150,7 +2194,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseEmptySelect,
                 "ParseEmptySelect",
-                "The SQL expression contains an emptySELECT clause.",
+                "The SQL expression contains an empty SELECT clause.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2330,7 +2374,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseInvalidContextForWildcardInSelectList,
                 "ParseInvalidContextForWildcardInSelectList",
-                "The use of* in theSELECT list in the SQL expression is not valid.",
+                "The use of* in the SELECT list in the SQL expression is not valid.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2390,7 +2434,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseSelectMissingFrom,
                 "ParseSelectMissingFrom",
-                "The SQL expression contains a missingFROM after theSELECT list.",
+                "The SQL expression contains a missing FROM after the SELECT list.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2460,7 +2504,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseUnsupportedCallWithStar,
                 "ParseUnsupportedCallWithStar",
-                "OnlyCOUNT with(*) as a parameter is supported in the SQL expression.",
+                "Only COUNT with(*) as a parameter is supported in the SQL expression.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2470,7 +2514,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseUnsupportedCase,
                 "ParseUnsupportedCase",
-                "The SQL expression contains an unsupported use ofCASE.",
+                "The SQL expression contains an unsupported use of CASE.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2480,7 +2524,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseUnsupportedCaseClause,
                 "ParseUnsupportedCaseClause",
-                "The SQL expression contains an unsupported use ofCASE.",
+                "The SQL expression contains an unsupported use of CASE.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2500,7 +2544,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseUnsupportedSelect,
                 "ParseUnsupportedSelect",
-                "The SQL expression contains an unsupported use ofSELECT.",
+                "The SQL expression contains an unsupported use of SELECT.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -3124,7 +3168,7 @@ namespace
             {
                 s3::err::S3ErrorCode::InvalidMatchAnyPrefix,
                 "InvalidMatchAnyPrefix",
-                "The MatchAnyPrefix parameter can’t be empty.",
+                "The MatchAnyPrefix parameter can't be empty.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -3469,9 +3513,9 @@ namespace
             {
                 s3::err::S3ErrorCode::AccessGrantsLocationsQuotaExceededError,
                 "AccessGrantsLocationsQuotaExceededError",
-                "The access grants location quota has been exceeded. Access Grants Locations Quota: <value>. Please reach out to S3 if an increase "
+                "The access grants location quota has been exceeded. Access Grants Locations Quota: {}. Please reach out to S3 if an increase "
                 "is required.",
-                0,
+                1,
                 s3::http::HttpStatusCode::Conflict,
             },
         },
