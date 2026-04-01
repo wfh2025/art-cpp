@@ -856,13 +856,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::MethodNotAllowed,
-            {s3::err::S3ErrorCode::MethodNotAllowed, "MethodNotAllowed", "The specified method is not allowed against this resource.", 0,
-             s3::http::HttpStatusCode::MethodNotAllowed},
-        },
-        {
-            s3::err::S3ErrorCode::MethodNotAllowedSelect,
-            {s3::err::S3ErrorCode::MethodNotAllowedSelect, "MethodNotAllowed", "The specified method is not allowed against this resource.", 0,
-             s3::http::HttpStatusCode::MethodNotAllowed},
+            {
+                s3::err::S3ErrorCode::MethodNotAllowed,
+                "MethodNotAllowed",
+                "The specified method is not allowed against this resource.",
+                0,
+                s3::http::HttpStatusCode::MethodNotAllowed,
+            },
         },
         {
             s3::err::S3ErrorCode::MissingAuthenticationToken,
@@ -1307,16 +1307,6 @@ namespace
             },
         },
         {
-            s3::err::S3ErrorCode::TagPolicyExceptionTagging,
-            {
-                s3::err::S3ErrorCode::TagPolicyExceptionTagging,
-                "TagPolicyException",
-                "The tag policy does not allow the specified value for the following tag key.",
-                0,
-                s3::http::HttpStatusCode::BadRequest,
-            },
-        },
-        {
             s3::err::S3ErrorCode::TemporaryRedirect,
             {
                 s3::err::S3ErrorCode::TemporaryRedirect,
@@ -1613,16 +1603,6 @@ namespace
             },
         },
         {
-            s3::err::S3ErrorCode::SlowDownFSx,
-            {
-                s3::err::S3ErrorCode::SlowDownFSx,
-                "SlowDown",
-                "Please reduce your request rate.",
-                0,
-                s3::http::HttpStatusCode::ServiceUnavailable,
-            },
-        },
-        {
             s3::err::S3ErrorCode::AmbiguousFieldName,
             {
                 s3::err::S3ErrorCode::AmbiguousFieldName,
@@ -1862,16 +1842,6 @@ namespace
                 "An integer overflow or underflow occurred in the SQL expression.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
-            },
-        },
-        {
-            s3::err::S3ErrorCode::InternalErrorSelect2,
-            {
-                s3::err::S3ErrorCode::InternalErrorSelect2,
-                "InternalError",
-                "An internal error occurred.",
-                0,
-                s3::http::HttpStatusCode::InternalServerError,
             },
         },
         {
@@ -3590,16 +3560,6 @@ namespace
             s3::err::S3ErrorCode::InvalidResourcePolicy,
             {
                 s3::err::S3ErrorCode::InvalidResourcePolicy,
-                "InvalidResourcePolicy",
-                "The specified Resource Policy is invalid",
-                0,
-                s3::http::HttpStatusCode::BadRequest,
-            },
-        },
-        {
-            s3::err::S3ErrorCode::InvalidResourcePolicyAccessGrants,
-            {
-                s3::err::S3ErrorCode::InvalidResourcePolicyAccessGrants,
                 "InvalidResourcePolicy",
                 "The specified Resource Policy is invalid",
                 0,
