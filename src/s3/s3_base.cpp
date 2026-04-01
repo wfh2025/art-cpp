@@ -63,26 +63,16 @@ namespace s3
             _val = 0;
         }
 
-        OptI64::OptI64() noexcept : _has(false), _val(0)
-        {
-            SPDLOG_DEBUG("fn: OptI64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptI64::OptI64() noexcept : _has(false), _val(0) {}
 
-        OptI64::OptI64(int64_t val) noexcept : _has(true), _val(val)
-        {
-            SPDLOG_DEBUG("fn: OptI64(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptI64::OptI64(int64_t val) noexcept : _has(true), _val(val) {}
 
-        OptI64::~OptI64() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptI64(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
-        }
+        OptI64::~OptI64() noexcept {}
 
         OptI64& OptI64::operator=(int64_t val) noexcept
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptI64& operator=(int64_t val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(&_val));
             return *this;
         }
 
@@ -160,33 +150,18 @@ namespace s3
             _val = 0.0;
         }
 
-        OptStr::OptStr() noexcept : _has(false), _val()
-        {
-            SPDLOG_DEBUG("fn: OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
-        }
+        OptStr::OptStr() noexcept : _has(false), _val() {}
 
-        OptStr::OptStr(const char* s) : _has(s != nullptr), _val((s != nullptr) ? s : "")
-        {
-            SPDLOG_DEBUG("fn: OptStr(const char* s), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
-        }
+        OptStr::OptStr(const char* s) : _has(s != nullptr), _val((s != nullptr) ? s : "") {}
 
-        OptStr::OptStr(const std::string& val) : _has(true), _val(val)
-        {
-            SPDLOG_DEBUG("fn: OptStr(const std::string& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
-                         fmt::ptr(_val.data()));
-        }
+        OptStr::OptStr(const std::string& val) : _has(true), _val(val) {}
 
-        OptStr::OptStr(std::string&& val) : _has(true), _val(std::move(val))
-        {
-            SPDLOG_DEBUG("fn: OptStr(std::string&& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
-        }
+        OptStr::OptStr(std::string&& val) : _has(true), _val(std::move(val)) {}
 
         OptStr& OptStr::operator=(const std::string& val)
         {
             _has = true;
             _val = val;
-            SPDLOG_DEBUG("fn: OptStr& operator=(const std::string& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
-                         fmt::ptr(_val.data()));
             return *this;
         }
 
@@ -201,8 +176,6 @@ namespace s3
             {
                 reset();
             }
-            SPDLOG_DEBUG("fn: OptStr& operator=(const char* s), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
-                         fmt::ptr(_val.data()));
             return *this;
         }
 
@@ -210,8 +183,6 @@ namespace s3
         {
             _has = true;
             _val = std::move(val);
-            SPDLOG_DEBUG("fn: OptStr& operator=(std::string&& val), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val,
-                         fmt::ptr(_val.data()));
             return *this;
         }
 
@@ -231,9 +202,6 @@ namespace s3
             _val.clear();
         }
 
-        OptStr::~OptStr() noexcept
-        {
-            SPDLOG_DEBUG("fn: ~OptStr(), this: {}, has: {}, val: {}, &val: {}", fmt::ptr(this), _has, _val, fmt::ptr(_val.data()));
-        }
+        OptStr::~OptStr() noexcept {}
     } // namespace base
 } // namespace s3
