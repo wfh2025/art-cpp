@@ -359,7 +359,6 @@ namespace s3
             AccessGrantsLocationAlreadyExistsError,
             AccessGrantsLocationNotEmptyError,
             AccessGrantsLocationsQuotaExceededError,
-            AccessGrantsQuotaExceededErrorAccessGrants,
             InvalidAccessGrant,
             InvalidAccessGrantsLocation,
             InvalidIamRole,

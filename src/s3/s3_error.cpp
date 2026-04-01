@@ -961,7 +961,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::NoSuchBucketAsync,
-            {s3::err::S3ErrorCode::NoSuchBucketAsync, "NoSuchBucket", "The specified bucket does not exist.", 0, s3::http::HttpStatusCode::OK},
+            {
+                s3::err::S3ErrorCode::NoSuchBucketAsync,
+                "NoSuchBucket",
+                "The specified bucket does not exist.",
+                0,
+                s3::http::HttpStatusCode::OK,
+            },
         },
         {
             s3::err::S3ErrorCode::NoSuchBucketPolicy,
@@ -1015,8 +1021,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::NoSuchMultiRegionAccessPointAsync,
-            {s3::err::S3ErrorCode::NoSuchMultiRegionAccessPointAsync, "NoSuchMultiRegionAccessPoint",
-             "The specified Multi-Region Access Point does not exist.", 0, s3::http::HttpStatusCode::OK},
+            {
+                s3::err::S3ErrorCode::NoSuchMultiRegionAccessPointAsync,
+                "NoSuchMultiRegionAccessPoint",
+                "The specified Multi-Region Access Point does not exist.",
+                0,
+                s3::http::HttpStatusCode::OK,
+            },
         },
         {
             s3::err::S3ErrorCode::NoSuchObjectLockConfiguration,
@@ -1392,8 +1403,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::UnauthorizedAccess,
-            {s3::err::S3ErrorCode::UnauthorizedAccess, "UnauthorizedAccess", "You are not authorized to perform this operation.", 0,
-             s3::http::HttpStatusCode::Unauthorized},
+            {
+                s3::err::S3ErrorCode::UnauthorizedAccess,
+                "UnauthorizedAccess",
+                "You are not authorized to perform this operation.",
+                0,
+                s3::http::HttpStatusCode::Unauthorized,
+            },
         },
         {
             s3::err::S3ErrorCode::UnauthorizedAccessError,
@@ -1558,8 +1574,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::InsufficientCapacity,
-            {s3::err::S3ErrorCode::InsufficientCapacity, "InsufficientCapacity", "Insufficient capacity.", 0,
-             s3::http::HttpStatusCode::InsufficientStorage},
+            {
+                s3::err::S3ErrorCode::InsufficientCapacity,
+                "InsufficientCapacity",
+                "Insufficient capacity.",
+                0,
+                s3::http::HttpStatusCode::InsufficientStorage,
+            },
         },
         {
             s3::err::S3ErrorCode::ServiceUnavailable,
@@ -1646,7 +1667,7 @@ namespace
             {
                 s3::err::S3ErrorCode::CSVEscapingRecordDelimiter,
                 "CSVEscapingRecordDelimiter",
-                "A quoted record delimiter was found in the file. To allow quoted record delimiters, setAllowQuotedRecordDelimiter to'TRUE'.",
+                "A quoted record delimiter was found in the file. To allow quoted record delimiters, setAllowQuotedRecordDelimiter to 'TRUE'.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -1666,7 +1687,8 @@ namespace
             {
                 s3::err::S3ErrorCode::CSVUnescapedQuote,
                 "CSVUnescapedQuote",
-                "An unescaped quote was found while parsing the CSV file. To allow quoted record delimiters, setAllowQuotedRecordDelimiter to'TRUE'.",
+                "An unescaped quote was found while parsing the CSV file. To allow quoted record delimiters, setAllowQuotedRecordDelimiter to "
+                "'TRUE'.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -1844,8 +1866,13 @@ namespace
         },
         {
             s3::err::S3ErrorCode::InternalErrorSelect2,
-            {s3::err::S3ErrorCode::InternalErrorSelect2, "InternalError", "An internal error occurred.", 0,
-             s3::http::HttpStatusCode::InternalServerError},
+            {
+                s3::err::S3ErrorCode::InternalErrorSelect2,
+                "InternalError",
+                "An internal error occurred.",
+                0,
+                s3::http::HttpStatusCode::InternalServerError,
+            },
         },
         {
             s3::err::S3ErrorCode::InvalidCast,
@@ -1912,7 +1939,7 @@ namespace
             {
                 s3::err::S3ErrorCode::InvalidFileHeaderInfo,
                 "InvalidFileHeaderInfo",
-                "TheFileHeaderInfo value is not valid. OnlyNONE,USE, andIGNORE are supported.",
+                "The FileHeaderInfo value is not valid. Only NONE, USE, and IGNORE are supported.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2073,7 +2100,7 @@ namespace
             {
                 s3::err::S3ErrorCode::MissingRequiredParameter,
                 "MissingRequiredParameter",
-                "TheSelectRequest entity is missing a required parameter. Check the service documentation and try again.",
+                "The SelectRequest entity is missing a required parameter. Check the service documentation and try again.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2103,8 +2130,8 @@ namespace
             {
                 s3::err::S3ErrorCode::ObjectSerializationConflict,
                 "ObjectSerializationConflict",
-                "InputSerialization specifies more than one format (CSV, JSON, or Parquet), orOutputSerialization specifies more than one format "
-                "(CSV or JSON). ForInputSerialization andOutputSerialization, you can specify only one format for each.",
+                "InputSerialization specifies more than one format (CSV, JSON, or Parquet), or OutputSerialization specifies more than one format "
+                "(CSV or JSON). For InputSerialization and OutputSerialization, you can specify only one format for each.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2134,7 +2161,7 @@ namespace
             {
                 s3::err::S3ErrorCode::OverMaxRecordSize,
                 "OverMaxRecordSize",
-                "The length of a record in the input or result is greater than themaxCharsPerRecord limit of 1 MB.",
+                "The length of a record in the input or result is greater than the maxCharsPerRecord limit of 1 MB.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2164,7 +2191,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseAsteriskIsNotAloneInSelectList,
                 "ParseAsteriskIsNotAloneInSelectList",
-                "Other expressions are not allowed in theSELECT list when* is used without dot notation in the SQL expression.",
+                "Other expressions are not allowed in the SELECT list when * is used without dot notation in the SQL expression.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2174,7 +2201,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseCannotMixSqbAndWildcardInSelectList,
                 "ParseCannotMixSqbAndWildcardInSelectList",
-                "Cannot mix[] and* in the same expression in aSELECT list in the SQL expression.",
+                "Cannot mix [] and * in the same expression in a SELECT list in the SQL expression.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2184,7 +2211,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseCastArity,
                 "ParseCastArity",
-                "The SQL expressionCAST has incorrect arity.",
+                "The SQL expression CAST has incorrect arity.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2254,7 +2281,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseExpectedIdentForAt,
                 "ParseExpectedIdentForAt",
-                "The expected identifier forAT name in the SQL expression was not found.",
+                "The expected identifier for AT name in the SQL expression was not found.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2284,7 +2311,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseExpectedLeftParenAfterCast,
                 "ParseExpectedLeftParenAfterCast",
-                "The expected left parenthesis afterCAST in the SQL expression was not found.",
+                "The expected left parenthesis after CAST in the SQL expression was not found.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2364,7 +2391,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseExpectedWhenClause,
                 "ParseExpectedWhenClause",
-                "The expectedWHEN clause in the SQL expression was not found.CASE is not supported.",
+                "The expected WHEN clause in the SQL expression was not found. CASE is not supported.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2374,7 +2401,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseInvalidContextForWildcardInSelectList,
                 "ParseInvalidContextForWildcardInSelectList",
-                "The use of* in the SELECT list in the SQL expression is not valid.",
+                "The use of * in the SELECT list in the SQL expression is not valid.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2494,7 +2521,7 @@ namespace
             {
                 s3::err::S3ErrorCode::ParseUnsupportedAlias,
                 "ParseUnsupportedAlias",
-                "The SQL expression contains an unsupported use ofALIAS.",
+                "The SQL expression contains an unsupported use of ALIAS.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -2654,7 +2681,7 @@ namespace
             {
                 s3::err::S3ErrorCode::UnsupportedStorageClass,
                 "UnsupportedStorageClass",
-                "We encountered a storage class that is not supported. Only STANDARD, STANDARD_IA, and",
+                "We encountered a storage class that is not supported. Only STANDARD, STANDARD_IA, and ONEZONE_IA storage classes are supported.",
                 0,
                 s3::http::HttpStatusCode::BadRequest,
             },
@@ -3515,16 +3542,6 @@ namespace
                 "AccessGrantsLocationsQuotaExceededError",
                 "The access grants location quota has been exceeded. Access Grants Locations Quota: {}. Please reach out to S3 if an increase "
                 "is required.",
-                1,
-                s3::http::HttpStatusCode::Conflict,
-            },
-        },
-        {
-            s3::err::S3ErrorCode::AccessGrantsQuotaExceededErrorAccessGrants,
-            {
-                s3::err::S3ErrorCode::AccessGrantsQuotaExceededErrorAccessGrants,
-                "AccessGrantsQuotaExceededError",
-                "The access grants quota has been exceeded. Access Grants Quota: {}. Please reach out to S3 if an increase is required.",
                 1,
                 s3::http::HttpStatusCode::Conflict,
             },
