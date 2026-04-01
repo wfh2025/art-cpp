@@ -11,6 +11,45 @@
 #include "tinyformat/tinyformat.h"
 #include "ut_config.h"
 
+TEST(s3_base_DateTime, 001)
+{
+    const char* format = "%Y-%m-%d %H:%M:%S";
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateCurrentHour());                  // 23
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimestampAsString(format));   // 2026-04-01 15:40:07
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimeWithMsPrecision());       // 2026-04-01 15:40:07.693
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateLocalTimestampAsString(format)); // 2026-04-01 23:40:07
+    SPDLOG_INFO("{}", s3::base::DateTime::ComputeCurrentTimestampInAmazonFormat()); // 1775058007.69331
+    SPDLOG_INFO("{}", s3::base::DateTime::CurrentTimeMillis());                     // 1775058007693
+
+    s3::base::DateTime nowDateTime = s3::base::DateTime::Now();
+
+    SPDLOG_INFO("{}", nowDateTime.WasParseSuccessful());
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601));
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601_BASIC));
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::RFC822));
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(format));
+
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601));
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601_BASIC));
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::RFC822));
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(format));
+
+    SPDLOG_INFO("{}", nowDateTime.ToGmtStringWithMs());
+    SPDLOG_INFO("{}", nowDateTime.SecondsWithMSPrecision());
+    SPDLOG_INFO("{}", nowDateTime.Seconds());
+    SPDLOG_INFO("{}", nowDateTime.Millis());
+    SPDLOG_INFO("{} => {}", nowDateTime.GetYear(false), nowDateTime.GetYear(true));
+    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetMonth(false), (int)nowDateTime.GetMonth(true));
+    SPDLOG_INFO("{} => {}", nowDateTime.GetDay(false), nowDateTime.GetDay(true));
+    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetDayOfWeek(false), (int)nowDateTime.GetDayOfWeek(true));
+    SPDLOG_INFO("{} => {}", nowDateTime.GetHour(false), nowDateTime.GetHour(true));
+    SPDLOG_INFO("{} => {}", nowDateTime.GetMinute(false), nowDateTime.GetMinute(true));
+    SPDLOG_INFO("{} => {}", nowDateTime.GetMinute(false), nowDateTime.GetMinute(true));
+    SPDLOG_INFO("{} => {}", nowDateTime.GetSecond(false), nowDateTime.GetSecond(true));
+    nowDateTime.UnderlyingTimestamp();
+}
+
+#ifdef RUN_ALL_TEST_CASE
 TEST(s3_resp_toXml_CreateMultipartUploadResult, 001)
 {
     s3::model::CreateMultipartUploadResult res;
@@ -26,10 +65,8 @@ TEST(s3_resp_toXml_CreateMultipartUploadResult, 001)
     res.sSECustomerAlgorithm = "sSECustomerAlgorithm";
     res.uploadId = "uploadId";
     std::string xml = s3::resp::toXml(res);
-    std::cout << xml << std::endl;
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(s3_req_parseDeleteObjectsBodyXml, 001)
 {
     const std::string body =
