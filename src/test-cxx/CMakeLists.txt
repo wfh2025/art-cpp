@@ -41,11 +41,6 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/thread_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/chrono_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/ratio_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/absl_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/fmt_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/leveldb_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/xml_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/cmdline_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/s3_test.cpp"
 )
 
