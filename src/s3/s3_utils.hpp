@@ -1,7 +1,9 @@
 #pragma once
+#include <algorithm>
 #include <chrono>
 #include <cstdint>
 #include <string>
+#include <vector>
 
 #include "s3_base.hpp"
 

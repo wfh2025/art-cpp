@@ -20,13 +20,13 @@ namespace s3
             pugi::xml_document doc;
             if (doc.load_buffer(body.data(), body.size()).status != pugi::status_ok)
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             pugi::xml_node taggingNode = doc.child("Tagging");
             if (taggingNode.empty())
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             pugi::xml_node tagSetNode = taggingNode.child("TagSet");
@@ -79,13 +79,13 @@ namespace s3
             pugi::xml_document doc;
             if (doc.load_buffer(body.data(), body.size()).status != pugi::status_ok)
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             pugi::xml_node root = doc.child("CompleteMultipartUpload");
             if (root.empty())
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             for (pugi::xml_node partNode = root.child("Part"); !partNode.empty(); partNode = partNode.next_sibling("Part"))
@@ -93,30 +93,30 @@ namespace s3
                 pugi::xml_node eTagNode = partNode.child("ETag");
                 if (eTagNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::InvalidPart;
                 }
                 const char* eTagText = eTagNode.child_value();
                 if (s3::utils::isNullOrEmpty(eTagText))
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::InvalidPart;
                 }
 
                 pugi::xml_node partNumberNode = partNode.child("PartNumber");
                 if (partNumberNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::InvalidPart;
                 }
 
                 const char* partNumberText = partNumberNode.child_value();
                 if (s3::utils::isNullOrEmpty(partNumberText))
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::InvalidPart;
                 }
 
                 s3::base::OptI64 partNumber = s3::utils::parseInt64(partNumberText);
                 if ((partNumber.has() == false) || ((partNumber.value() <= 0) || (partNumber.value() > 10000)))
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::InvalidPart;
                 }
 
                 model::CompletedPart part;
@@ -154,7 +154,7 @@ namespace s3
 
             if (uploadParts.parts.empty())
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             return s3::err::S3ErrorCode::Ok;
@@ -174,13 +174,13 @@ namespace s3
             pugi::xml_document doc;
             if (doc.load_buffer(body.data(), body.size()).status != pugi::status_ok)
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             pugi::xml_node root = doc.child("Delete");
             if (root.empty())
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             pugi::xml_node quietNode = root.child("Quiet");
@@ -189,7 +189,7 @@ namespace s3
                 pugi::xml_text quietText = quietNode.text();
                 if (quietText.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::MalformedXML;
                 }
                 deleteNode.quiet = quietText.as_bool(false);
             }
@@ -204,12 +204,12 @@ namespace s3
                 pugi::xml_node keyNode = objectNode.child("Key");
                 if (keyNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::MalformedXML;
                 }
                 const char* keyText = keyNode.child_value();
                 if (s3::utils::isNullOrEmpty(keyText))
                 {
-                    return s3::err::S3ErrorCode::InvalidRequest;
+                    return s3::err::S3ErrorCode::MalformedXML;
                 }
 
                 model::ObjectIdentifier oid;
@@ -239,12 +239,12 @@ namespace s3
                     const char* sizeText = sizeNode.child_value();
                     if (s3::utils::isNullOrEmpty(sizeText))
                     {
-                        return s3::err::S3ErrorCode::InvalidRequest;
+                        return s3::err::S3ErrorCode::MalformedXML;
                     }
                     s3::base::OptI64 sizeVal = s3::utils::parseInt64(std::string(sizeText));
                     if (!sizeVal.has())
                     {
-                        return s3::err::S3ErrorCode::InvalidRequest;
+                        return s3::err::S3ErrorCode::MalformedXML;
                     }
                     oid.size = sizeVal.value();
                 }
@@ -254,7 +254,7 @@ namespace s3
 
             if (deleteNode.objects.empty())
             {
-                return s3::err::S3ErrorCode::InvalidRequest;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
 
             return s3::err::S3ErrorCode::Ok;
