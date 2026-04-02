@@ -1,10 +1,27 @@
 #include "s3_utils.hpp"
 
+#include <array>
 #include <iomanip>
+#include <random>
 #include <sstream>
 
 namespace
 {
+    std::mt19937_64& randomEngineForThread()
+    {
+        thread_local std::mt19937_64 rng([]() -> std::mt19937_64 {
+            std::random_device rd;
+            std::array<std::uint32_t, 8> seeds;
+            for (std::size_t i = 0; i < seeds.size(); ++i)
+            {
+                seeds[i] = rd();
+            }
+            std::seed_seq seq(seeds.begin(), seeds.end());
+            return std::mt19937_64(seq);
+        }());
+        return rng;
+    }
+
     bool looksLikeIpv4Format(const std::string& s)
     {
         int parts = 0;
@@ -347,6 +364,30 @@ namespace s3
                 return false;
             }
             return text.compare(text.size() - suffix.size(), suffix.size(), suffix) == 0;
+        }
+
+        std::string StringUtils::RandomString(size_t length)
+        {
+            static const char kAlphanumeric[] = "0123456789"
+                                                "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                                                "abcdefghijklmnopqrstuvwxyz";
+            static const size_t kAlphanumericLen = sizeof(kAlphanumeric) - 1;
+
+            std::string out;
+            if (length == 0)
+            {
+                return out;
+            }
+            out.reserve(length);
+
+            std::mt19937_64& rng = randomEngineForThread();
+            std::uniform_int_distribution<std::size_t> dist(0, kAlphanumericLen - 1);
+
+            for (std::size_t i = 0; i < length; ++i)
+            {
+                out.push_back(kAlphanumeric[dist(rng)]);
+            }
+            return out;
         }
 
         std::vector<std::string> StringUtils::Split(const std::string& toSplit, char splitOn)

@@ -41,6 +41,17 @@ TEST(s3_utils_StringUtils, 001)
     EXPECT_TRUE(StringUtils::EndsWith("abcdef", ""));
     EXPECT_FALSE(StringUtils::EndsWith("ab", "abc"));
 
+    // RandomString
+    EXPECT_TRUE(StringUtils::RandomString(0).empty());
+    {
+        const std::string r = StringUtils::RandomString(64);
+        EXPECT_EQ(r.size(), 64u);
+        for (size_t i = 0; i < r.size(); ++i)
+        {
+            EXPECT_TRUE(StringUtils::IsAlnum(r[i]));
+        }
+    }
+
     // URL encode/decode
     EXPECT_EQ(StringUtils::URLEncode("a b+"), "a%20b%2B");
     EXPECT_EQ(StringUtils::URLEncode(std::string("x y")), "x%20y");

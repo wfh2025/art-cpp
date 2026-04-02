@@ -55,6 +55,14 @@ namespace s3
             static bool EndsWith(const std::string& text, const std::string& suffix);
 
             /**
+             * Returns a pseudorandom string of exactly `length` characters from [0-9A-Za-z].
+             * C++11; pre-reserves output; per-thread std::mt19937_64 seeded from std::random_device
+             * via std::seed_seq (no mutex). Suitable for non-crypto IDs and load tests.
+             * Not a standards-guaranteed CSPRNG — use OS crypto (e.g. getrandom, BCrypt) for secrets.
+             */
+            static std::string RandomString(size_t length);
+
+            /**
              * URL encodes a string (uses %20 not + for spaces).
              */
             static std::string URLEncode(const char* unsafe);
