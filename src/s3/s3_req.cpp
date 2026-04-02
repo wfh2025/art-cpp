@@ -113,7 +113,7 @@ namespace s3
                     return s3::err::S3ErrorCode::InvalidPart;
                 }
 
-                s3::base::OptI64 partNumber = s3::utils::parseInt64(partNumberText);
+                s3::base::OptI64 partNumber = s3::utils::parseInt64(std::string(partNumberText));
                 if ((partNumber.has() == false) || ((partNumber.value() <= 0) || (partNumber.value() > 10000)))
                 {
                     return s3::err::S3ErrorCode::InvalidPart;

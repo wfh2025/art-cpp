@@ -161,15 +161,6 @@ namespace s3
             return s == nullptr || s[0] == '\0';
         }
 
-        s3::base::OptI64 parseInt64(const char* s)
-        {
-            if (isNullOrEmpty(s))
-            {
-                return s3::base::OptI64{};
-            }
-            return parseInt64(std::string(s));
-        }
-
         s3::base::OptI64 parseInt64(const std::string& str)
         {
             s3::base::OptI64 optVal;
