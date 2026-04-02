@@ -1,5 +1,6 @@
 #include "s3_req.hpp"
 
+#include <set>
 #include <string>
 
 #include "pugixml.hpp"
@@ -32,37 +33,48 @@ namespace s3
             pugi::xml_node tagSetNode = taggingNode.child("TagSet");
             if (tagSetNode.empty())
             {
-                return s3::err::S3ErrorCode::InvalidTagTagging;
+                return s3::err::S3ErrorCode::MalformedXML;
             }
+
+            constexpr std::size_t kMaxObjectTagCount = 10;
+            std::set<std::string> seenKeys;
 
             for (pugi::xml_node tagNode = tagSetNode.child("Tag"); !tagNode.empty(); tagNode = tagNode.next_sibling("Tag"))
             {
+                if (tagging.tagSet.size() >= kMaxObjectTagCount)
+                {
+                    return s3::err::S3ErrorCode::TooManyTags;
+                }
+
                 pugi::xml_node keyNode = tagNode.child("Key");
                 pugi::xml_node valueNode = tagNode.child("Value");
-                if (keyNode.empty())
+                if (keyNode.empty() || valueNode.empty())
                 {
-                    return s3::err::S3ErrorCode::InvalidTagTagging;
-                }
-                if (valueNode.empty())
-                {
-                    return s3::err::S3ErrorCode::InvalidTagTagging;
+                    return s3::err::S3ErrorCode::InvalidTag;
                 }
 
                 const char* keyText = keyNode.child_value();
                 if (s3::utils::isNullOrEmpty(keyText))
                 {
-                    return s3::err::S3ErrorCode::InvalidTagTagging;
+                    return s3::err::S3ErrorCode::InvalidTag;
                 }
 
                 model::Tag tag;
                 tag.key = keyText;
                 tag.value = valueNode.child_value();
-                tagging.tagSet.push_back(tag);
-            }
 
-            if (tagging.tagSet.empty())
-            {
-                return s3::err::S3ErrorCode::InvalidTagTagging;
+                if (!seenKeys.insert(tag.key).second)
+                {
+                    return s3::err::S3ErrorCode::InvalidTag;
+                }
+
+                const s3::err::S3ErrorCode tagErr = s3::utils::validateObjectTag(tag.key, tag.value);
+                if (tagErr != s3::err::S3ErrorCode::Ok)
+                {
+                    return tagErr;
+                }
+
+                tagging.tagSet.push_back(std::move(tag));
             }
 
             return s3::err::S3ErrorCode::Ok;

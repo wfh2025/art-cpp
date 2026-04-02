@@ -159,6 +159,31 @@ TEST(s3_utils_object_key_validation, 001)
     EXPECT_EQ(validateObjectKey(invalidUtf8), S3ErrorCode::InvalidKey);
 }
 
+TEST(s3_utils_object_tag_validation, 001)
+{
+    using s3::err::S3ErrorCode;
+    using s3::utils::validateObjectTag;
+
+    EXPECT_EQ(validateObjectTag("Project", "Blue"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectTag("k", ""), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectTag("a/b@c:test-1=ok.+", "x"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectTag("bad#", "1"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectTag(u8"\u9879\u76EE", u8"\u503C"), S3ErrorCode::Ok);
+
+    EXPECT_EQ(validateObjectTag("", "v"), S3ErrorCode::InvalidTag);
+    EXPECT_EQ(validateObjectTag("aws:reserved", "v"), S3ErrorCode::InvalidTag);
+    EXPECT_EQ(validateObjectTag(std::string("x\x0B", 2), "1"), S3ErrorCode::InvalidTag);
+    EXPECT_EQ(validateObjectTag(std::string("a\0b", 3), "v"), S3ErrorCode::InvalidTag);
+
+    const std::string key129(129, 'a');
+    EXPECT_EQ(validateObjectTag(key129, "x"), S3ErrorCode::InvalidTag);
+    const std::string val257(257, 'b');
+    EXPECT_EQ(validateObjectTag("k", val257), S3ErrorCode::InvalidTag);
+
+    const std::string invalidUtf8Key("k\xC3\x28", 3);
+    EXPECT_EQ(validateObjectTag(invalidUtf8Key, "v"), S3ErrorCode::InvalidTag);
+}
+
 TEST(s3_base_DateTime, 001)
 {
     // caution: 当前操作系统显示时间, 2026-04-02 21:44:29
@@ -278,6 +303,47 @@ TEST(s3_req_parsePutObjectTaggingBodyXml, 001)
     EXPECT_EQ(tagging.tagSet[0].value, "v1");
     EXPECT_EQ(tagging.tagSet[1].key, "k2");
     EXPECT_EQ(tagging.tagSet[1].value, "v2");
+}
+
+TEST(s3_req_parsePutObjectTaggingBodyXml, 002_empty_tagset)
+{
+    const std::string body = R"(
+<Tagging xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <TagSet></TagSet>
+</Tagging>
+)";
+    s3::model::Tagging tagging;
+    tagging.tagSet.emplace_back();
+    EXPECT_EQ(s3::req::parsePutObjectTaggingBodyXml(body, tagging), s3::err::S3ErrorCode::Ok);
+    EXPECT_TRUE(tagging.tagSet.empty());
+}
+
+TEST(s3_req_parsePutObjectTaggingBodyXml, 003_too_many_tags)
+{
+    std::string body = "<Tagging xmlns=\"http://s3.amazonaws.com/doc/2006-03-01/\"><TagSet>";
+    for (int i = 0; i < 11; ++i)
+    {
+        body += "<Tag><Key>k";
+        body += char('0' + i);
+        body += "</Key><Value>v</Value></Tag>";
+    }
+    body += "</TagSet></Tagging>";
+    s3::model::Tagging tagging;
+    EXPECT_EQ(s3::req::parsePutObjectTaggingBodyXml(body, tagging), s3::err::S3ErrorCode::TooManyTags);
+}
+
+TEST(s3_req_parsePutObjectTaggingBodyXml, 004_duplicate_keys)
+{
+    const std::string body = R"(
+<Tagging xmlns="http://s3.amazonaws.com/doc/2006-03-01/">
+    <TagSet>
+        <Tag><Key>a</Key><Value>1</Value></Tag>
+        <Tag><Key>a</Key><Value>2</Value></Tag>
+    </TagSet>
+</Tagging>
+)";
+    s3::model::Tagging tagging;
+    EXPECT_EQ(s3::req::parsePutObjectTaggingBodyXml(body, tagging), s3::err::S3ErrorCode::InvalidTag);
 }
 
 TEST(s3_req_parseCompleteMultipartUploadBodyXml, 001)

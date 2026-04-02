@@ -134,6 +134,141 @@ namespace
         return true;
     }
 
+    bool decodeOneUtf8Scalar(const std::string& s, size_t& i, std::uint32_t& cp)
+    {
+        if (i >= s.size())
+        {
+            return false;
+        }
+        unsigned char c0 = static_cast<unsigned char>(s[i]);
+        if (c0 <= 0x7F)
+        {
+            cp = c0;
+            i += 1;
+            return true;
+        }
+
+        if (c0 >= 0xC2 && c0 <= 0xDF)
+        {
+            if (i + 1 >= s.size())
+            {
+                return false;
+            }
+            unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+            if ((c1 & 0xC0) != 0x80)
+            {
+                return false;
+            }
+            cp = ((c0 & 0x1F) << 6) | (c1 & 0x3F);
+            i += 2;
+            return true;
+        }
+
+        if (c0 >= 0xE0 && c0 <= 0xEF)
+        {
+            if (i + 2 >= s.size())
+            {
+                return false;
+            }
+            unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+            unsigned char c2 = static_cast<unsigned char>(s[i + 2]);
+            if ((c1 & 0xC0) != 0x80 || (c2 & 0xC0) != 0x80)
+            {
+                return false;
+            }
+            if ((c0 == 0xE0 && c1 < 0xA0) || (c0 == 0xED && c1 >= 0xA0))
+            {
+                return false;
+            }
+            cp = ((c0 & 0x0F) << 12) | ((c1 & 0x3F) << 6) | (c2 & 0x3F);
+            i += 3;
+            return true;
+        }
+
+        if (c0 >= 0xF0 && c0 <= 0xF4)
+        {
+            if (i + 3 >= s.size())
+            {
+                return false;
+            }
+            unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+            unsigned char c2 = static_cast<unsigned char>(s[i + 2]);
+            unsigned char c3 = static_cast<unsigned char>(s[i + 3]);
+            if ((c1 & 0xC0) != 0x80 || (c2 & 0xC0) != 0x80 || (c3 & 0xC0) != 0x80)
+            {
+                return false;
+            }
+            if ((c0 == 0xF0 && c1 < 0x90) || (c0 == 0xF4 && c1 > 0x8F))
+            {
+                return false;
+            }
+            cp = ((static_cast<std::uint32_t>(c0) & 0x07) << 18) | ((static_cast<std::uint32_t>(c1) & 0x3F) << 12) |
+                 ((static_cast<std::uint32_t>(c2) & 0x3F) << 6) | (static_cast<std::uint32_t>(c3) & 0x3F);
+            i += 4;
+            return true;
+        }
+
+        return false;
+    }
+
+    // S3 object tagging uses XML; restrict scalars to XML 1.0 Char (W3C XML 1.0).
+    bool isS3ObjectTagCodePointAllowed(std::uint32_t cp)
+    {
+        if (cp == 0x9 || cp == 0xA || cp == 0xD)
+        {
+            return true;
+        }
+        if (cp < 0x20)
+        {
+            return false;
+        }
+        if (cp <= 0xD7FF)
+        {
+            return true;
+        }
+        if (cp < 0xE000)
+        {
+            return false;
+        }
+        if (cp <= 0xFFFD)
+        {
+            return true;
+        }
+        if (cp < 0x10000)
+        {
+            return false;
+        }
+        return cp <= 0x10FFFF;
+    }
+
+    bool tagComponentWithinRules(const std::string& s, std::size_t maxScalars, bool allowEmpty)
+    {
+        if (s.empty())
+        {
+            return allowEmpty;
+        }
+        std::size_t count = 0;
+        std::size_t i = 0;
+        while (i < s.size())
+        {
+            std::uint32_t cp = 0;
+            if (!decodeOneUtf8Scalar(s, i, cp))
+            {
+                return false;
+            }
+            if (!isS3ObjectTagCodePointAllowed(cp))
+            {
+                return false;
+            }
+            ++count;
+            if (count > maxScalars)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     bool hasValidRelativePathSegments(const std::string& objectKey)
     {
         // AWS rule: while parsing left-to-right, cumulative ".." count must
@@ -285,6 +420,28 @@ namespace s3
             if (!hasValidRelativePathSegments(objectKey))
             {
                 return s3::err::S3ErrorCode::InvalidKey;
+            }
+            return s3::err::S3ErrorCode::Ok;
+        }
+
+        s3::err::S3ErrorCode validateObjectTag(const std::string& key, const std::string& value)
+        {
+            // https://docs.aws.amazon.com/AmazonS3/latest/userguide/object-tagging.html
+            if (key.empty())
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
+            }
+            if (StringUtils::StartsWith(key, "aws:"))
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
+            }
+            if (!tagComponentWithinRules(key, 128, false))
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
+            }
+            if (!tagComponentWithinRules(value, 256, true))
+            {
+                return s3::err::S3ErrorCode::InvalidTag;
             }
             return s3::err::S3ErrorCode::Ok;
         }

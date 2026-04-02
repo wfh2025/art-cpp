@@ -20,6 +20,14 @@ namespace s3
         s3::err::S3ErrorCode validateObjectKey(const std::string& objectKey);
 
         /**
+         * Validates one decoded S3 object tag (key + value): UTF-8, lengths in Unicode scalars,
+         * XML 1.0 Char whitelist (decoded tag strings from the XML body).
+         * User-defined keys must not use the reserved "aws:" prefix. Tag count and duplicate keys
+         * belong in the XML body parser (e.g. parsePutObjectTaggingBodyXml), not here.
+         */
+        s3::err::S3ErrorCode validateObjectTag(const std::string& key, const std::string& value);
+
+        /**
          * All the things the c++ stdlib is missing for string operations that I needed.
          */
         class StringUtils
