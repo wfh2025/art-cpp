@@ -8,48 +8,114 @@
 #include "s3/s3_resp.hpp"
 #include "s3/s3_utils.hpp"
 #include "spdlog/spdlog.h"
-#include "tinyformat/tinyformat.h"
 #include "ut_config.h"
+
+#ifdef RUN_ALL_TEST_CASE
+TEST(s3_utils_StringUtils, 001)
+{
+    using s3::utils::StringUtils;
+
+    // Replace
+    {
+        std::string s = "a-b-a";
+        StringUtils::Replace(s, "a", "xy");
+        EXPECT_EQ(s, "xy-b-xy");
+
+        StringUtils::Replace(s, nullptr, "z");
+        EXPECT_EQ(s, "xy-b-xy");
+        StringUtils::Replace(s, "xy", nullptr);
+        EXPECT_EQ(s, "xy-b-xy");
+    }
+
+    // ToLower / ToUpper / CaselessCompare
+    EXPECT_EQ(StringUtils::ToLower("AbC1_"), "abc1_");
+    EXPECT_EQ(StringUtils::ToUpper("AbC1_"), "ABC1_");
+    EXPECT_TRUE(StringUtils::CaselessCompare("HeLLo", "hello"));
+    EXPECT_FALSE(StringUtils::CaselessCompare("hello", "world"));
+
+    // URL encode/decode
+    EXPECT_EQ(StringUtils::URLEncode("a b+"), "a%20b%2B");
+    EXPECT_EQ(StringUtils::URLEncode(std::string("x y")), "x%20y");
+    EXPECT_EQ(StringUtils::URLEncode(1000.0), "1000");
+    EXPECT_EQ(StringUtils::URLDecode("a+b%2B"), "a b+");
+    EXPECT_EQ(StringUtils::URLDecode("%G1"), "%G1");
+
+    // UTF8Escape
+    {
+        const std::string input("A\x01B", 3);
+        EXPECT_EQ(StringUtils::UTF8Escape(input.c_str(), "%"), "A%1B");
+    }
+
+    // Split overloads
+    EXPECT_THAT(StringUtils::Split("a,,b,", ','), ::testing::ElementsAre("a", "b"));
+    EXPECT_THAT(StringUtils::Split("a,,b,", ',', StringUtils::SplitOptions::INCLUDE_EMPTY_ENTRIES), ::testing::ElementsAre("a", "", "b", ""));
+    EXPECT_THAT(StringUtils::Split("a,b,c", ',', 2), ::testing::ElementsAre("a", "b,c"));
+    EXPECT_THAT(StringUtils::Split("a,,b", ',', 10, StringUtils::SplitOptions::INCLUDE_EMPTY_SEGMENTS), ::testing::ElementsAre("a", "", "b"));
+    EXPECT_THAT(StringUtils::SplitWithSpaces("a,,b,", ','), ::testing::ElementsAre("a", "", "b"));
+    EXPECT_THAT(StringUtils::SplitOnLine("a\n\nb\n"), ::testing::ElementsAre("a", "b"));
+
+    // Trim
+    EXPECT_EQ(StringUtils::LTrim(" \t abc "), "abc ");
+    EXPECT_EQ(StringUtils::RTrim(" \t abc \n"), " \t abc");
+    EXPECT_EQ(StringUtils::Trim(" \n\t abc \r\n"), "abc");
+
+    // Convert
+    EXPECT_EQ(StringUtils::ConvertToInt64("12345"), 12345LL);
+    EXPECT_EQ(StringUtils::ConvertToInt64(nullptr), 0LL);
+    EXPECT_EQ(StringUtils::ConvertToInt32("42"), 42L);
+    EXPECT_EQ(StringUtils::ConvertToInt32(nullptr), 0L);
+    EXPECT_TRUE(StringUtils::ConvertToBool("true"));
+    EXPECT_TRUE(StringUtils::ConvertToBool("1"));
+    EXPECT_FALSE(StringUtils::ConvertToBool("false"));
+    EXPECT_FALSE(StringUtils::ConvertToBool(nullptr));
+    EXPECT_DOUBLE_EQ(StringUtils::ConvertToDouble("12.5"), 12.5);
+    EXPECT_DOUBLE_EQ(StringUtils::ConvertToDouble(nullptr), 0.0);
+
+    // Template and inline helpers
+    EXPECT_EQ(StringUtils::to_string(123), "123");
+    EXPECT_TRUE(StringUtils::IsAlnum('A'));
+    EXPECT_TRUE(StringUtils::IsAlnum('z'));
+    EXPECT_TRUE(StringUtils::IsAlnum('9'));
+    EXPECT_FALSE(StringUtils::IsAlnum('-'));
+    EXPECT_EQ(StringUtils::ToHexString(static_cast<uint32_t>(0)), "0");
+    EXPECT_EQ(StringUtils::ToHexString(static_cast<uint32_t>(0x1A2B)), "1A2B");
+}
 
 TEST(s3_base_DateTime, 001)
 {
+    // caution: 当前操作系统显示时间, 2026-04-02 21:44:29
     const char* format = "%Y-%m-%d %H:%M:%S";
-    SPDLOG_INFO("{}", s3::base::DateTime::CalculateCurrentHour());                  // 23
-    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimestampAsString(format));   // 2026-04-01 15:40:07
-    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimeWithMsPrecision());       // 2026-04-01 15:40:07.693
-    SPDLOG_INFO("{}", s3::base::DateTime::CalculateLocalTimestampAsString(format)); // 2026-04-01 23:40:07
-    SPDLOG_INFO("{}", s3::base::DateTime::ComputeCurrentTimestampInAmazonFormat()); // 1775058007.69331
-    SPDLOG_INFO("{}", s3::base::DateTime::CurrentTimeMillis());                     // 1775058007693
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateCurrentHour());                  // 21
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimestampAsString(format));   // 2026-04-02 13:44:29
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateGmtTimeWithMsPrecision());       // 2026-04-02 13:44:29.430
+    SPDLOG_INFO("{}", s3::base::DateTime::CalculateLocalTimestampAsString(format)); // 2026-04-02 21:44:29
+    SPDLOG_INFO("{}", s3::base::DateTime::ComputeCurrentTimestampInAmazonFormat()); // 1775137469.430724
+    SPDLOG_INFO("{}", s3::base::DateTime::CurrentTimeMillis());                     // 1775137469430
 
     s3::base::DateTime nowDateTime = s3::base::DateTime::Now();
-
-    SPDLOG_INFO("{}", nowDateTime.WasParseSuccessful());
-    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601));
-    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601_BASIC));
-    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::RFC822));
-    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(format));
-
-    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601));
-    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601_BASIC));
-    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::RFC822));
-    SPDLOG_INFO("{}", nowDateTime.ToGmtString(format));
-
-    SPDLOG_INFO("{}", nowDateTime.ToGmtStringWithMs());
-    SPDLOG_INFO("{}", nowDateTime.SecondsWithMSPrecision());
-    SPDLOG_INFO("{}", nowDateTime.Seconds());
-    SPDLOG_INFO("{}", nowDateTime.Millis());
-    SPDLOG_INFO("{} => {}", nowDateTime.GetYear(false), nowDateTime.GetYear(true));
-    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetMonth(false), (int)nowDateTime.GetMonth(true));
-    SPDLOG_INFO("{} => {}", nowDateTime.GetDay(false), nowDateTime.GetDay(true));
-    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetDayOfWeek(false), (int)nowDateTime.GetDayOfWeek(true));
-    SPDLOG_INFO("{} => {}", nowDateTime.GetHour(false), nowDateTime.GetHour(true));
-    SPDLOG_INFO("{} => {}", nowDateTime.GetMinute(false), nowDateTime.GetMinute(true));
-    SPDLOG_INFO("{} => {}", nowDateTime.GetMinute(false), nowDateTime.GetMinute(true));
-    SPDLOG_INFO("{} => {}", nowDateTime.GetSecond(false), nowDateTime.GetSecond(true));
+    SPDLOG_INFO("{}", nowDateTime.WasParseSuccessful());                                                // true
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601));                   // 2026-04-02T21:44:29Z
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::ISO_8601_BASIC));             // 20260402T214429Z
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(s3::base::DateFormat::RFC822));                     // Thu, 02 Apr 2026 21:44:29 CST
+    SPDLOG_INFO("{}", nowDateTime.ToLocalTimeString(format));                                           // 2026-04-02 21:44:29
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601));                         // 2026-04-02T13:44:29Z
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::ISO_8601_BASIC));                   // 20260402T134429Z
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(s3::base::DateFormat::RFC822));                           // Thu, 02 Apr 2026 13:44:29 GMT
+    SPDLOG_INFO("{}", nowDateTime.ToGmtString(format));                                                 // 2026-04-02 13:44:29
+    SPDLOG_INFO("{}", nowDateTime.ToGmtStringWithMs());                                                 // 2026-04-02T13:44:29.430
+    SPDLOG_INFO("{}", nowDateTime.SecondsWithMSPrecision());                                            // 1775137469.430761
+    SPDLOG_INFO("{}", nowDateTime.Seconds());                                                           // 1775137469
+    SPDLOG_INFO("{}", nowDateTime.Millis());                                                            // 1775137469430
+    SPDLOG_INFO("{} => {}", nowDateTime.GetYear(false), nowDateTime.GetYear(true));                     // 2026 => 2026
+    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetMonth(false), (int)nowDateTime.GetMonth(true));         // 3 => 3
+    SPDLOG_INFO("{} => {}", nowDateTime.GetDay(false), nowDateTime.GetDay(true));                       // 2 => 2
+    SPDLOG_INFO("{} => {}", (int)nowDateTime.GetDayOfWeek(false), (int)nowDateTime.GetDayOfWeek(true)); // 4 => 4
+    SPDLOG_INFO("{} => {}", nowDateTime.GetHour(false), nowDateTime.GetHour(true));                     // 13 => 21
+    SPDLOG_INFO("{} => {}", nowDateTime.GetMinute(false), nowDateTime.GetMinute(true));                 // 44 => 44
+    SPDLOG_INFO("{} => {}", nowDateTime.GetSecond(false), nowDateTime.GetSecond(true));                 // 29 => 29
     nowDateTime.UnderlyingTimestamp();
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(s3_resp_toXml_CreateMultipartUploadResult, 001)
 {
     s3::model::CreateMultipartUploadResult res;
