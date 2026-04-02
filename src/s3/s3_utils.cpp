@@ -3,6 +3,155 @@
 #include <iomanip>
 #include <sstream>
 
+namespace
+{
+    bool looksLikeIpv4Format(const std::string& s)
+    {
+        int parts = 0;
+        size_t i = 0;
+        while (i < s.size())
+        {
+            if (!(s[i] >= '0' && s[i] <= '9'))
+            {
+                return false;
+            }
+            size_t j = i;
+            while (j < s.size() && s[j] >= '0' && s[j] <= '9')
+            {
+                ++j;
+            }
+            ++parts;
+            if (parts > 4)
+            {
+                return false;
+            }
+            if (j == s.size())
+            {
+                i = j;
+                break;
+            }
+            if (s[j] != '.')
+            {
+                return false;
+            }
+            i = j + 1;
+            if (i == s.size())
+            {
+                return false;
+            }
+        }
+        return parts == 4;
+    }
+
+    bool isValidUtf8(const std::string& s)
+    {
+        for (size_t i = 0; i < s.size();)
+        {
+            unsigned char c = static_cast<unsigned char>(s[i]);
+            if (c <= 0x7F)
+            {
+                ++i;
+                continue;
+            }
+
+            if (c >= 0xC2 && c <= 0xDF)
+            {
+                if (i + 1 >= s.size())
+                {
+                    return false;
+                }
+                unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+                if ((c1 & 0xC0) != 0x80)
+                {
+                    return false;
+                }
+                i += 2;
+                continue;
+            }
+
+            if (c >= 0xE0 && c <= 0xEF)
+            {
+                if (i + 2 >= s.size())
+                {
+                    return false;
+                }
+                unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+                unsigned char c2 = static_cast<unsigned char>(s[i + 2]);
+                if ((c1 & 0xC0) != 0x80 || (c2 & 0xC0) != 0x80)
+                {
+                    return false;
+                }
+                // Reject overlong and UTF-16 surrogate range.
+                if ((c == 0xE0 && c1 < 0xA0) || (c == 0xED && c1 >= 0xA0))
+                {
+                    return false;
+                }
+                i += 3;
+                continue;
+            }
+
+            if (c >= 0xF0 && c <= 0xF4)
+            {
+                if (i + 3 >= s.size())
+                {
+                    return false;
+                }
+                unsigned char c1 = static_cast<unsigned char>(s[i + 1]);
+                unsigned char c2 = static_cast<unsigned char>(s[i + 2]);
+                unsigned char c3 = static_cast<unsigned char>(s[i + 3]);
+                if ((c1 & 0xC0) != 0x80 || (c2 & 0xC0) != 0x80 || (c3 & 0xC0) != 0x80)
+                {
+                    return false;
+                }
+                // Reject overlong and > U+10FFFF.
+                if ((c == 0xF0 && c1 < 0x90) || (c == 0xF4 && c1 > 0x8F))
+                {
+                    return false;
+                }
+                i += 4;
+                continue;
+            }
+
+            return false;
+        }
+        return true;
+    }
+
+    bool hasValidRelativePathSegments(const std::string& objectKey)
+    {
+        // AWS rule: while parsing left-to-right, cumulative ".." count must
+        // never exceed number of non-relative segments.
+        int depth = 0;
+        size_t start = 0;
+        while (start <= objectKey.size())
+        {
+            size_t slash = objectKey.find('/', start);
+            size_t end = (slash == std::string::npos) ? objectKey.size() : slash;
+            std::string segment = objectKey.substr(start, end - start);
+
+            if (segment == "..")
+            {
+                --depth;
+                if (depth < 0)
+                {
+                    return false;
+                }
+            }
+            else if (!segment.empty() && segment != ".")
+            {
+                ++depth;
+            }
+
+            if (slash == std::string::npos)
+            {
+                break;
+            }
+            start = slash + 1;
+        }
+        return true;
+    }
+} // namespace
+
 namespace s3
 {
     namespace utils
@@ -41,6 +190,95 @@ namespace s3
             }
             optVal = tmp;
             return optVal;
+        }
+
+        s3::err::S3ErrorCode validateBucketName(const std::string& bucketName)
+        {
+            // Length: 3..63
+            if (bucketName.size() < 3 || bucketName.size() > 63)
+            {
+                return s3::err::S3ErrorCode::InvalidBucketName;
+            }
+
+            // Allowed chars: lowercase letters, digits, '.', '-'
+            for (size_t i = 0; i < bucketName.size(); ++i)
+            {
+                char c = bucketName[i];
+                if (!(StringUtils::IsAlnum(c) || c == '.' || c == '-'))
+                {
+                    return s3::err::S3ErrorCode::InvalidBucketName;
+                }
+            }
+
+            // Must begin and end with letter or number
+            if (!StringUtils::IsAlnum(bucketName.front()) || !StringUtils::IsAlnum(bucketName.back()))
+            {
+                return s3::err::S3ErrorCode::InvalidBucketName;
+            }
+
+            // No adjacent dots
+            if (bucketName.find("..") != std::string::npos)
+            {
+                return s3::err::S3ErrorCode::InvalidBucketName;
+            }
+
+            // Must not be formatted as IP address
+            if (looksLikeIpv4Format(bucketName))
+            {
+                return s3::err::S3ErrorCode::InvalidBucketName;
+            }
+
+            static const std::vector<std::string> kReservedPrefixes = {
+                "xn--",
+                "sthree-",
+                "amzn-s3-demo-",
+            };
+            for (size_t i = 0; i < kReservedPrefixes.size(); ++i)
+            {
+                const std::string& prefix = kReservedPrefixes[i];
+                if (StringUtils::StartsWith(bucketName, prefix))
+                {
+                    return s3::err::S3ErrorCode::InvalidBucketName;
+                }
+            }
+
+            static const std::vector<std::string> kReservedSuffixes = {
+                "-s3alias", "--ol-s3", ".mrap", "--x-s3", "--table-s3",
+            };
+            for (size_t i = 0; i < kReservedSuffixes.size(); ++i)
+            {
+                const std::string& suffix = kReservedSuffixes[i];
+                if (StringUtils::EndsWith(bucketName, suffix))
+                {
+                    return s3::err::S3ErrorCode::InvalidBucketName;
+                }
+            }
+
+            // "-an" suffix is not allowed for general-purpose validation.
+            if (StringUtils::EndsWith(bucketName, "-an"))
+            {
+                return s3::err::S3ErrorCode::InvalidBucketName;
+            }
+
+            return s3::err::S3ErrorCode::Ok;
+        }
+
+        s3::err::S3ErrorCode validateObjectKey(const std::string& objectKey)
+        {
+            // Object key is UTF-8, max 1024 bytes.
+            if (objectKey.size() > 1024)
+            {
+                return s3::err::S3ErrorCode::KeyTooLongError;
+            }
+            if (!isValidUtf8(objectKey))
+            {
+                return s3::err::S3ErrorCode::InvalidKey;
+            }
+            if (!hasValidRelativePathSegments(objectKey))
+            {
+                return s3::err::S3ErrorCode::InvalidKey;
+            }
+            return s3::err::S3ErrorCode::Ok;
         }
 
         void StringUtils::Replace(std::string& s, const char* search, const char* replace)
@@ -92,6 +330,32 @@ namespace s3
             std::string value2Lower = ToLower(value2);
 
             return value1Lower == value2Lower;
+        }
+
+        bool StringUtils::StartsWith(const std::string& text, const std::string& prefix)
+        {
+            if (prefix.empty())
+            {
+                return true;
+            }
+            if (text.size() < prefix.size())
+            {
+                return false;
+            }
+            return text.compare(0, prefix.size(), prefix) == 0;
+        }
+
+        bool StringUtils::EndsWith(const std::string& text, const std::string& suffix)
+        {
+            if (suffix.empty())
+            {
+                return true;
+            }
+            if (text.size() < suffix.size())
+            {
+                return false;
+            }
+            return text.compare(text.size() - suffix.size(), suffix.size(), suffix) == 0;
         }
 
         std::vector<std::string> StringUtils::Split(const std::string& toSplit, char splitOn)

@@ -32,6 +32,14 @@ TEST(s3_utils_StringUtils, 001)
     EXPECT_EQ(StringUtils::ToUpper("AbC1_"), "ABC1_");
     EXPECT_TRUE(StringUtils::CaselessCompare("HeLLo", "hello"));
     EXPECT_FALSE(StringUtils::CaselessCompare("hello", "world"));
+    EXPECT_TRUE(StringUtils::StartsWith("abcdef", "abc"));
+    EXPECT_FALSE(StringUtils::StartsWith("abcdef", "abd"));
+    EXPECT_TRUE(StringUtils::StartsWith("abcdef", ""));
+    EXPECT_FALSE(StringUtils::StartsWith("ab", "abc"));
+    EXPECT_TRUE(StringUtils::EndsWith("abcdef", "def"));
+    EXPECT_FALSE(StringUtils::EndsWith("abcdef", "deg"));
+    EXPECT_TRUE(StringUtils::EndsWith("abcdef", ""));
+    EXPECT_FALSE(StringUtils::EndsWith("ab", "abc"));
 
     // URL encode/decode
     EXPECT_EQ(StringUtils::URLEncode("a b+"), "a%20b%2B");
@@ -79,6 +87,65 @@ TEST(s3_utils_StringUtils, 001)
     EXPECT_FALSE(StringUtils::IsAlnum('-'));
     EXPECT_EQ(StringUtils::ToHexString(static_cast<uint32_t>(0)), "0");
     EXPECT_EQ(StringUtils::ToHexString(static_cast<uint32_t>(0x1A2B)), "1A2B");
+}
+
+TEST(s3_utils_bucket_name_validation, 001)
+{
+    using s3::err::S3ErrorCode;
+    using s3::utils::validateBucketName;
+
+    // valid general-purpose bucket names
+    EXPECT_EQ(validateBucketName("abc"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateBucketName("my-bucket-001"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateBucketName("www.example.com"), S3ErrorCode::Ok);
+
+    // invalid length
+    EXPECT_EQ(validateBucketName("ab"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName(std::string(64, 'a')), S3ErrorCode::InvalidBucketName);
+
+    // invalid chars / format
+    EXPECT_EQ(validateBucketName("AmznBucket"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("amzn_s3_bucket"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("-abc"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("abc-"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("a..bc"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("192.168.5.4"), S3ErrorCode::InvalidBucketName);
+
+    // reserved prefixes/suffixes
+    EXPECT_EQ(validateBucketName("xn--bucket"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("sthree-demo"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("amzn-s3-demo-bucket"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("bucket-s3alias"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("bucket--ol-s3"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("bucket.mrap"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("bucket--x-s3"), S3ErrorCode::InvalidBucketName);
+    EXPECT_EQ(validateBucketName("bucket--table-s3"), S3ErrorCode::InvalidBucketName);
+
+    // "-an" is not allowed in current general-purpose validator.
+    EXPECT_EQ(validateBucketName("bucket-111122223333-us-west-2-an"), S3ErrorCode::InvalidBucketName);
+}
+
+TEST(s3_utils_object_key_validation, 001)
+{
+    using s3::utils::validateObjectKey;
+    using s3::err::S3ErrorCode;
+
+    // valid keys
+    EXPECT_EQ(validateObjectKey("a.txt"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectKey("videos/2014/../../video1.wmv"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectKey("folder/.hidden/file.txt"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectKey(""), S3ErrorCode::Ok);
+
+    // invalid relative segments
+    EXPECT_EQ(validateObjectKey("videos/../../video1.wmv"), S3ErrorCode::InvalidKey);
+    EXPECT_EQ(validateObjectKey("../file.txt"), S3ErrorCode::InvalidKey);
+
+    // length limit: >1024 bytes
+    EXPECT_EQ(validateObjectKey(std::string(1025, 'a')), S3ErrorCode::KeyTooLongError);
+
+    // invalid UTF-8
+    const std::string invalidUtf8("\xC3\x28", 2);
+    EXPECT_EQ(validateObjectKey(invalidUtf8), S3ErrorCode::InvalidKey);
 }
 
 TEST(s3_base_DateTime, 001)

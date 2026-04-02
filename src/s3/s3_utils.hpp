@@ -6,6 +6,7 @@
 #include <vector>
 
 #include "s3_base.hpp"
+#include "s3_error.hpp"
 
 namespace s3
 {
@@ -14,6 +15,9 @@ namespace s3
         bool isNullOrEmpty(const char* s);
 
         s3::base::OptI64 parseInt64(const std::string& str);
+
+        s3::err::S3ErrorCode validateBucketName(const std::string& bucketName);
+        s3::err::S3ErrorCode validateObjectKey(const std::string& objectKey);
 
         /**
          * All the things the c++ stdlib is missing for string operations that I needed.
@@ -37,6 +41,18 @@ namespace s3
              * Does a caseless comparison of two strings.
              */
             static bool CaselessCompare(const char* value1, const char* value2);
+
+            /**
+             * Returns whether `text` begins with `prefix`.
+             * Empty prefix always matches.
+             */
+            static bool StartsWith(const std::string& text, const std::string& prefix);
+
+            /**
+             * Returns whether `text` ends with `suffix`.
+             * Empty suffix always matches.
+             */
+            static bool EndsWith(const std::string& text, const std::string& suffix);
 
             /**
              * URL encodes a string (uses %20 not + for spaces).
