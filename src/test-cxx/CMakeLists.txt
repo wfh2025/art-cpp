@@ -8,8 +8,11 @@ set_target_properties("${TARGET_NAME}" PROPERTIES CXX_STANDARD 20
                                                   OUTPUT_NAME "${EXEC_NAME}"
 )
 
+find_package(OpenSSL REQUIRED)
+
 target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}" 
                                                     "${CMAKE_CURRENT_SOURCE_DIR}"
+                                                    "${OPENSSL_INCLUDE_DIR}"
                                                     "${ART_CXX_DEPS_DIR}/abseil-cpp/include"
                                                     "${ART_CXX_DEPS_DIR}/gflags/include"
                                                     "${ART_CXX_DEPS_DIR}/googletest/include"
@@ -42,6 +45,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/chrono_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/ratio_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/s3_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/openssl_test.cpp"
 )
 
 target_compile_definitions("${TARGET_NAME}" PRIVATE 
@@ -58,6 +62,7 @@ target_compile_options("${TARGET_NAME}" PRIVATE -pthread
 
 add_dependencies("${TARGET_NAME}" "art-base-static" "art-s3-static")
 target_link_libraries("${TARGET_NAME}" PRIVATE -pthread  
+                                               "${OPENSSL_LIBRARIES}"
                                                "${ART_CXX_DEPS_DIR}/googletest/lib/libgtest.a"
                                                "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libart_base.a"
                                                "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libart_s3.a"

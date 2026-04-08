@@ -1,5 +1,8 @@
 set(TARGET_NAME "art-s3")
 set(OUTPUT_NAME "art_s3")
+
+find_package(OpenSSL REQUIRED)
+
 set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
@@ -8,9 +11,11 @@ set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_http.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_model.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_req.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp"
 )
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${CMAKE_SOURCE_DIR}"
+                 "${OPENSSL_INCLUDE_DIR}"
                  "${ART_CXX_DEPS_DIR}/pugixml/include"
                  "${ART_CXX_DEPS_DIR}/spdlog/include"
 )
@@ -32,6 +37,7 @@ target_compile_definitions("${TARGET_NAME}-static" PRIVATE
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-static" PRIVATE -pthread  
+                                                "${OPENSSL_LIBRARIES}"
                                                 "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
                                                 "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
 )
@@ -42,13 +48,13 @@ set_target_properties("${TARGET_NAME}-shared" PROPERTIES CXX_STANDARD 20
                                                   CXX_EXTENSIONS OFF
                                                   OUTPUT_NAME "${OUTPUT_NAME}"
 )
-
 target_include_directories("${TARGET_NAME}-shared" PRIVATE "${INCLUDE_DIRS}")
 target_compile_options("${TARGET_NAME}-shared" PRIVATE "${COMPILE_OPTIONS}")
 target_compile_definitions("${TARGET_NAME}-shared" PRIVATE 
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-shared" PRIVATE -pthread  
+                                                "${OPENSSL_LIBRARIES}"
                                                 "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
                                                 "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
 )
