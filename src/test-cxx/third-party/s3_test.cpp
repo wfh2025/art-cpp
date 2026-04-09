@@ -4,11 +4,22 @@
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "s3/s3_auth.hpp"
 #include "s3/s3_req.hpp"
 #include "s3/s3_resp.hpp"
 #include "s3/s3_utils.hpp"
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
+
+TEST(s3_auth_UriEncode, 001)
+{
+    using s3::auth::uriEncode;
+
+    EXPECT_EQ(uriEncode("abcXYZ-_.~"), "abcXYZ-_.~");
+    EXPECT_EQ(uriEncode("a b+"), "a%20b%2B");
+    EXPECT_EQ(uriEncode("a/b"), "a/b");
+    EXPECT_EQ(uriEncode(std::string("\xE4\xB8\xAD")), "%E4%B8%AD");
+}
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(s3_utils_StringUtils, 001)
