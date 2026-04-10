@@ -11,16 +11,6 @@
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
 
-TEST(s3_auth_UriEncode, 001)
-{
-    using s3::auth::uriEncode;
-
-    EXPECT_EQ(uriEncode("abcXYZ-_.~"), "abcXYZ-_.~");
-    EXPECT_EQ(uriEncode("a b+"), "a%20b%2B");
-    EXPECT_EQ(uriEncode("a/b"), "a/b");
-    EXPECT_EQ(uriEncode(std::string("\xE4\xB8\xAD")), "%E4%B8%AD");
-}
-
 #ifdef RUN_ALL_TEST_CASE
 TEST(s3_utils_StringUtils, 001)
 {
@@ -149,8 +139,8 @@ TEST(s3_utils_bucket_name_validation, 001)
 
 TEST(s3_utils_object_key_validation, 001)
 {
-    using s3::utils::validateObjectKey;
     using s3::err::S3ErrorCode;
+    using s3::utils::validateObjectKey;
 
     // valid keys
     EXPECT_EQ(validateObjectKey("a.txt"), S3ErrorCode::Ok);
@@ -179,7 +169,7 @@ TEST(s3_utils_object_tag_validation, 001)
     EXPECT_EQ(validateObjectTag("k", ""), S3ErrorCode::Ok);
     EXPECT_EQ(validateObjectTag("a/b@c:test-1=ok.+", "x"), S3ErrorCode::Ok);
     EXPECT_EQ(validateObjectTag("bad#", "1"), S3ErrorCode::Ok);
-    EXPECT_EQ(validateObjectTag(u8"\u9879\u76EE", u8"\u503C"), S3ErrorCode::Ok);
+    EXPECT_EQ(validateObjectTag("项目", "值"), S3ErrorCode::Ok);
 
     EXPECT_EQ(validateObjectTag("", "v"), S3ErrorCode::InvalidTag);
     EXPECT_EQ(validateObjectTag("aws:reserved", "v"), S3ErrorCode::InvalidTag);

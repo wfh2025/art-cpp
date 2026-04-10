@@ -337,6 +337,8 @@ namespace s3
 
         s3::err::S3ErrorCode validateBucketName(const std::string& bucketName)
         {
+            const auto isLowercaseOrDigit = [](char c) -> bool { return (c >= 'a' && c <= 'z') || (c >= '0' && c <= '9'); };
+
             // Length: 3..63
             if (bucketName.size() < 3 || bucketName.size() > 63)
             {
@@ -347,14 +349,14 @@ namespace s3
             for (size_t i = 0; i < bucketName.size(); ++i)
             {
                 char c = bucketName[i];
-                if (!(StringUtils::IsAlnum(c) || c == '.' || c == '-'))
+                if (!(isLowercaseOrDigit(c) || c == '.' || c == '-'))
                 {
                     return s3::err::S3ErrorCode::InvalidBucketName;
                 }
             }
 
             // Must begin and end with letter or number
-            if (!StringUtils::IsAlnum(bucketName.front()) || !StringUtils::IsAlnum(bucketName.back()))
+            if (!isLowercaseOrDigit(bucketName.front()) || !isLowercaseOrDigit(bucketName.back()))
             {
                 return s3::err::S3ErrorCode::InvalidBucketName;
             }
