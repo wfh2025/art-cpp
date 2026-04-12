@@ -3,6 +3,10 @@ set(OUTPUT_NAME "art_s3")
 
 find_package(OpenSSL REQUIRED)
 
+find_package(civetweb CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/civetweb" NO_DEFAULT_PATH)
+find_package(pugixml CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/pugixml" NO_DEFAULT_PATH)
+find_package(spdlog CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/spdlog" NO_DEFAULT_PATH)
+
 set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp" 
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
@@ -18,8 +22,6 @@ set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp"
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${CMAKE_SOURCE_DIR}"
                  "${OPENSSL_INCLUDE_DIR}"
-                 "${ART_CXX_DEPS_DIR}/pugixml/include"
-                 "${ART_CXX_DEPS_DIR}/spdlog/include"
 )
 set(COMPILE_OPTIONS -pthread -ggdb -Wno-unused-value 
                     -Wno-unused-parameter
@@ -40,8 +42,9 @@ target_compile_definitions("${TARGET_NAME}-static" PRIVATE
 )
 target_link_libraries("${TARGET_NAME}-static" PRIVATE -pthread  
                                                 "${OPENSSL_LIBRARIES}"
-                                                "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
-                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
+                                                pugixml::pugixml
+                                                spdlog::spdlog
+                                                civetweb::civetweb-cpp
 )
 
 add_library("${TARGET_NAME}-shared" SHARED "${SRCS}")
@@ -57,6 +60,7 @@ target_compile_definitions("${TARGET_NAME}-shared" PRIVATE
 )
 target_link_libraries("${TARGET_NAME}-shared" PRIVATE -pthread  
                                                 "${OPENSSL_LIBRARIES}"
-                                                "${ART_CXX_DEPS_DIR}/spdlog/lib/libspdlog.a"
-                                                "${ART_CXX_DEPS_DIR}/pugixml/lib/libpugixml.a"
+                                                pugixml::pugixml
+                                                spdlog::spdlog
+                                                civetweb::civetweb-cpp
 )
