@@ -3,15 +3,17 @@ set(OUTPUT_NAME "art_s3")
 
 find_package(OpenSSL REQUIRED)
 
-set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
+set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp" 
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/s3_resp.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/s3_utils.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_http.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_model.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_req.cpp"
-         "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_resp.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_route.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_svc.cpp"
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_utils.cpp"
 )
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${CMAKE_SOURCE_DIR}"
