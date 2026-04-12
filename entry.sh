@@ -20,6 +20,24 @@ function build-deps() {
     build-spdlog
 }
 
+function build-oatpp() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/oatpp"
+    local src="${PROJ_SRC}/third-party/oatpp-1.3.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_CXX_COMPILER="${PROJ_CXX}" \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" -DCMAKE_POLICY_VERSION_MINIMUM=3.5
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
+}
+
 function build-tinyformat() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/tinyformat"
