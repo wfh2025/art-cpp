@@ -1,77 +1,17 @@
 #include "s3_auth.hpp"
 
-#include <array>
-#include <cstdint>
 #include <iomanip>
-#include <memory>
 #include <sstream>
 #include <string>
-#include <unordered_set>
 #include <vector>
 
-#include "openssl/err.h"
-#include "openssl/evp.h"
-#include "openssl/evperr.h"
-#include "openssl/hmac.h"
-#include "openssl/md5.h"
-#include "openssl/sha.h"
-#include "s3_base.hpp"
+#include "s3_algs.hpp"
 #include "s3_utils.hpp"
+#include "spdlog/fmt/bundled/args.h"
 #include "spdlog/spdlog.h"
 
 namespace
 {
-    const char* kEmptySHA256Hash = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855";
-    const int64_t kPayloadBuffer = 1024 * 1024;
-    const std::unordered_set<std::string> kSignedHeadersBlacklist = {
-        "connection",        "expect",  "keep-alive", "proxy-authenticate", "proxy-authorization", "te", "trailer",
-        "transfer-encoding", "upgrade", "user-agent", "x-amzn-trace-id",
-    };
-    const std::string kUnsignedPayload = "UNSIGNED-PAYLOAD";
-    const std::string kStreamingUnsignedPayloadTrailer = "STREAMING-UNSIGNED-PAYLOAD-TRAILER";
-} // namespace
-
-namespace
-{
-    s3::base::OptStr sha256HashRawInternal(const std::string& str)
-    {
-        unsigned char hash[EVP_MAX_MD_SIZE] = {0};
-        unsigned int hashLen = 0;
-
-        std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
-        if (!ctx)
-        {
-            return s3::base::OptStr();
-        }
-        // OpenSSL EVP APIs convention: return 1 on success, otherwise failure.
-        if (EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr) != 1)
-        {
-            return s3::base::OptStr();
-        }
-        if (EVP_DigestUpdate(ctx.get(), str.data(), str.size()) != 1)
-        {
-            return s3::base::OptStr();
-        }
-        if (EVP_DigestFinal_ex(ctx.get(), hash, &hashLen) != 1)
-        {
-            return s3::base::OptStr();
-        }
-        return s3::base::OptStr(std::string(reinterpret_cast<const char*>(hash), hashLen));
-    }
-
-    s3::base::OptStr hmacSha256RawInternal(const std::string& key, const std::string& data)
-    {
-        unsigned char mac[EVP_MAX_MD_SIZE] = {0};
-        unsigned int macLen = 0;
-        unsigned char* ok = HMAC(EVP_sha256(), key.data(), static_cast<int>(key.size()), reinterpret_cast<const unsigned char*>(data.data()),
-                                 data.size(), mac, &macLen);
-        if (ok == nullptr)
-        {
-            return s3::base::OptStr();
-        }
-        return s3::base::OptStr(std::string(reinterpret_cast<const char*>(mac), macLen));
-    }
-
     std::string toHexLower(const unsigned char* data, unsigned int len)
     {
         std::ostringstream oss;
@@ -89,7 +29,7 @@ namespace s3
     {
         s3::base::OptStr sha256HashHex(const std::string& data)
         {
-            const s3::base::OptStr raw = sha256HashRawInternal(data);
+            const s3::base::OptStr raw = s3::algs::sha256(data.data(), static_cast<int64_t>(data.size()));
             if (!raw.has())
             {
                 return s3::base::OptStr();
@@ -100,7 +40,8 @@ namespace s3
 
         s3::base::OptStr hmacSha256Hex(const std::string& key, const std::string& data)
         {
-            const s3::base::OptStr raw = hmacSha256RawInternal(key, data);
+            const s3::base::OptStr raw =
+                s3::algs::hmacSha256(key.data(), static_cast<int64_t>(key.size()), data.data(), static_cast<int64_t>(data.size()));
             if (!raw.has())
             {
                 return s3::base::OptStr();

@@ -7,7 +7,8 @@ find_package(civetweb CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/civetweb" NO_DE
 find_package(pugixml CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/pugixml" NO_DEFAULT_PATH)
 find_package(spdlog CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/spdlog" NO_DEFAULT_PATH)
 
-set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp" 
+set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_algs.cpp"  
+         "${CMAKE_CURRENT_SOURCE_DIR}/s3_auth.cpp" 
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_base.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_def.cpp"
          "${CMAKE_CURRENT_SOURCE_DIR}/s3_error.cpp"
