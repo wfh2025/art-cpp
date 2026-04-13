@@ -10,6 +10,21 @@ namespace s3
 {
     namespace req
     {
+        BucketAndKey parseBucketAndKeyFromUriWithPathStyle(const std::string& uri)
+        {
+            // 路径风格：首段为 bucket，其后整段为 key（保留多余 `/`，与对象键字面一致）
+            // /mybucket/myobject.txt ==> bucket: mybucket, key: myobject.txt
+            // /mybucket//myobject.txt ==> bucket: mybucket, key: /myobject.txt
+            // /mybucket ==> bucket: mybucket, key: 无
+            // /mybucket/ ==> bucket: mybucket, key: ""（显式空路径）
+            // /mybucket/a/b/c/d.txt ==> bucket: mybucket, key: a/b/c/d.txt
+            // /mybucket//a/b/c/d.txt ==> bucket: mybucket, key: /a/b/c/d.txt
+            // /mybucket//a/b///c/d.txt ==> bucket: mybucket, key: /a/b///c/d.txt
+            BucketAndKey ret;
+
+            return ret;
+        }
+
         s3::err::S3ErrorCode parsePutObjectTaggingBodyXml(const std::string& body, s3::model::Tagging& tagging)
         {
             tagging.tagSet.clear();
