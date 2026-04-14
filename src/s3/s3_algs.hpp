@@ -4,7 +4,12 @@
 #include <memory>
 
 #include "openssl/evp.h"
+#include "openssl/opensslv.h"
 #include "s3_base.hpp"
+
+#ifndef LIBRESSL_VERSION_NUMBER
+#error "art-s3 requires LibreSSL headers and libraries"
+#endif
 
 namespace s3
 {

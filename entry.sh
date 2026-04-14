@@ -18,6 +18,24 @@ function build-deps() {
     build-abseil-cpp
     build-tinyformat
     build-spdlog
+    build-libressl
+}
+
+function build-libressl() {
+    local build_dir="${PROJ_BUILD}"
+    local install_dir="${PROJ_DEPS}/libressl"
+    local src="${PROJ_SRC}/third-party/libressl-4.2.1"
+
+    rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
+
+    ${PROJ_CMAKE} -B "${build_dir}" \
+          -S "${src}" \
+          -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_C_COMPILER="${PROJ_CC}" \
+          -DCMAKE_INSTALL_PREFIX="${install_dir}" -DLIBRESSL_TESTS=OFF
+    ${PROJ_CMAKE} --build "${PROJ_BUILD}" --parallel --target install
+
+    rm -fr "${build_dir}"
 }
 
 function build-oatpp() {

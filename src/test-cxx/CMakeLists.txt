@@ -1,7 +1,7 @@
 set(TARGET_NAME "cmd-test-cxx")
 set(EXEC_NAME "test-cxx")
 
-find_package(OpenSSL REQUIRED)
+find_package(LibreSSL CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/libressl" NO_DEFAULT_PATH)
 find_package(absl CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/abseil-cpp" NO_DEFAULT_PATH)
 find_package(gflags CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/gflags" NO_DEFAULT_PATH)
 find_package(GTest CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/googletest" NO_DEFAULT_PATH)
@@ -19,7 +19,7 @@ set_target_properties("${TARGET_NAME}" PROPERTIES CXX_STANDARD 20
 
 target_include_directories("${TARGET_NAME}" PRIVATE "${CMAKE_SOURCE_DIR}"
                                                     "${CMAKE_CURRENT_SOURCE_DIR}"
-                                                    "${OPENSSL_INCLUDE_DIR}"
+                                                    "${LIBRESSL_INCLUDE_DIR}"
                                                     "${ART_CXX_DEPS_DIR}/tinyformat/include"
                                                     "${CMAKE_SOURCE_DIR}/third-party/cmdline"
 )
@@ -44,7 +44,7 @@ target_sources("${TARGET_NAME}" PRIVATE "${CMAKE_CURRENT_SOURCE_DIR}/gut/gtest_a
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/chrono_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/stl/ratio_test.cpp"
                                         "${CMAKE_CURRENT_SOURCE_DIR}/third-party/s3_test.cpp"
-                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/openssl_test.cpp"
+                                        "${CMAKE_CURRENT_SOURCE_DIR}/third-party/libressl_test.cpp"
 )
 
 target_compile_definitions("${TARGET_NAME}" PRIVATE
@@ -61,7 +61,7 @@ target_compile_options("${TARGET_NAME}" PRIVATE -pthread
 
 add_dependencies("${TARGET_NAME}" "art-base-static" "art-s3-static")
 target_link_libraries("${TARGET_NAME}" PRIVATE -pthread
-                                               "${OPENSSL_LIBRARIES}"
+                                               LibreSSL::Crypto
                                                GTest::gtest
                                                GTest::gmock
                                                "${CMAKE_ARCHIVE_OUTPUT_DIRECTORY}/libart_base.a"

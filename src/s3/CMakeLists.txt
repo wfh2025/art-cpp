@@ -1,7 +1,7 @@
 set(TARGET_NAME "art-s3")
 set(OUTPUT_NAME "art_s3")
 
-find_package(OpenSSL REQUIRED)
+find_package(LibreSSL CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/libressl" NO_DEFAULT_PATH)
 
 find_package(civetweb CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/civetweb" NO_DEFAULT_PATH)
 find_package(pugixml CONFIG REQUIRED PATHS "${ART_CXX_DEPS_DIR}/pugixml" NO_DEFAULT_PATH)
@@ -22,7 +22,7 @@ set(SRCS "${CMAKE_CURRENT_SOURCE_DIR}/s3_algs.cpp"
 )
 set(INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}"
                  "${CMAKE_SOURCE_DIR}"
-                 "${OPENSSL_INCLUDE_DIR}"
+                 "${LIBRESSL_INCLUDE_DIR}"
 )
 set(COMPILE_OPTIONS -pthread -ggdb -Wno-unused-value 
                     -Wno-unused-parameter
@@ -42,7 +42,7 @@ target_compile_definitions("${TARGET_NAME}-static" PRIVATE
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-static" PRIVATE -pthread  
-                                                "${OPENSSL_LIBRARIES}"
+                                                LibreSSL::Crypto
                                                 pugixml::pugixml
                                                 spdlog::spdlog
                                                 civetweb::civetweb-cpp
@@ -60,7 +60,7 @@ target_compile_definitions("${TARGET_NAME}-shared" PRIVATE
                             SPDLOG_ACTIVE_LEVEL=SPDLOG_LEVEL_DEBUG
 )
 target_link_libraries("${TARGET_NAME}-shared" PRIVATE -pthread  
-                                                "${OPENSSL_LIBRARIES}"
+                                                LibreSSL::Crypto
                                                 pugixml::pugixml
                                                 spdlog::spdlog
                                                 civetweb::civetweb-cpp
