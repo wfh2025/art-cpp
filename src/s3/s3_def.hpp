@@ -3,6 +3,8 @@
 #include <cstdint>
 #include <string>
 
+#define S3_OPENSSL_USE_C_API // openssl API: C
+
 namespace s3
 {
     enum class S3ApiKind : int32_t

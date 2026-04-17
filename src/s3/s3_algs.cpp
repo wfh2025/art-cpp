@@ -5,6 +5,8 @@
 
 #include "openssl/evp.h"
 #include "openssl/hmac.h"
+#include "openssl/md5.h"
+#include "spdlog/spdlog.h"
 
 namespace
 {
@@ -60,27 +62,66 @@ namespace s3
 
         s3::base::OptStr md5(const char* data, int64_t dataLen)
         {
-            return digestOneShot(EVP_md5(), data, dataLen);
+#ifdef S3_OPENSSL_USE_C_API
+            unsigned char digest[MD5_DIGEST_LENGTH] = {0};
+            MD5_CTX ctx;
+            (void)MD5_Init(&ctx);
+            (void)MD5_Update(&ctx, data, static_cast<size_t>(dataLen));
+            (void)MD5_Final(digest, &ctx);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), MD5_DIGEST_LENGTH));
+#else
+            unsigned int digestLen = 0;
+            unsigned char digest[EVP_MAX_MD_SIZE] = {0};
+            std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+            (void)EVP_DigestInit_ex(ctx.get(), EVP_md5(), nullptr);
+            (void)EVP_DigestUpdate(ctx.get(), data, static_cast<size_t>(dataLen));
+            (void)EVP_DigestFinal_ex(ctx.get(), digest, &digestLen);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), digestLen));
+#endif
         }
 
         s3::base::OptStr crc32(const char* data, int64_t dataLen)
         {
-            return digestOneShot(kCrc32Digest, data, dataLen);
+            unsigned int digestLen = 0;
+            unsigned char digest[EVP_MAX_MD_SIZE] = {0};
+            std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+            (void)EVP_DigestInit_ex(ctx.get(), kCrc32Digest, nullptr);
+            (void)EVP_DigestUpdate(ctx.get(), data, static_cast<size_t>(dataLen));
+            (void)EVP_DigestFinal_ex(ctx.get(), digest, &digestLen);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), digestLen));
         }
 
         s3::base::OptStr crc32c(const char* data, int64_t dataLen)
         {
-            return digestOneShot(kCrc32cDigest, data, dataLen);
+            unsigned int digestLen = 0;
+            unsigned char digest[EVP_MAX_MD_SIZE] = {0};
+            std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+            (void)EVP_DigestInit_ex(ctx.get(), kCrc32cDigest, nullptr);
+            (void)EVP_DigestUpdate(ctx.get(), data, static_cast<size_t>(dataLen));
+            (void)EVP_DigestFinal_ex(ctx.get(), digest, &digestLen);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), digestLen));
         }
 
         s3::base::OptStr sha1(const char* data, int64_t dataLen)
         {
-            return digestOneShot(EVP_sha1(), data, dataLen);
+            unsigned int digestLen = 0;
+            unsigned char digest[EVP_MAX_MD_SIZE] = {0};
+            std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+            (void)EVP_DigestInit_ex(ctx.get(), EVP_sha1(), nullptr);
+            (void)EVP_DigestUpdate(ctx.get(), data, static_cast<size_t>(dataLen));
+            (void)EVP_DigestFinal_ex(ctx.get(), digest, &digestLen);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), digestLen));
         }
 
         s3::base::OptStr sha256(const char* data, int64_t dataLen)
         {
-            return digestOneShot(EVP_sha256(), data, dataLen);
+            unsigned int digestLen = 0;
+            unsigned char digest[EVP_MAX_MD_SIZE] = {0};
+            std::unique_ptr<EVP_MD_CTX, decltype(&EVP_MD_CTX_free)> ctx(EVP_MD_CTX_new(), &EVP_MD_CTX_free);
+            (void)EVP_DigestInit_ex(ctx.get(), EVP_sha256(), nullptr);
+            (void)EVP_DigestUpdate(ctx.get(), data, static_cast<size_t>(dataLen));
+            (void)EVP_DigestFinal_ex(ctx.get(), digest, &digestLen);
+            return s3::base::OptStr(std::string(reinterpret_cast<const char*>(digest), digestLen));
         }
 
         s3::base::OptStr hmacSha256(const char* key, int64_t keyLen, const char* data, int64_t dataLen)

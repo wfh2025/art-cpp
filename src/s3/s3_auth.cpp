@@ -7,7 +7,6 @@
 
 #include "s3_algs.hpp"
 #include "s3_utils.hpp"
-#include "spdlog/fmt/bundled/args.h"
 #include "spdlog/spdlog.h"
 
 namespace

@@ -1,15 +1,73 @@
+#include <filesystem>
+#include <fstream>
 #include <future>
+#include <iomanip>
 #include <ios>
+#include <sstream>
 #include <system_error>
+#include <vector>
 
 #include "gmock/gmock.h"
 #include "gtest/gtest.h"
+#include "s3/s3_algs.hpp"
 #include "s3/s3_auth.hpp"
 #include "s3/s3_req.hpp"
 #include "s3/s3_resp.hpp"
 #include "s3/s3_utils.hpp"
 #include "spdlog/spdlog.h"
 #include "ut_config.h"
+
+namespace
+{
+    std::string bytesToHexLower(const std::string& bytes)
+    {
+        std::ostringstream oss;
+        oss << std::hex << std::setfill('0');
+        for (unsigned char ch : bytes)
+        {
+            oss << std::setw(2) << static_cast<int>(ch);
+        }
+        return oss.str();
+    }
+} // namespace
+
+TEST(s3_algs_MD5, 001_large_file_streaming)
+{
+    constexpr size_t kFileSize = 16 * 1024 * 1024; // 16MB large test file
+    constexpr size_t kChunkSize = 1024 * 1024;     // 1MB read chunk
+
+    // const std::filesystem::path filePath = std::filesystem::temp_directory_path() / "art_s3_large_file_for_md5.bin";
+    const std::filesystem::path filePath = "/Users/wu.feihu/ws/github-gitee/aws/aws-sdk-cpp.tar.gz";
+
+    // EVP_sha1();
+    // EVP_sha256();
+
+    // EVP_sha224();
+    // EVP_sha384();
+    // EVP_sha512();
+
+    s3::algs::DigestCtx ctx(EVP_sha384());
+    {
+        std::ifstream in(filePath, std::ios::binary);
+        ASSERT_TRUE(in.is_open());
+
+        std::vector<char> buffer(kChunkSize);
+        while (in)
+        {
+            in.read(buffer.data(), static_cast<std::streamsize>(buffer.size()));
+            const std::streamsize readSize = in.gcount();
+            if (readSize > 0)
+            {
+                ctx.update(buffer.data(), static_cast<int64_t>(readSize));
+            }
+        }
+    }
+
+    const auto actualMd5Raw = ctx.finalRaw();
+    ASSERT_TRUE(actualMd5Raw.has());
+    const std::string actualMd5Hex = bytesToHexLower(actualMd5Raw.value());
+    SPDLOG_INFO("raw: {}, human: {}", actualMd5Raw.value(), actualMd5Hex);
+}
 
 #ifdef RUN_ALL_TEST_CASE
 TEST(s3_utils_StringUtils, 001)
