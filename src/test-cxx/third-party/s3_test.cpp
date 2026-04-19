@@ -31,20 +31,21 @@ namespace
     }
 } // namespace
 
+TEST(s3_auth_scope, 001)
+{
+    std::string rv = "";
+    rv = s3::auth::scope("x0", "x1", "x2", "x3");
+    EXPECT_EQ(rv, "x0/x1/x2/x3/aws4_request");
+}
+
+#ifdef RUN_ALL_TEST_CASE
 TEST(s3_algs_MD5, 001_large_file_streaming)
 {
+#    if 0
     constexpr size_t kFileSize = 16 * 1024 * 1024; // 16MB large test file
     constexpr size_t kChunkSize = 1024 * 1024;     // 1MB read chunk
 
-    // const std::filesystem::path filePath = std::filesystem::temp_directory_path() / "art_s3_large_file_for_md5.bin";
     const std::filesystem::path filePath = "/Users/wu.feihu/ws/github-gitee/aws/aws-sdk-cpp.tar.gz";
-
-    // EVP_sha1();
-    // EVP_sha256();
-
-    // EVP_sha224();
-    // EVP_sha384();
-    // EVP_sha512();
 
     s3::algs::DigestCtx ctx(EVP_sha384());
     {
@@ -67,9 +68,9 @@ TEST(s3_algs_MD5, 001_large_file_streaming)
     ASSERT_TRUE(actualMd5Raw.has());
     const std::string actualMd5Hex = bytesToHexLower(actualMd5Raw.value());
     SPDLOG_INFO("raw: {}, human: {}", actualMd5Raw.value(), actualMd5Hex);
+#    endif
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(s3_utils_StringUtils, 001)
 {
     using s3::utils::StringUtils;
