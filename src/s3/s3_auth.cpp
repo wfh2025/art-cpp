@@ -3,10 +3,12 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <unordered_set>
 #include <utility>
 #include <vector>
 
 #include "openssl/evp.h"
+#include "openssl/hmac.h"
 #include "s3_utils.hpp"
 #include "spdlog/fmt/ranges.h"
 #include "spdlog/spdlog.h"
@@ -38,6 +40,20 @@ namespace
         return bytesToHexLower(digest, static_cast<size_t>(digestLen));
     }
 
+    std::string hmacSha256(const std::string& key, const std::string& msg, bool hex)
+    {
+        unsigned int outLen = 0;
+        unsigned char out[EVP_MAX_MD_SIZE] = {0};
+        (void)HMAC(EVP_sha256(), key.data(), static_cast<int>(key.size()), reinterpret_cast<const unsigned char*>(msg.data()),
+                   static_cast<size_t>(msg.size()), out, &outLen);
+        if (false == hex)
+        {
+            return std::string(reinterpret_cast<const char*>(out), static_cast<size_t>(outLen));
+        }
+
+        return bytesToHexLower(out, static_cast<size_t>(outLen));
+    }
+
     std::string ensureUnicode(const std::string& s)
     {
         return s;
@@ -67,33 +83,42 @@ namespace s3
 {
     namespace auth
     {
-        /**
-         * 计算canonicalHeaders
-         * @param headers http头
-         */
-        std::string canonicalHeaders(const std::vector<std::pair<std::string, std::string>>& headers)
+
+        std::string canonicalHeaders(const std::vector<std::pair<std::string, std::string>>& headersToSign)
         {
-            // caution: 存在大小写不同的header，例如: host/Host
-            // caution: grouped的顺序
-            std::map<std::string, std::vector<std::string>, std::less<std::string>> grouped;
-            for (const auto& kv : headers)
+            // 去重
+            std::unordered_set<std::string> uniqueHeaderNames;
+            for (const auto& kv : headersToSign)
             {
-                std::string lowerKey = kv.first;
-                std::transform(lowerKey.begin(), lowerKey.end(), lowerKey.begin(), [](unsigned char c) { return std::tolower(c); });
-                std::string processed = ensureUnicode(headerValue(kv.second));
-                grouped[lowerKey].push_back(processed);
+                uniqueHeaderNames.insert(kv.first);
             }
 
-            std::vector<std::string> lines;
-            for (const auto& entry : grouped)
+            // 排序
+            std::vector<std::string> sortedHeaderNames;
+            sortedHeaderNames.reserve(uniqueHeaderNames.size());
+            for (const std::string& name : uniqueHeaderNames)
             {
-                const std::string& key = entry.first;
-                const auto& values = entry.second;
-
-                std::string joined_values = fmt::to_string(fmt::join(values, ","));
-                lines.push_back(fmt::format("{}:{}", key, joined_values));
+                sortedHeaderNames.push_back(name);
             }
-            return fmt::to_string(fmt::join(lines, "\n"));
+            std::sort(sortedHeaderNames.begin(), sortedHeaderNames.end(), std::less<std::string>());
+
+            std::vector<std::string> headers;
+            for (const std::string& key : sortedHeaderNames)
+            {
+                std::string lowerKey = s3::utils::StringUtils::ToLower(key.c_str());
+                std::vector<std::string> matchedValues;
+                for (const auto& kv : headersToSign)
+                {
+                    std::string lowerKvKey = s3::utils::StringUtils::ToLower(kv.first.c_str());
+                    if (lowerKey == lowerKvKey)
+                    {
+                        matchedValues.push_back(headerValue(kv.second));
+                    }
+                }
+                std::string value = fmt::to_string(fmt::join(matchedValues, ","));
+                headers.push_back(fmt::format("{}:{}", key, ensureUnicode(value)));
+            }
+            return fmt::to_string(fmt::join(headers, "\n"));
         }
 
         /**
@@ -129,6 +154,23 @@ namespace s3
                 "aws4_request",
             };
             return fmt::to_string(fmt::join(vec, "/"));
+        }
+
+        /**
+         * @param secretKey
+         * @param dateStamp
+         * @param regionName
+         * @param serviceName
+         * @param stringToSign
+         */
+        std::string signature(const std::string& secretKey, const std::string& dateStamp, const std::string& regionName,
+                              const std::string& serviceName, const std::string& stringToSign)
+        {
+            const std::string kDate = hmacSha256(fmt::format("AWS4{}", secretKey), dateStamp, false);
+            const std::string kRegion = hmacSha256(kDate, regionName, false);
+            const std::string kService = hmacSha256(kRegion, serviceName, false);
+            const std::string kSigning = hmacSha256(kService, "aws4_request", false);
+            return hmacSha256(kSigning, stringToSign, true);
         }
 
         /**
@@ -207,5 +249,44 @@ namespace s3
             return canonicalQueryStringByVecPair(encodedPairs);
         }
 
+        std::string signedHeaders(const std::vector<std::pair<std::string, std::string>>& headersToSign)
+        {
+            std::unordered_set<std::string> uniqueSet;
+            for (const auto& kv : headersToSign)
+            {
+                std::string lowerKey = s3::utils::StringUtils::ToLower(kv.first.c_str());
+                std::string trimmedKey = s3::utils::StringUtils::Trim(lowerKey.c_str());
+                uniqueSet.insert(trimmedKey);
+            }
+
+            std::vector<std::string> headersVec;
+            headersVec.reserve(uniqueSet.size());
+            for (const std::string& key : uniqueSet)
+            {
+                headersVec.push_back(key);
+            }
+            std::sort(headersVec.begin(), headersVec.end(), std::less<std::string>());
+            return fmt::to_string(fmt::join(headersVec, ";"));
+        }
+
+        std::vector<std::pair<std::string, std::string>> headersToSign(const std::vector<std::pair<std::string, std::string>>& headers)
+        {
+            static const std::unordered_set<std::string> signedHeadersBlacklist = {
+                "connection",        "expect",  "keep-alive", "proxy-authenticate", "proxy-authorization", "te", "trailer",
+                "transfer-encoding", "upgrade", "user-agent", "x-amzn-trace-id",
+            };
+            std::vector<std::pair<std::string, std::string>> headerMap;
+            for (const auto& kv : headers)
+            {
+                const std::string& key = kv.first;
+                const std::string& value = kv.second;
+                std::string lowerKey = s3::utils::StringUtils::ToLower(key.c_str());
+                if (signedHeadersBlacklist.find(lowerKey) == signedHeadersBlacklist.end())
+                {
+                    headerMap.emplace_back(lowerKey, value);
+                }
+            }
+            return headerMap;
+        }
     } // namespace auth
 } // namespace s3

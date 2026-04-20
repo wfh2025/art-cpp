@@ -12,5 +12,15 @@ namespace s3
     {
         std::string scope(const std::string& accessKey, const std::string& timestamp, const std::string& regionName, const std::string& serviceName);
 
+        /**
+         * @param secretKey
+         * @param dateStamp
+         * @param regionName
+         * @param serviceName
+         * @param stringToSign
+         */
+        std::string signature(const std::string& secretKey, const std::string& dateStamp, const std::string& regionName,
+                              const std::string& serviceName, const std::string& stringToSign);
+
     } // namespace auth
 } // namespace s3
