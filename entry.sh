@@ -24,7 +24,7 @@ function build-deps() {
 function build-libressl() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/libressl"
-    local src="${PROJ_SRC}/third-party/libressl-4.2.1"
+    local src="${PROJ_ROOT}/third-party/libressl-4.2.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -41,7 +41,7 @@ function build-libressl() {
 function build-oatpp() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/oatpp"
-    local src="${PROJ_SRC}/third-party/oatpp-1.3.1"
+    local src="${PROJ_ROOT}/third-party/oatpp-1.3.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -59,7 +59,7 @@ function build-oatpp() {
 function build-tinyformat() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/tinyformat"
-    local src="${PROJ_SRC}/third-party/tinyformat-2.3.0"
+    local src="${PROJ_ROOT}/third-party/tinyformat-2.3.0"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}/include"
     ln -f -s "${src}" "${install_dir}/include/tinyformat"
@@ -69,7 +69,7 @@ function build-tinyformat() {
 function build-folly() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/folly"
-    local src="${PROJ_SRC}/third-party/folly-2026.01.05.00"
+    local src="${PROJ_ROOT}/third-party/folly-2026.01.05.00"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -98,7 +98,7 @@ function build-aws-sdk-cpp() {
 
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/aws-sdk-cpp"
-    local src="${PROJ_SRC}/third-party/aws-sdk-cpp"
+    local src="${PROJ_ROOT}/third-party/aws-sdk-cpp"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     
@@ -118,7 +118,7 @@ function build-aws-sdk-cpp() {
 function build-zlog() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/zlog"
-    local src="${PROJ_SRC}/third-party/zlog-1.2.18"
+    local src="${PROJ_ROOT}/third-party/zlog-1.2.18"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -137,7 +137,7 @@ function build-zlog() {
 function build-spdlog() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/spdlog"
-    local src="${PROJ_SRC}/third-party/spdlog-1.15.3"
+    local src="${PROJ_ROOT}/third-party/spdlog-1.15.3"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -154,7 +154,7 @@ function build-spdlog() {
 function build-eigen() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/eigen"
-    local src="${PROJ_SRC}/third-party/eigen-5.0.1"
+    local src="${PROJ_ROOT}/third-party/eigen-5.0.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -173,7 +173,7 @@ function build-libevent() {
     # https://codeload.github.com/libevent/libevent/tar.gz/refs/tags/release-2.1.12-stable
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/libevent"
-    local src="${PROJ_SRC}/third-party/libevent-release-2.1.12-stable"
+    local src="${PROJ_ROOT}/third-party/libevent-release-2.1.12-stable"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -196,7 +196,7 @@ function build-zlib() {
     # https://zlib.net/zlib-1.3.1.tar.gz
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/zlib"
-    local src="${PROJ_SRC}/third-party/zlib-1.3.1"
+    local src="${PROJ_ROOT}/third-party/zlib-1.3.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -213,7 +213,7 @@ function build-zlib() {
 function build-civetweb() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/civetweb"
-    local src="${PROJ_SRC}/third-party/civetweb-1.16"
+    local src="${PROJ_ROOT}/third-party/civetweb-1.16"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -243,7 +243,7 @@ function build-civetweb() {
 function build-leveldb() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/leveldb"
-    local src="${PROJ_SRC}/third-party/leveldb-1.23"
+    local src="${PROJ_ROOT}/third-party/leveldb-1.23"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -265,7 +265,7 @@ function build-leveldb() {
 function build-nlohmann-json() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/json"
-    local src="${PROJ_SRC}/third-party/json-3.12.0"
+    local src="${PROJ_ROOT}/third-party/json-3.12.0"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
 
@@ -284,7 +284,7 @@ function build-nlohmann-json() {
 function build-googletest() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/googletest"
-    local src="${PROJ_SRC}/third-party/googletest-1.17.0"
+    local src="${PROJ_ROOT}/third-party/googletest-1.17.0"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -301,7 +301,7 @@ function build-googletest() {
 function build-abseil-cpp() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/abseil-cpp"
-    local src="${PROJ_SRC}/third-party/abseil-cpp-20250814.1"
+    local src="${PROJ_ROOT}/third-party/abseil-cpp-20250814.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -318,7 +318,7 @@ function build-abseil-cpp() {
 function build-linenoise-ng() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/linenoise-ng"
-    local src="${PROJ_SRC}/third-party/linenoise-ng-1.0.1"
+    local src="${PROJ_ROOT}/third-party/linenoise-ng-1.0.1"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -337,7 +337,7 @@ function build-linenoise-ng() {
 function build-dlib() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/dlib"
-    local src="${PROJ_SRC}/third-party/dlib-20.0"
+    local src="${PROJ_ROOT}/third-party/dlib-20.0"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -354,7 +354,7 @@ function build-dlib() {
 function build-fmt() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/fmt"
-    local src="${PROJ_SRC}/third-party/fmt-12.0.0"
+    local src="${PROJ_ROOT}/third-party/fmt-12.0.0"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -370,7 +370,7 @@ function build-fmt() {
 function build-gflags() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/gflags"
-    local src="${PROJ_SRC}/third-party/gflags-2.2.2"
+    local src="${PROJ_ROOT}/third-party/gflags-2.2.2"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -388,7 +388,7 @@ function build-gflags() {
 function build-pugixml() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/pugixml"
-    local src="${PROJ_SRC}/third-party/pugixml-1.15"
+    local src="${PROJ_ROOT}/third-party/pugixml-1.15"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -405,7 +405,7 @@ function build-pugixml() {
 function build-poco() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/poco"
-    local src="${PROJ_SRC}/third-party/poco-poco-1.14.2-release"
+    local src="${PROJ_ROOT}/third-party/poco-poco-1.14.2-release"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
     ${PROJ_CMAKE} -B "${build_dir}" \
@@ -422,7 +422,7 @@ function build-poco() {
 function build-opencv() {
     local build_dir="${PROJ_BUILD}"
     local install_dir="${PROJ_DEPS}/opencv"
-    local src="${PROJ_SRC}/third-party/opencv-4.12.0"
+    local src="${PROJ_ROOT}/third-party/opencv-4.12.0"
     local src_contrib="${PROJ_SRC}/third-party/opencv_contrib-4.12.0/modules"
 
     rm -fr "${build_dir}" "${install_dir}" && mkdir -p "${install_dir}"
