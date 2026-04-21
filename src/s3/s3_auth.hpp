@@ -22,5 +22,8 @@ namespace s3
         std::string signature(const std::string& secretKey, const std::string& dateStamp, const std::string& regionName,
                               const std::string& serviceName, const std::string& stringToSign);
 
+        std::pair<std::string, std::string> makeAuthorizationHeaderKv(const std::string& scope, const std::string& signedHeaders,
+                                                                      const std::string& signature);
+
     } // namespace auth
 } // namespace s3

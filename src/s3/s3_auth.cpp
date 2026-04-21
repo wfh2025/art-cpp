@@ -84,6 +84,106 @@ namespace s3
     namespace auth
     {
 
+        std::string percentEncode(const std::string& input, const std::string& safe)
+        {
+            std::array<bool, 256> safeChars;
+            std::fill(safeChars.begin(), safeChars.end(), false);
+            for (unsigned char c : safe)
+            {
+                safeChars[c] = true;
+            }
+
+            std::string out;
+            out.reserve(input.size() * 3);
+            for (const unsigned char c : input)
+            {
+                if (std::isalnum(static_cast<unsigned char>(c)))
+                {
+                    out += c;
+                }
+                else if (safeChars[c])
+                {
+                    out += c;
+                }
+                else
+                {
+                    out += fmt::format("%{:02X}", static_cast<uint8_t>(c));
+                }
+            }
+
+            return out;
+        }
+
+        std::string percentDecode(const char* safe)
+        {
+            std::string unescaped;
+
+            for (; *safe; safe++)
+            {
+                switch (*safe)
+                {
+                case '%': {
+                    int hex = 0;
+                    auto ch = *++safe;
+                    if (ch >= '0' && ch <= '9')
+                    {
+                        hex = (ch - '0') * 16;
+                    }
+                    else if (ch >= 'A' && ch <= 'F')
+                    {
+                        hex = (ch - 'A' + 10) * 16;
+                    }
+                    else if (ch >= 'a' && ch <= 'f')
+                    {
+                        hex = (ch - 'a' + 10) * 16;
+                    }
+                    else
+                    {
+                        unescaped.push_back('%');
+                        if (ch == 0)
+                        {
+                            return unescaped;
+                        }
+                        unescaped.push_back(ch);
+                        break;
+                    }
+
+                    ch = *++safe;
+                    if (ch >= '0' && ch <= '9')
+                    {
+                        hex += (ch - '0');
+                    }
+                    else if (ch >= 'A' && ch <= 'F')
+                    {
+                        hex += (ch - 'A' + 10);
+                    }
+                    else if (ch >= 'a' && ch <= 'f')
+                    {
+                        hex += (ch - 'a' + 10);
+                    }
+                    else
+                    {
+                        unescaped.push_back('%');
+                        unescaped.push_back(*(safe - 1));
+                        if (ch == 0)
+                        {
+                            return unescaped;
+                        }
+                        unescaped.push_back(ch);
+                        break;
+                    }
+
+                    unescaped.push_back(char(hex));
+                    break;
+                }
+                default:
+                    unescaped.push_back(*safe);
+                    break;
+                }
+            }
+
+            return unescaped;
+        }
         std::string canonicalHeaders(const std::vector<std::pair<std::string, std::string>>& headersToSign)
         {
             // 去重
@@ -287,6 +387,18 @@ namespace s3
                 }
             }
             return headerMap;
+        }
+
+        std::pair<std::string, std::string> makeAuthorizationHeaderKv(const std::string& scope, const std::string& signedHeaders,
+                                                                      const std::string& signature)
+        {
+            std::vector<std::string> vec{
+                fmt::format("AWS4-HMAC-SHA256 Credential={}", scope),
+                fmt::format("SignedHeaders={}", signedHeaders),
+                fmt::format("Signature={}", signature),
+            };
+            std::string value = fmt::to_string(fmt::join(vec, ", "));
+            return std::make_pair("Authorization", value);
         }
     } // namespace auth
 } // namespace s3
