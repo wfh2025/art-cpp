@@ -3,6 +3,7 @@
 #include <memory>
 #include <sstream>
 #include <string>
+#include <unordered_map>
 #include <unordered_set>
 #include <utility>
 #include <vector>
@@ -83,7 +84,92 @@ namespace s3
 {
     namespace auth
     {
+        namespace
+        {
+            const std::unordered_map<std::string, SignatureVersion>& signatureVersionFromStringMap()
+            {
+                static const std::unordered_map<std::string, SignatureVersion> kMap = {
+                    {"unknown", SignatureVersion::Unknown},
+                    {"v2", SignatureVersion::V2},
+                    {"v3", SignatureVersion::V3},
+                    {"v3https", SignatureVersion::V3Https},
+                    {"s3", SignatureVersion::S3},
+                    {"s3-query", SignatureVersion::S3Query},
+                    {"s3-presign-post", SignatureVersion::S3PresignPost},
+                    {"s3v4-presign-post", SignatureVersion::S3V4PresignPost},
+                    {"v4-s3express", SignatureVersion::V4S3Express},
+                    {"v4-s3express-query", SignatureVersion::V4S3ExpressQuery},
+                    {"v4-s3express-presign-post", SignatureVersion::V4S3ExpressPresignPost},
+                    {"bearer", SignatureVersion::Bearer},
+                    {"v4", SignatureVersion::V4},
+                    {"v4-query", SignatureVersion::V4Query},
+                    {"v4a", SignatureVersion::V4a},
+                    {"s3v4", SignatureVersion::S3V4},
+                    {"s3v4-query", SignatureVersion::S3V4Query},
+                    {"s3v4a", SignatureVersion::S3V4a},
+                    {"s3v4a-query", SignatureVersion::S3V4aQuery},
+                };
+                return kMap;
+            }
+        } // namespace
 
+        const char* signatureVersionToString(SignatureVersion v) noexcept
+        {
+            switch (v)
+            {
+            case SignatureVersion::Unknown:
+                return "unknown";
+            case SignatureVersion::V2:
+                return "v2";
+            case SignatureVersion::V3:
+                return "v3";
+            case SignatureVersion::V3Https:
+                return "v3https";
+            case SignatureVersion::S3:
+                return "s3";
+            case SignatureVersion::S3Query:
+                return "s3-query";
+            case SignatureVersion::S3PresignPost:
+                return "s3-presign-post";
+            case SignatureVersion::S3V4PresignPost:
+                return "s3v4-presign-post";
+            case SignatureVersion::V4S3Express:
+                return "v4-s3express";
+            case SignatureVersion::V4S3ExpressQuery:
+                return "v4-s3express-query";
+            case SignatureVersion::V4S3ExpressPresignPost:
+                return "v4-s3express-presign-post";
+            case SignatureVersion::Bearer:
+                return "bearer";
+            case SignatureVersion::V4:
+                return "v4";
+            case SignatureVersion::V4Query:
+                return "v4-query";
+            case SignatureVersion::V4a:
+                return "v4a";
+            case SignatureVersion::S3V4:
+                return "s3v4";
+            case SignatureVersion::S3V4Query:
+                return "s3v4-query";
+            case SignatureVersion::S3V4a:
+                return "s3v4a";
+            case SignatureVersion::S3V4aQuery:
+                return "s3v4a-query";
+            default:
+                return "unknown";
+            }
+        }
+
+        SignatureVersion stringToSignatureVersion(const std::string& s) noexcept
+        {
+            const auto& map = signatureVersionFromStringMap();
+            const auto it = map.find(s);
+            if (it != map.end())
+            {
+                return it->second;
+            }
+            return SignatureVersion::Unknown;
+        }
         std::string percentEncode(const std::string& input, const std::string& safe)
         {
             std::array<bool, 256> safeChars;

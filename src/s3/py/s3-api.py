@@ -8,6 +8,7 @@ s3_config = {
     'bucket_name': 'haha',
 }
 
+# 配置参考: https://docs.aws.amazon.com/botocore/latest/reference/config.html
 client = boto3.client(
     service_name='s3',
     region_name=None,
