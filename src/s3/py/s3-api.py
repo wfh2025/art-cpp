@@ -83,5 +83,14 @@ def list_objects():
     pprint.pprint(resp)
 
 
+def put_object():
+    resp = client.put_object(
+        Bucket=s3_config["bucket_name"],
+        Key='a/b/c.txt',
+        Body=b"Hello World"
+    )
+    pprint.pprint(resp)
+
+
 if __name__ == "__main__":
-    list_objects()
+    put_object()

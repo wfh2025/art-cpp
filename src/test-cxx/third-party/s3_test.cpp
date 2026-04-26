@@ -31,6 +31,75 @@ namespace
     }
 } // namespace
 
+TEST(s3_auth_S3AuthRequest, 001)
+{
+    auto req = s3::auth::S3AuthRequest{};
+    req.timestamp = "20260425T092048Z";
+    req.upperHttpMethod = "PUT";
+    req.path = "/haha/a/b/c.txt";
+    req.canoicalQueryString = "";
+    req.accessKey = "access111";
+    req.secretKey = "yyyy";
+    req.regionName = "us-east-1";
+    req.serviceName = "s3";
+    std::string dateStamp = req.timestamp.substr(0, 8);
+
+    req.headers = {
+        {
+            "User-Agent",
+            "Boto3/1.42.86 md/Botocore#1.42.86 ua/2.1 os/macos#24.3.0 md/arch#arm64 lang/python#3.9.6 md/pyimpl#CPython m/N,e,F,b,Z "
+            "cfg/retry-mode#adaptive Botocore/1.42.86",
+        },
+        {
+            "Expect",
+            "100-continue",
+        },
+        {
+            "Transfer-Encoding",
+            "chunked",
+        },
+        {
+            "Content-Encoding",
+            "aws-chunked",
+        },
+        {
+            "X-Amz-Trailer",
+            "x-amz-checksum-crc32",
+        },
+        {
+            "X-Amz-Decoded-Content-Length",
+            "11",
+        },
+        {
+            "x-amz-sdk-checksum-algorithm",
+            "CRC32",
+        },
+        {
+            "X-Amz-Date",
+            "20260425T092048Z",
+        },
+        {
+            "X-Amz-Content-SHA256",
+            s3::auth::kStreamingUnsignedPayloadTrailer,
+        },
+    };
+
+    std::vector<std::pair<std::string, std::string>> headersToSign = s3::auth::headersToSign(req.headers);
+    std::string signedHeaders = s3::auth::signedHeaders(headersToSign);
+    std::string canonicalHeaders = s3::auth::canonicalHeaders(headersToSign);
+    std::string canonicalRequest = s3::auth::canonicalRequest(req.upperHttpMethod, req.path, req.canoicalQueryString, canonicalHeaders, signedHeaders,
+                                                              s3::auth::kStreamingUnsignedPayloadTrailer);
+
+    std::string scope = s3::auth::scope(req.accessKey, dateStamp, req.regionName, req.serviceName);
+    std::string credentialScope = s3::auth::credentialScope(dateStamp, req.regionName, req.serviceName);
+    std::string stringToSign = s3::auth::stringToSign(req.timestamp, credentialScope, canonicalRequest);
+    std::string signature = s3::auth::signature(req.secretKey, dateStamp, req.regionName, req.serviceName, stringToSign);
+
+    auto authKv = s3::auth::makeAuthorizationHeaderKv(scope, signedHeaders, signature);
+    SPDLOG_INFO("key: {}, val: {}", authKv.first, authKv.second);
+}
+
+#ifdef RUN_ALL_TEST_CASE
 TEST(s3_auth_scope, 001)
 {
     std::string rv = "";
@@ -38,7 +107,6 @@ TEST(s3_auth_scope, 001)
     EXPECT_EQ(rv, "x0/x1/x2/x3/aws4_request");
 }
 
-#ifdef RUN_ALL_TEST_CASE
 TEST(s3_algs_MD5, 001_large_file_streaming)
 {
 #    if 0

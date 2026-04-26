@@ -10,6 +10,24 @@ namespace s3
 {
     namespace auth
     {
+        struct S3AuthRequest
+        {
+            std::string timestamp;                                        // '20260425T092048Z'
+            std::string upperHttpMethod;                                  // 大写的HTTP方法
+            std::string path;                                             // http请求路径
+            std::string canoicalQueryString;                              // 标准化查询字符串
+            std::vector<std::pair<std::string, std::string>> headers;     // 头
+            std::vector<std::pair<std::string, std::string>> queryParams; // 查询参数
+            std::string accessKey;
+            std::string secretKey;
+            std::string regionName;
+            std::string serviceName;
+        };
+
+        extern const std::string kUnsignedPayload;
+        extern const std::string kStreamingUnsignedPayloadTrailer;
+        extern const std::string kEmptySha256Hash;
+
         enum class SignatureVersion : int32_t
         {
             Unknown,
@@ -51,6 +69,18 @@ namespace s3
 
         std::pair<std::string, std::string> makeAuthorizationHeaderKv(const std::string& scope, const std::string& signedHeaders,
                                                                       const std::string& signature);
+        std::vector<std::pair<std::string, std::string>> headersToSign(const std::vector<std::pair<std::string, std::string>>& headers);
+        std::string signedHeaders(const std::vector<std::pair<std::string, std::string>>& headersToSign);
+        std::string canonicalQueryStringUrl(const std::string& encodedQueryString);
+        std::string canonicalQueryStringByVecPair(std::vector<std::pair<std::string, std::string>>& encodedPairs);
+        std::string canonicalRequest(const std::string& upperHttpMethod, const std::string& normalizedUrlPath,
+                                     const std::string& canonicalQueryString, const std::string& canonicalHeaders, const std::string& signedHeaders,
+                                     const std::string& bodyChecksum);
+        std::string stringToSign(const std::string& timestamp, const std::string& credentialScope, const std::string& canonicalRequest);
+        std::string credentialScope(const std::string& dateStamp, const std::string& regionName, const std::string& serviceName);
+        std::string canonicalHeaders(const std::vector<std::pair<std::string, std::string>>& headersToSign);
+        std::string percentDecode(const char* safe);
+        std::string percentEncode(const std::string& input, const std::string& safe);
 
     } // namespace auth
 } // namespace s3

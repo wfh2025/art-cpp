@@ -84,6 +84,9 @@ namespace s3
 {
     namespace auth
     {
+        const std::string kUnsignedPayload = "UNSIGNED-PAYLOAD";
+        const std::string kStreamingUnsignedPayloadTrailer = "STREAMING-UNSIGNED-PAYLOAD-TRAILER";
+
         namespace
         {
             const std::unordered_map<std::string, SignatureVersion>& signatureVersionFromStringMap()
