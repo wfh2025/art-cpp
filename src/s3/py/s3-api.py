@@ -1,3 +1,4 @@
+import datetime
 import logging
 import pprint
 import sys
@@ -93,63 +94,342 @@ def put_object():
 
 
 def abort_multipart_upload():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.abort_multipart_upload(
+        Bucket='string',
+        Key='string',
+        UploadId='string',
+        RequestPayer='requester',
+        ExpectedBucketOwner='string',
+        IfMatchInitiatedTime=datetime.datetime(2015, 1, 1)
+    )
+    pprint.pprint(resp)
 
 
 def complete_multipart_upload():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.complete_multipart_upload(
+        Bucket='string',
+        Key='string',
+        MultipartUpload={
+            'Parts': [
+                {
+                    'ETag': 'string',
+                    'ChecksumCRC32': 'string',
+                    'ChecksumCRC32C': 'string',
+                    'ChecksumCRC64NVME': 'string',
+                    'ChecksumSHA1': 'string',
+                    'ChecksumSHA256': 'string',
+                    'ChecksumSHA512': 'string',
+                    'ChecksumMD5': 'string',
+                    'ChecksumXXHASH64': 'string',
+                    'ChecksumXXHASH3': 'string',
+                    'ChecksumXXHASH128': 'string',
+                    'PartNumber': 123
+                },
+            ]
+        },
+        UploadId='string',
+        ChecksumCRC32='string',
+        ChecksumCRC32C='string',
+        ChecksumCRC64NVME='string',
+        ChecksumSHA1='string',
+        ChecksumSHA256='string',
+        ChecksumSHA512='string',
+        ChecksumMD5='string',
+        ChecksumXXHASH64='string',
+        ChecksumXXHASH3='string',
+        ChecksumXXHASH128='string',
+        ChecksumType='COMPOSITE',
+        MpuObjectSize=123,
+        RequestPayer='requester',
+        ExpectedBucketOwner='string',
+        IfMatch='string',
+        IfNoneMatch='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+    )
+    pprint.pprint(resp)
 
 
 def create_multipart_upload():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.create_multipart_upload(
+        ACL='public-read-write',
+        Bucket='string',
+        CacheControl='string',
+        ContentDisposition='string',
+        ContentEncoding='string',
+        ContentLanguage='string',
+        ContentType='string',
+        Expires=datetime.datetime(2015, 1, 1),
+        GrantFullControl='string',
+        GrantRead='string',
+        GrantReadACP='string',
+        GrantWriteACP='string',
+        Key='string',
+        Metadata={
+            'string': 'string'
+        },
+        ServerSideEncryption='AES256',
+        StorageClass='STANDARD',
+        WebsiteRedirectLocation='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+        SSEKMSKeyId='string',
+        SSEKMSEncryptionContext='string',
+        BucketKeyEnabled=True,
+        RequestPayer='requester',
+        Tagging='string',
+        ObjectLockMode='GOVERNANCE',
+        ObjectLockRetainUntilDate=datetime.datetime(2015, 1, 1),
+        ObjectLockLegalHoldStatus='ON',
+        ExpectedBucketOwner='string',
+        ChecksumAlgorithm='CRC32',
+        ChecksumType='COMPOSITE',
+    )
+    pprint.pprint(resp)
 
 
 def delete_object():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.delete_object(
+        Bucket='string',
+        Key='string',
+        MFA='string',
+        VersionId='string',
+        RequestPayer='requester',
+        BypassGovernanceRetention=True,
+        ExpectedBucketOwner='string',
+        IfMatch='string',
+        IfMatchLastModifiedTime=datetime.datetime(2015, 1, 1),
+        IfMatchSize=123
+    )
+    pprint.pprint(resp)
 
 
 def delete_objects():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.delete_objects(
+        Bucket='string',
+        Delete={
+            'Objects': [
+                {
+                    'Key': 'string',
+                    'VersionId': 'string',
+                    'ETag': 'string',
+                    'LastModifiedTime': datetime.datetime(2015, 1, 1),
+                    'Size': 123
+                },
+            ],
+            'Quiet': True,
+        },
+        MFA='string',
+        RequestPayer='requester',
+        BypassGovernanceRetention=True,
+        ExpectedBucketOwner='string',
+        ChecksumAlgorithm='CRC32',
+    )
+    pprint.pprint(resp)
 
 
 def delete_object_tagging():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.delete_object_tagging(
+        Bucket='string',
+        Key='string',
+        VersionId='string',
+        ExpectedBucketOwner='string'
+    )
+    pprint.pprint(resp)
 
 
 def get_object():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.get_object(
+        Bucket='string',
+        IfMatch='string',
+        IfModifiedSince=datetime.datetime(2015, 1, 1),
+        IfNoneMatch='string',
+        IfUnmodifiedSince=datetime.datetime(2015, 1, 1),
+        Key='string',
+        Range='string',
+        ResponseCacheControl='string',
+        ResponseContentDisposition='string',
+        ResponseContentEncoding='string',
+        ResponseContentLanguage='string',
+        ResponseContentType='string',
+        ResponseExpires=datetime.datetime(2015, 1, 1),
+        VersionId='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+        RequestPayer='requester',
+        PartNumber=123,
+        ExpectedBucketOwner='string',
+        ChecksumMode='ENABLED'
+    )
+    pprint.pprint(resp)
 
 
 def get_object_tagging():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.get_object_tagging(
+        Bucket='string',
+        Key='string',
+        VersionId='string',
+        ExpectedBucketOwner='string',
+        RequestPayer='requester'
+    )
+    pprint.pprint(resp)
 
 
 def head_object():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.head_object(
+        Bucket='string',
+        IfMatch='string',
+        IfModifiedSince=datetime.datetime(2015, 1, 1),
+        IfNoneMatch='string',
+        IfUnmodifiedSince=datetime.datetime(2015, 1, 1),
+        Key='string',
+        Range='string',
+        ResponseCacheControl='string',
+        ResponseContentDisposition='string',
+        ResponseContentEncoding='string',
+        ResponseContentLanguage='string',
+        ResponseContentType='string',
+        ResponseExpires=datetime.datetime(2015, 1, 1),
+        VersionId='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+        RequestPayer='requester',
+        PartNumber=123,
+        ExpectedBucketOwner='string',
+        ChecksumMode='ENABLED'
+    )
+    pprint.pprint(resp)
 
 
 def list_multipart_uploads():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.list_multipart_uploads(
+        Bucket='string',
+        Delimiter='string',
+        EncodingType='url',
+        KeyMarker='string',
+        MaxUploads=123,
+        Prefix='string',
+        UploadIdMarker='string',
+        ExpectedBucketOwner='string',
+        RequestPayer='requester'
+    )
+    pprint.pprint(resp)
 
 
 def list_object_versions():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.list_object_versions(
+        Bucket='string',
+        Delimiter='string',
+        EncodingType='url',
+        KeyMarker='string',
+        MaxKeys=123,
+        Prefix='string',
+        VersionIdMarker='string',
+        ExpectedBucketOwner='string',
+        RequestPayer='requester',
+        OptionalObjectAttributes=[
+            'RestoreStatus',
+        ]
+    )
+    pprint.pprint(resp)
 
 
 def list_objects_v2():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.list_objects_v2(
+        Bucket='string',
+        Delimiter='string',
+        EncodingType='url',
+        MaxKeys=123,
+        Prefix='string',
+        ContinuationToken='string',
+        FetchOwner=True,
+        StartAfter='string',
+        RequestPayer='requester',
+        ExpectedBucketOwner='string',
+        OptionalObjectAttributes=[
+            'RestoreStatus',
+        ]
+    )
+    pprint.pprint(resp)
 
 
 def list_parts():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.list_parts(
+        Bucket='string',
+        Key='string',
+        MaxParts=123,
+        PartNumberMarker=123,
+        UploadId='string',
+        RequestPayer='requester',
+        ExpectedBucketOwner='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+    )
+    pprint.pprint(resp)
 
 
 def put_object_tagging():
-    pass
+    logger.info(''.center(100, '-'))
+    resp = client.put_object_tagging(
+        Bucket='string',
+        Key='string',
+        VersionId='string',
+        ContentMD5='string',
+        ChecksumAlgorithm='CRC32',
+        Tagging={
+            'TagSet': [
+                {
+                    'Key': 'string',
+                    'Value': 'string'
+                },
+            ]
+        },
+        ExpectedBucketOwner='string',
+        RequestPayer='requester'
+    )
+    pprint.pprint(resp)
 
 
 def upload_part():
-    pass
+    logger.info(''.center(100, '-'))
+    response = client.upload_part(
+        Body=b'bytes',
+        Bucket='string',
+        ContentLength=123,
+        ContentMD5='string',
+        ChecksumAlgorithm='CRC32',
+        ChecksumCRC32='string',
+        ChecksumCRC32C='string',
+        ChecksumCRC64NVME='string',
+        ChecksumSHA1='string',
+        ChecksumSHA256='string',
+        ChecksumSHA512='string',
+        ChecksumMD5='string',
+        ChecksumXXHASH64='string',
+        ChecksumXXHASH3='string',
+        ChecksumXXHASH128='string',
+        Key='string',
+        PartNumber=123,
+        UploadId='string',
+        SSECustomerAlgorithm='string',
+        SSECustomerKey='string',
+        RequestPayer='requester',
+        ExpectedBucketOwner='string'
+    )
+    pprint.pprint(response)
 
 
 def main():
